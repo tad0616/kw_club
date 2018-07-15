@@ -206,4 +206,5 @@ foreach ($item_list as $item_id => $item_name) {
 }
 echo $formi->render();
 
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
 include_once 'footer.php';

@@ -10,7 +10,8 @@
 </center>
 
 
-<div><form class="form-horizontal" name="classform" id="classform" action="<{$_server[PHP_SELF]}>" method="post" onsubmit="return xoopsFormValidate_classform();" enctype = "multipart/form-data">
+<div>
+    <form class="form-horizontal" name="classform" id="classform" action="main.php" method="post" onsubmit="return xoopsFormValidate_classform();" enctype = "multipart/form-data">
 
     <div class="form-group">
         <label for="class_num" class="col-md-2 control-label">挑選社團<span class="caption-required">*</span></label>

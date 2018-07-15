@@ -37,14 +37,7 @@ switch ($op) {
         break;
 
     default:
-        if (empty($reg_sn)) {
-//列表模式
-            reg_list();
-            //$main .= kw_club_reg_form($reg_sn);
-        } else {
-//修改編輯模式
-            reg_list($reg_sn);
-        }
+        reg_list($reg_sn);
         break;
 
         /*---判斷動作請貼在上方---*/
@@ -232,13 +225,12 @@ function update_reg($reg_sn = '')
 }
 
 //列出所有kw_club_reg資料
-function reg_list()
+function reg_list($reg_sn = 0)
 {
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
     $review = system_CleanVars($_REQUEST, 'review', '', 'string');
     $year   = system_CleanVars($_REQUEST, 'year', '0', 'int');
-    $reg_sn = system_CleanVars($_REQUEST, 'reg_sn', '0', 'int');
     // $review = 'reg_sn';
 
     //報名年度

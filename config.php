@@ -8,7 +8,6 @@ $xoopsOption['template_main'] = "kw_club_config.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
-include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op      = system_CleanVars($_REQUEST, 'op', '', 'string');
 $kw_club = [];
@@ -54,10 +53,6 @@ function club_form()
     $cal = new My97DatePicker();
     $cal->render();
 
-    // if (!$_SESSION['isclubAdmin']) {
-    //     redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    // }
-
     //尚未設定社團期別
     if (!file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
         $arr_semester = get_semester();
@@ -97,10 +92,6 @@ function club_form()
 function set_config()
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
-
-    if (!$_SESSION['isclubAdmin']) {
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    }
 
     $uid          = $xoopsUser->uid();
     $kw_club_year = system_CleanVars($_REQUEST, 'kw_club_year', '', 'int');
@@ -165,9 +156,6 @@ function update_config()
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
 
-    if (!$_SESSION['isclubAdmin']) {
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    }
     //update json
     $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
     $kw_club = json_decode($json, true);
@@ -198,9 +186,6 @@ function reset_config()
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
 
-    if (!$_SESSION['isclubAdmin']) {
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    }
     if (!isset($_SESSION['club_year'])) {
         echo "<script language='JavaScript'>alert('尚未設定社團期別，請先設定社團資料!');window.location.href='config.php'; </script>";
         exit();
@@ -221,20 +206,6 @@ function reset_config()
     }
 
 }
-
-//權限項目陣列（編號超級重要！設定後，以後切勿隨便亂改。）
-$item_list = array(
-    '1' => "新增社團",
-    '2' => "管理社團",
-);
-
-$mid       = $xoopsModule->mid();
-$perm_name = $xoopsModule->dirname();
-$formi     = new XoopsGroupPermForm('細部權限設定', $mid, $perm_name, '請勾選欲開放給群組使用的權限：<br>');
-foreach ($item_list as $item_id => $item_name) {
-    $formi->addItem($item_id, $item_name);
-}
-echo $formi->render();
 
 /*-----------秀出結果區--------------*/
 include_once XOOPS_ROOT_PATH . '/footer.php';

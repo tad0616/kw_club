@@ -39,17 +39,12 @@ switch ($op) {
         } else {
             class_form();
         }
-
-        $op = "class_form";
         break;
 
     default:
         if ($class_id) {
             class_show($class_id);
-
-            //$main .= class_form($class_id);
         } else {
-
             class_list();
         }
         break;
