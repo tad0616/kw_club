@@ -1,8 +1,9 @@
 <?php
-
 /*-----------引入檔案區--------------*/
-
 include_once "header.php";
+if (!$_SESSION['isclubAdmin']) {
+    redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
+}
 $xoopsOption['template_main'] = "kw_club_register.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
@@ -11,13 +12,6 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op       = system_CleanVars($_REQUEST, 'op', '', 'string');
 $class_id = system_CleanVars($_REQUEST, 'class_id', '', 'int');
 $reg_sn   = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
-
-//check power
-if (!isset($_SESSION['isclubAdmin'])) {
-    echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-    // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    exit();
-}
 
 switch ($op) {
 

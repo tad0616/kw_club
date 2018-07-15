@@ -1,6 +1,9 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+if (!$_SESSION['isclubAdmin']) {
+    redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
+}
 $xoopsOption['template_main'] = "kw_club_cate.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
@@ -14,13 +17,6 @@ $type    = system_CleanVars($_REQUEST, 'type', '', 'string'); //database name
 $op      = system_CleanVars($_REQUEST, 'op', '', 'string');
 $cate_id = system_CleanVars($_REQUEST, 'cate_id', '', 'int');
 $table   = "kw_club_" . $type; //database name
-
-//check power
-if (!isset($_SESSION['isclubAdmin'])) {
-    echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-    // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    exit();
-}
 
 switch ($op) {
 
@@ -58,11 +54,6 @@ switch ($op) {
 function cate_form($cate_id = '')
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser, $type, $table;
-
-    // if (!power_chk("", 2) && !power_chk("", 1)) {
-    //     echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-    //     exit();
-    // }
 
     include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
     include_once XOOPS_ROOT_PATH . "/class/xoopseditor/xoopseditor.php";
@@ -177,15 +168,6 @@ function insert_cate()
 {
     global $xoopsDB, $xoopsTpl, $error, $type, $table;
 
-    // if (!$_SESSION['isclubAdmin']) {
-    //     redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    // }
-
-    // if (!power_chk("", 2) && !power_chk("", 1)) {
-    //     echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-    //     exit();
-    // }
-
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
         $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
@@ -240,15 +222,6 @@ function update_cate($cate_id = '')
 {
     global $xoopsDB, $xoopsTpl, $error, $type, $table;
 
-    // if (!$_SESSION['isclubAdmin']) {
-    //     redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    // }
-
-    // if (!power_chk("", 2) && !power_chk("", 1)) {
-    //     echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-    //     exit();
-    // }
-
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
         $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
@@ -292,11 +265,6 @@ function update_cate($cate_id = '')
 function delete_cate($cate_id = '')
 {
     global $xoopsDB, $type, $table;
-
-    // if (!power_chk("", 2) && !power_chk("", 1)) {
-    //     echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-    //     exit();
-    // }
 
     if (empty($cate_id)) {
         echo "<script language='JavaScript'>alert('刪除錯誤!沒有id!');history.back(); </script>";

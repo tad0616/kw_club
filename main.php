@@ -80,13 +80,11 @@ function class_form($class_id = '')
     $editor = $ck->render();
 
     if (!power_chk("", 2) && !power_chk("", 1)) {
-        echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-        exit();
-        // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
+        redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
+
     if (!file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
-        echo "<script language='JavaScript'>alert('尚未設定社團期別，請管理員先設定社團資料!');window.location.href='index.php'; </script>";
-        exit();
+        redirect_header("index.php", 3, '尚未設定社團期別，請管理員先設定社團資料!');
     }
 
     // include_once(XOOPS_ROOT_PATH."/class/xoopsformloader.php");
@@ -266,9 +264,7 @@ function insert_class()
 
     //檢查權限
     if (!power_chk("", 2) && !power_chk("", 1)) {
-        echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-        exit();
-        // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
+        redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 //     if (!$_SESSION['isclubAdmin']) {
     //     redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
@@ -391,13 +387,8 @@ function update_class($class_id = '')
 
     //檢查權限
     if (!power_chk("", 2) && !power_chk("", 1)) {
-        echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-        exit();
-        // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
+        redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
-//     if (!$_SESSION['isclubAdmin']) {
-    //     redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    // }
 
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -482,9 +473,7 @@ function delete_class($class_id)
 
     //檢查權限
     if (!power_chk("", 2) && !power_chk("", 1)) {
-        echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-        exit();
-        // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
+        redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 
     if (empty($class_id)) {

@@ -72,3 +72,4 @@ define('_MD_KWCLUB', '社團報名');
 define('_MD_KWCLUB_LIST', '期社團列表');
 define('_MD_KWCLUB_APPLY_DATE', '報名期間：');
 define('_MD_KWCLUB_EMPTY_CLUB', '此期尚未新增社團！');
+define('_MD_KWCLUB_FORBBIDEN', '您沒有執行此動作的權限！');
