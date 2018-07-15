@@ -9,10 +9,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
-$kw_club = [];
-
-//debug
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 switch ($op) {
 
@@ -33,13 +30,7 @@ switch ($op) {
         exit;
 
     default:
-        $arr_num = [];
-        for ($i = 0; $i <= 10; $i++) {
-            $arr_num[$i] = $i;
-        }
-        $xoopsTpl->assign('arr_num', $arr_num);
         club_form();
-
         break;
 
 }
@@ -61,20 +52,9 @@ function club_form()
         //已設定
         $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
         $kw_club = json_decode($json, true);
-        $xoopsTpl->assign('semester', $kw_club['0']);
-        $xoopsTpl->assign('start_reg', $kw_club['1']);
-        $xoopsTpl->assign('end_reg', $kw_club['2']);
-        $xoopsTpl->assign('isfree_reg', $kw_club['3']);
-        $xoopsTpl->assign('backup_num', $kw_club['4']);
-        // $xoopsTpl->assign('pickdate', $pickdate);
-
-        //套用formValidator驗證機制
-        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
-            redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
+        foreach ($kw_club as $key => $value) {
+            $xoopsTpl->assign($key, $value);
         }
-        include_once TADTOOLS_PATH . "/formValidator.php";
-        $formValidator = new formValidator("#classform", true);
-        $formValidator->render();
 
         //刪除確認的JS
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
@@ -87,24 +67,36 @@ function club_form()
 
     }
 
+    $arr_num = [];
+    for ($i = 0; $i <= 10; $i++) {
+        $arr_num[$i] = $i;
+    }
+    $xoopsTpl->assign('arr_num', $arr_num);
+
+    //套用formValidator驗證機制
+    if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+        redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
+    }
+    include_once TADTOOLS_PATH . "/formValidator.php";
+    $formValidator = new formValidator("#classform", true);
+    $formValidator->render();
+
 }
 
 function set_config()
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
 
-    $uid          = $xoopsUser->uid();
-    $kw_club_year = system_CleanVars($_REQUEST, 'kw_club_year', '', 'int');
-    $start_reg    = system_CleanVars($_REQUEST, 'start_reg', '', 'datetime');
-    $end_reg      = system_CleanVars($_REQUEST, 'end_reg', '', 'datetime');
-    $isfree_reg   = system_CleanVars($_REQUEST, 'isfree_reg', '', '');
-    $backup_num   = system_CleanVars($_REQUEST, 'backup_num', '', 'int');
+    $uid        = $xoopsUser->uid();
+    $semester   = system_CleanVars($_REQUEST, 'kw_club_year', '', 'int');
+    $start_reg  = system_CleanVars($_REQUEST, 'start_reg', '', 'datetime');
+    $end_reg    = system_CleanVars($_REQUEST, 'end_reg', '', 'datetime');
+    $isfree_reg = system_CleanVars($_REQUEST, 'isfree_reg', '', '');
+    $backup_num = system_CleanVars($_REQUEST, 'backup_num', '', 'int');
     //db
-    $myts         = MyTextSanitizer::getInstance();
-    $kw_club_year = $myts->addSlashes($kw_club_year);
-    $isfree_reg   = $myts->addSlashes($isfree_reg);
-    $sql          = "select `club_year` from `" . $xoopsDB->prefix('kw_club_info') . "` where `club_year` = {$kw_club_year}";
-    $result       = $xoopsDB->query($sql) or web_error($sql);
+    $myts   = MyTextSanitizer::getInstance();
+    $sql    = "select `club_year` from `" . $xoopsDB->prefix('kw_club_info') . "` where `club_year` = {$semester}";
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     //check club_year isreset
     if (list($club_year) = $xoopsDB->fetchRow($result)) {
@@ -127,7 +119,7 @@ function set_config()
             `club_datetime`,
             `club_enable`
             ) values(
-            '{$kw_club_year}',
+            '{$semester}',
             '{$start_reg}',
             '{$end_reg}',
             '{$isfree_reg}',
@@ -139,12 +131,12 @@ function set_config()
         $xoopsDB->query($sql) or web_error($sql);
     }
     //json
-    $kw_club = array('0' => $kw_club_year, '1' => $start_reg, '2' => $end_reg, '3' => $isfree_reg, '4' => $backup_num);
+    $kw_club = array('semester' => $semester, 'start_reg' => $start_reg, 'end_reg' => $end_reg, 'isfree_reg' => $isfree_reg, 'backup_num' => $backup_num);
     $json    = json_encode($kw_club, JSON_UNESCAPED_UNICODE);
     file_put_contents(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json", $json);
 
     //設定相關變數
-    $_SESSION['club_year']       = $kw_club_year;
+    $_SESSION['club_year']       = $semester;
     $_SESSION['club_start_date'] = $start_reg;
     $_SESSION['club_end_date']   = $end_reg;
     $_SESSION['club_isfreereg']  = $isfree_reg;
@@ -162,7 +154,7 @@ function update_config()
 
     $start_reg = system_CleanVars($_REQUEST, 'start_reg', '', 'datetime');
     $end_reg   = system_CleanVars($_REQUEST, 'end_reg', '', 'datetime');
-    $kw_club   = array('0' => $kw_club['0'], '1' => $start_reg, '2' => $end_reg, '3' => $kw_club['3'], '4' => $kw_club['4']);
+    $kw_club   = array('semester' => $kw_club['semester'], 'start_reg' => $kw_club['start_reg'], 'end_reg' => $kw_club['end_reg'], 'isfree_reg' => $kw_club['isfree_reg'], 'backup_num' => $kw_club['backup_num']);
     $json      = json_encode($kw_club, JSON_UNESCAPED_UNICODE);
     file_put_contents(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json", $json);
 
@@ -172,6 +164,7 @@ function update_config()
     `club_start_date`  =  '{$start_reg}',
     `club_end_date` =  '{$end_reg}',
     `club_uid` = '{$uid}',
+    `backup_num` = '{$backup_num}',
     `club_datetime` = NOW()";
     $xoopsDB->query($sql) or web_error($sql);
 
@@ -187,14 +180,11 @@ function reset_config()
     global $xoopsDB, $xoopsTpl, $xoopsUser;
 
     if (!isset($_SESSION['club_year'])) {
-        echo "<script language='JavaScript'>alert('尚未設定社團期別，請先設定社團資料!');window.location.href='config.php'; </script>";
-        exit();
+        redirect_header("config.php", 3, '尚未設定社團期別，請先設定社團資料!');
     } else {
         $year = $_SESSION['club_year'];
     }
 
-    // $sql = "delete from `" . $xoopsDB->prefix('kw_club_info') . "`
-    // where `" . $type . "club_year` = '{$year}'";
     $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
     `club_enable`  =  '0',
     `club_uid` = '{$uid}',
@@ -208,4 +198,5 @@ function reset_config()
 }
 
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
 include_once XOOPS_ROOT_PATH . '/footer.php';

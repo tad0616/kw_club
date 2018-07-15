@@ -62,14 +62,21 @@ define('_MD_KWCLUB_REG_IP', 'IP');
 
 //by tad
 if ($_SESSION['isclubAdmin']) {
-    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，<a href="config.php">請先進行每期社團資訊設定</a>後，再新增課程！');
+    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，<a href="config.php">請先進行社團報名期別設定</a>後，再新增課程！');
 } else {
-    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，請通知管理員，進行每期社團資訊設定，以便新增課程！');
+    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，請通知管理員，進行社團報名期別設定，以便新增課程！');
 }
 define('_MD_KWCLUB_SELECT_YEAR', '請選擇社團期別：');
 define('_MD_KWCLUB_EMPTY_YEAR', '目前沒有期別');
 define('_MD_KWCLUB', '社團報名');
 define('_MD_KWCLUB_LIST', '期社團列表');
-define('_MD_KWCLUB_APPLY_DATE', '報名期間：');
+define('_MD_KWCLUB_APPLY_DATE', '報名起訖時間');
+define('_MD_KWCLUB_APPLY_FROM_TO', '起至');
 define('_MD_KWCLUB_EMPTY_CLUB', '此期尚未新增社團！');
 define('_MD_KWCLUB_FORBBIDEN', '您沒有執行此動作的權限！');
+define('_MD_KWCLUB_INFO_SETUP', '社團期別設定');
+define('_MD_KWCLUB_YEAR', '社團期別');
+define('_MD_KWCLUB_NOW_YEAR', '目前設定的期數是：');
+define('_MD_KWCLUB_YEAR_HELP', '（除非截止日期或重設，否則設定後就無法變更。00暑假、01第一學期、11寒假、02第二學期）');
+define('_MD_KWCLUB_ADMIN', '期別設定');
+define('_MD_KWCLUB_BACKUP_NUM', '候補人數');

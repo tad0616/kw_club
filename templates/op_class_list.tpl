@@ -21,7 +21,7 @@
         <span style="color:blue;"><{$year}></span><{$smarty.const._MD_KWCLUB_LIST}>
         <small>（共 <{$total}> 筆活動）</small> 
     </h2>
-    <{$smarty.const._MD_KWCLUB_APPLY_DATE}><span style="color:red"><{$reg_start}>~<{$reg_end}></span>
+    <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:red"><{$reg_start}>~<{$reg_end}></span>
     
     <{if $all_content}>
         <table class="table table-bordered table-hover table-striped">

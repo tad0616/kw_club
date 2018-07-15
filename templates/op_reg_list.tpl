@@ -155,18 +155,18 @@
         <td>
               <{if $data.reg_isreg=='0'}>
                 <label class="radio-inline"><input type='radio' name='reg_isreg'  title='正取' value='0' checked />正取&nbsp;</label>
-                <label class="radio-inline"><input type='radio' name='reg_isreg'  title='後補' value='1'  />後補&nbsp;</label>
+                <label class="radio-inline"><input type='radio' name='reg_isreg'  title='後補' value='1'>後補&nbsp;</label>
                 <{else}>
-                <label class="radio-inline"><input type='radio' name='reg_isreg'  title='正取' value='0'   />正取&nbsp;</label>
+                <label class="radio-inline"><input type='radio' name='reg_isreg'  title='正取' value='0' >正取&nbsp;</label>
                 <label class="radio-inline"><input type='radio' name='reg_isreg'  title='後補' value='1'  checked/>後補&nbsp;</label>
                 <{/if}>
         </td>
         <td> 
               <{if $data.reg_isfee=='0'}>
-                <label class="radio-inline"><input type='radio' name='reg_isfee'  title='未繳' value='0' checked  />未繳&nbsp;</label>
-                <label class="radio-inline"><input type='radio' name='reg_isfee'  title='已繳' value='1'  />已繳&nbsp;</label>
+                <label class="radio-inline"><input type='radio' name='reg_isfee'  title='未繳' value='0' checked>未繳&nbsp;</label>
+                <label class="radio-inline"><input type='radio' name='reg_isfee'  title='已繳' value='1'>已繳&nbsp;</label>
                 <{else}>
-                <label class="radio-inline"><input type='radio' name='reg_isfee'  title='未繳' value='0'   />未繳&nbsp;</label>
+                <label class="radio-inline"><input type='radio' name='reg_isfee'  title='未繳' value='0' >未繳&nbsp;</label>
                 <label class="radio-inline"><input type='radio' name='reg_isfee'  title='已繳' value='1'  checked/>已繳&nbsp;</label>
                 <{/if}>
             

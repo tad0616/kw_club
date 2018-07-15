@@ -169,8 +169,8 @@
     <div class="form-group">
         <label for="class_isopen" class="col-md-2 control-label">是否啟用<span class="caption-required">*</span></label>
         <div class="col-md-10">
-            <label class="radio-inline"><input type='radio' name='class_isopen' id='class_isopen1' title='啟用' value='1' checked  />啟用&nbsp;</label>
-            <label class="radio-inline"><input type='radio' name='class_isopen' id='class_isopen2' title='停用' value='0'  />停用&nbsp;</label>
+            <label class="radio-inline"><input type='radio' name='class_isopen' id='class_isopen1' title='啟用' value='1' checked>啟用&nbsp;</label>
+            <label class="radio-inline"><input type='radio' name='class_isopen' id='class_isopen2' title='停用' value='0'>停用&nbsp;</label>
         </div>
     </div>
     <div class="form-group">
@@ -195,7 +195,7 @@
     <div class="form-group">
             <div class="col-md-2"> </div>
             <div class="col-md-10"><span class="form-inline">
-                <input type='submit' class='btn btn-default' name=''  id='' value='送出' title='送出'  /></span>
+                <input type='submit' class='btn btn-default' name=''  id='' value='送出' title='送出'></span>
             </div>
     </div>
 </form>

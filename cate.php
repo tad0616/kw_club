@@ -267,8 +267,7 @@ function delete_cate($cate_id = '')
     global $xoopsDB, $type, $table;
 
     if (empty($cate_id)) {
-        echo "<script language='JavaScript'>alert('刪除錯誤!沒有id!');history.back(); </script>";
-        exit();
+        redirect_header("cate.php", 3, '刪除錯誤!沒有id!');
     }
 
     $sql = "delete from `" . $xoopsDB->prefix($table) . "`

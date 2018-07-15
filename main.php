@@ -276,8 +276,7 @@ function insert_class()
         $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
         $kw_club = json_decode($json, true);
     } else {
-        echo "<script language='JavaScript'>alert('尚未設定社團期別，請先設定社團資料!');window.location.href='config.php'; </script>";
-        exit();
+        redirect_header("config.php", 3, '尚未設定社團期別，請先設定社團資料!');
     }
 
     $myts = MyTextSanitizer::getInstance();
@@ -396,8 +395,7 @@ function update_class($class_id = '')
         $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
         $kw_club = json_decode($json, true);
     } else {
-        echo "<script language='JavaScript'>alert('尚未設定社團期別，請先設定社團資料!');window.location.href='config.php'; </script>";
-        exit();
+        redirect_header("config.php", 3, '尚未設定社團期別，請先設定社團資料!');
     }
 
     $myts = MyTextSanitizer::getInstance();
@@ -472,11 +470,9 @@ function delete_class($class_id)
     }
 
     if (empty($class_id)) {
-        echo "<script language='JavaScript'>alert('錯誤!');window.location.href='index.php'; </script>";
-        exit();
+        redirect_header("index.php", 3, '錯誤!!');
     } else if (check_class_reg($class_id)) {
-        echo "<script language='JavaScript'>alert('警告!!此課程已有學生報名!!無法刪除!!'); </script>";
-        exit();
+        redirect_header("main.php", 3, '警告!!此課程已有學生報名!!無法刪除!!');
     } else {
 
         $tbl = $xoopsDB->prefix('kw_club_class');

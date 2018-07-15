@@ -158,24 +158,20 @@ function insert_reg()
     if (isset($_SESSION['club_year'])) {
         $year = $_SESSION['club_year'];
     } else {
-        echo "<script language='JavaScript'>alert('錯誤!社團期數未設定!無法報名!請連絡管理員。');window.location.href='index.php'; </script>";
-        exit();
+        redirect_header("index.php", 3, '錯誤!社團期數未設定!無法報名!請連絡管理員。');
     }
 
     //檢查報名是否可行
     if ($_SESSION['club_start_date'] > $today || $_SESSION['club_end_date'] < $today) {
-        echo "<script language='JavaScript'>alert('目前不是報名時間喔!');window.location.href='index.php'; </script>";
-        exit();
+        redirect_header("index.php", 3, '目前不是報名時間喔!');
     }
     if (($arr_class['class_menber'] + $_SESSION['club_backup_num']) <= $arr_class['class_regnum']) {
-        echo "<script language='JavaScript'>alert('報名人數已滿!');window.location.href='index.php'; </script>";
-        exit();
+        redirect_header("index.php", 3, '報名人數已滿!');
     }
 
     //檢查是否衝堂
     if (check_class_date($reg_uid, $class_id)) {
-        echo "<script language='JavaScript'>alert('錯誤!社團課程衝堂!!請再確認!');window.location.href='index.php'; </script>";
-        exit();
+        redirect_header("index.php", 3, '錯誤!社團課程衝堂!!請再確認!');
     }
 
     $myts = MyTextSanitizer::getInstance();
@@ -211,16 +207,15 @@ function insert_reg()
         // update xx_kw_club_class set class_regnum=class_regnum+1 where class_id =1;
         $update_sql = "update `" . $xoopsDB->prefix("kw_club_class") . "` set `class_regnum`=`class_regnum`+1 where `class_id`={$class_id}";
         $xoopsDB->query($update_sql);
-        echo "<script language='JavaScript'>alert('報名成功!');window.location.href='index.php'; </script>";
-        exit();
+        
+        redirect_header("index.php", 3, '報名成功!');
         //取得最後新增資料的流水編號
         // $reg_sn = $xoopsDB->getInsertId();
         // return $reg_sn;
 
     } else {
         // web_error($sql);
-        echo "<script language='JavaScript'>alert('錯誤!重複報名');window.location.href='index.php'; </script>";
-        exit();
+        redirect_header("index.php", 3, '錯誤!重複報名!');
     }
 
 }

@@ -611,19 +611,16 @@ function get_club_info()
     global $xoopsDB, $xoopsTpl;
 
     if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
-        // $sql      = "select * from `" . $xoopsDB->prefix("kw_club_info");
-        // $result   = $xoopsDB->query($sql) or web_error($sql);
-        // $arr_info = $xoopsDB->fetchArray($result);
         $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
         $kw_club = json_decode($json, true);
 
         //到期判斷
         $today = Date("Y-m-d");
-        if($today >  $kw_club['2'])
+        if($today >  $kw_club['end_reg'])
         {
             $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
             `club_enable`  =  '0',
-            `club_datetime` = NOW() where `club_year` = {$kw_club['0']}";
+            `club_datetime` = NOW() where `club_year` = {$kw_club['kw_club_year']}";
             $xoopsDB->queryF($sql) or web_error($sql);
         
             if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
@@ -632,11 +629,11 @@ function get_club_info()
             return false;
         }
         else{
-            $_SESSION['club_year']       = $kw_club['0'];
-            $_SESSION['club_start_date'] = $kw_club['1'];
-            $_SESSION['club_end_date']   = $kw_club['2'];
-            $_SESSION['club_isfreereg']  = $kw_club['3'];
-            $_SESSION['club_backup_num']  = $kw_club['4'];
+            $_SESSION['club_year']       = $kw_club['kw_club_year'];
+            $_SESSION['club_start_date'] = $kw_club['start_reg'];
+            $_SESSION['club_end_date']   = $kw_club['end_reg'];
+            $_SESSION['club_isfreereg']  = $kw_club['isfree_reg'];
+            $_SESSION['club_backup_num']  = $kw_club['backup_num'];
             return true; 
         }   
     }
@@ -733,8 +730,7 @@ function delete_reg()
     $uid      = system_CleanVars($_REQUEST, 'uid', '0', 'string');
 
     if (empty($reg_sn)) {
-        echo "<script language='JavaScript'>alert('錯誤!'); window.location.href={$_SERVER['PHP_SELF']}?op=myclass&uid={$uid}</script>";
-        exit();
+        redirect_header("{$_SERVER['PHP_SELF']}?op=myclass&uid={$uid}", 3, '錯誤!');
     } else {
         $arr      = get_reg($reg_sn);
         $class_id = $arr['class_id'];
