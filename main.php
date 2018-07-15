@@ -2,7 +2,7 @@
 /*-----------引入檔案區--------------*/
 
 include_once "header.php";
-$xoopsOption['template_main'] = "main.tpl";
+$xoopsOption['template_main'] = "kw_club_main.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
@@ -515,5 +515,4 @@ function delete_class($class_id)
 /*-----------秀出結果區--------------*/
 
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';

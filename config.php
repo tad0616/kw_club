@@ -1,7 +1,7 @@
 <?php
 
 include_once "header.php";
-$xoopsOption['template_main'] = "config.tpl";
+$xoopsOption['template_main'] = "kw_club_config.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/

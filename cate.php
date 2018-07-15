@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$xoopsOption['template_main'] = "cate.tpl";
+$xoopsOption['template_main'] = "kw_club_cate.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
@@ -16,12 +16,11 @@ $cate_id = system_CleanVars($_REQUEST, 'cate_id', '', 'int');
 $table   = "kw_club_" . $type; //database name
 
 //check power
-if (!isset($_SESSION['isclubAdmin']) ) {
+if (!isset($_SESSION['isclubAdmin'])) {
     echo "<script language='JavaScript'>alert('您沒有權限!');window.location.href='index.php'; </script>";
-     // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
+    // redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     exit();
 }
-
 
 switch ($op) {
 
@@ -48,7 +47,7 @@ switch ($op) {
 
     default:
         cate_list($type, $table);
-       
+
         break;
 
 }
@@ -315,5 +314,4 @@ function delete_cate($cate_id = '')
 $xoopsTpl->assign('type', $type);
 $xoopsTpl->assign('error', $error);
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';

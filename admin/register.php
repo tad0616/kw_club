@@ -2,7 +2,7 @@
 
 /*-----------引入檔案區--------------*/
 // $isAdmin                      = true;
-$xoopsOption['template_main'] = 'adm_main.tpl';
+$xoopsOption['template_main'] = 'kw_club_adm_register.tpl';
 include_once "header.php";
 include_once "../function.php";
 
@@ -309,5 +309,5 @@ function reg_list()
 
 /*-----------秀出結果區--------------*/
 // $xoopsTpl->assign("isAdmin", true);
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
 include_once 'footer.php';

@@ -9,7 +9,7 @@ $adminmenu[$i]['icon']  = 'images/admin/home.png';
 
 $i++;
 $adminmenu[$i]['title'] = "設定社團資料";
-$adminmenu[$i]['link']  = 'admin/config.php';
+$adminmenu[$i]['link']  = 'admin/main.php';
 $adminmenu[$i]['desc']  = _MI_KWCLUB_ADMENU2_DESC;
 $adminmenu[$i]['icon']  = "images/admin/button.png";
 

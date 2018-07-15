@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$xoopsOption['template_main'] = "index.tpl";
+$xoopsOption['template_main'] = "kw_club_index.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
@@ -412,5 +412,4 @@ function class_showjson($class_id = '')
 // $xoopsTpl->assign('op', $op);
 
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';

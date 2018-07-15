@@ -3,7 +3,7 @@
 /*-----------引入檔案區--------------*/
 
 include_once "header.php";
-$xoopsOption['template_main'] = "register.tpl";
+$xoopsOption['template_main'] = "kw_club_register.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
@@ -328,5 +328,5 @@ function reg_list()
 /*-----------秀出結果區--------------*/
 // $xoopsTpl->assign("isAdmin", $_SESSION['isClubAdmin']);
 // $xoopsTpl->assign('op', 'reg_list');
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
 include_once XOOPS_ROOT_PATH . '/footer.php';

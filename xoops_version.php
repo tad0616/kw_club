@@ -84,27 +84,34 @@ $modversion['sub'][$i]['name'] = _MI_KWCLUB_SMNAME4;
 $modversion['sub'][$i]['url']  = "statistic.php";
 
 //---樣板設定---//
-$modversion['templates'] = array();
-$i                       = 1;
-
-$modversion['templates'][$i]['file']        = 'config.tpl';
-$modversion['templates'][$i]['description'] = 'config.tpl';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'register.tpl';
-$modversion['templates'][$i]['description'] = 'register.tpl';
+$modversion['templates']                    = array();
+$i                                          = 1;
+$modversion['templates'][$i]['file']        = 'kw_club_config.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_config.tpl';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'index.tpl';
-$modversion['templates'][$i]['description'] = 'index.tpl';
+$modversion['templates'][$i]['file']        = 'kw_club_register.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_register.tpl';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'main.tpl';
-$modversion['templates'][$i]['description'] = 'main.tpl';
+$modversion['templates'][$i]['file']        = 'kw_club_index.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_index.tpl';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'cate.tpl';
-$modversion['templates'][$i]['description'] = 'cate.tpl for bootstrap3';
+$modversion['templates'][$i]['file']        = 'kw_club_main.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_main.tpl';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'kw_club_cate.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_cate.tpl';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'kw_club_adm_main.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_adm_main.tpl';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'kw_club_adm_register.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_adm_register.tpl';
 
 //---區塊設定---//
 $i = 0;
