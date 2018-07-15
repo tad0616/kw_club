@@ -7,8 +7,8 @@ include_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['langua
 define('_MI_KWCLUB_NAME', '社團報名系統');
 define('_MI_KWCLUB_AUTHOR', '社團報名系統');
 define('_MI_KWCLUB_CREDITS', '');
-define('_MI_KWCLUB_DESC', '此模組的用途是...');
-define('_MI_KWCLUB_AUTHOR_WEB', 'xoops');
+define('_MI_KWCLUB_DESC', '國小社團報名系統');
+define('_MI_KWCLUB_AUTHOR_WEB', 'https://github.com/laecych');
 define('_MI_KWCLUB_ADMENU1', '新增社團課程');
 define('_MI_KWCLUB_ADMENU1_DESC', '新增社團課程');
 define('_MI_KWCLUB_ADMENU2', '新增教師');

@@ -59,3 +59,13 @@ define('_MD_KWCLUB_REG_DATETIME', '報名日期');
 define('_MD_KWCLUB_REG_ISREG', '是否後補');
 define('_MD_KWCLUB_REG_ISFEE', '是否繳費');
 define('_MD_KWCLUB_REG_IP', 'IP');
+
+//by tad
+if ($_SESSION['isclubAdmin']) {
+    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，<a href="config.php">請先進行每期社團資訊設定</a>後，再新增課程！');
+} else {
+    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，請通知管理員，進行每期社團資訊設定，以便新增課程！');
+}
+define('_MD_KWCLUB_SELECT_YEAR', '請選擇社團期別：');
+define('_MD_KWCLUB_EMPTY_YEAR', '請選擇社團期別：');
+define('_MD_KWCLUB', '社團報名');
