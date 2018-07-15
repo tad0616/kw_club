@@ -14,10 +14,10 @@ CREATE TABLE `kw_club_info` (
 
 
 CREATE TABLE `kw_club_cate` (
-  `cate_id` smallint(5) unsigned NOT NULL auto_increment COMMENT '類型編號',
+  `cate_id` smallint(6) unsigned NOT NULL auto_increment COMMENT '類型編號',
   `cate_title` varchar(255) NOT NULL default '' COMMENT '類型標題',
   `cate_desc` varchar(255) NOT NULL default '' COMMENT '類型說明',
-  `cate_sort` smallint(5) unsigned NOT NULL default '0' COMMENT '類型排序',
+  `cate_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '類型排序',
   `cate_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
 PRIMARY KEY  (`cate_id`),
  UNIQUE KEY `cate_sort` (`cate_sort`)
@@ -30,13 +30,13 @@ CREATE TABLE `kw_club_class` (
   `cate_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '社團類型',
   `class_title` varchar(255) NOT NULL DEFAULT '' COMMENT '社團名稱',
   `teacher_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '開課教師',
-  `class_week` varchar(12) NOT NULL DEFAULT '0' COMMENT '上課星期',
+  `class_week` varchar(255) NOT NULL DEFAULT '0' COMMENT '上課星期',
   `class_date_open` date NOT NULL DEFAULT '0000-00-00' COMMENT '上課起始日',
   `class_date_close` date NOT NULL DEFAULT '0000-00-00' COMMENT '上課終止日',
   `class_time_start` time NOT NULL DEFAULT '00:00:00' COMMENT '起始時間',
   `class_time_end` time NOT NULL DEFAULT '00:00:00' COMMENT '終止時間',
   `place_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '上課地點',
-  `class_grade` varchar(20) NOT NULL DEFAULT '' COMMENT '招收對象',
+  `class_grade` varchar(255) NOT NULL DEFAULT '' COMMENT '招收對象',
   `class_menber` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '招收人數',
   `class_money` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '社團學費',
   `class_fee` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '額外費用',
@@ -45,7 +45,7 @@ CREATE TABLE `kw_club_class` (
   `class_ischecked` enum('1','0') NOT NULL COMMENT '是否開班',
   `class_isopen` enum('1','0') NOT NULL DEFAULT '1' COMMENT '是否啟用',
   `class_desc` text NOT NULL COMMENT '社團簡介',
-  `class_uid` int(255) NOT NULL COMMENT '發佈者',
+  `class_uid` mediumint(9) unsigned NOT NULL COMMENT '發佈者',
   `class_datetime` datetime NOT NULL COMMENT '發佈時間',
   `class_ip` varchar(255) NOT NULL COMMENT '發佈ip',
   PRIMARY KEY (`class_id`),
@@ -53,20 +53,20 @@ CREATE TABLE `kw_club_class` (
 ) ENGINE=MyISAM;
 
 CREATE TABLE `kw_club_place` (
-  `place_id` smallint(5) unsigned NOT NULL auto_increment COMMENT '地點編號',
+  `place_id` smallint(6) unsigned NOT NULL auto_increment COMMENT '地點編號',
   `place_title` varchar(255) NOT NULL default '' COMMENT '地點標題',
   `place_desc` varchar(255) NOT NULL default '' COMMENT '地點說明',
-  `place_sort` smallint(5) unsigned NOT NULL default '0' COMMENT '地點排序',
+  `place_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '地點排序',
   `place_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
 PRIMARY KEY  (`place_id`),
 UNIQUE KEY `place_sort` (`place_sort`)
 ) ENGINE=MyISAM;
 
 CREATE TABLE `kw_club_teacher` (
-  `teacher_id` smallint(5) unsigned NOT NULL auto_increment COMMENT '教師編號',
+  `teacher_id` smallint(6) unsigned NOT NULL auto_increment COMMENT '教師編號',
   `teacher_title` varchar(255) NOT NULL default '' COMMENT '教師姓名',
   `teacher_desc` varchar(255) NOT NULL default '' COMMENT '教師簡介',
-  `teacher_sort` smallint(5) unsigned NOT NULL default '0' COMMENT '教師排序',
+  `teacher_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '教師排序',
   `teacher_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
 PRIMARY KEY  (`teacher_id`),
 UNIQUE KEY `teacher_sort` (`teacher_sort`)
@@ -78,11 +78,11 @@ CREATE TABLE `kw_club_reg` (
   `reg_uid` varchar(255) NOT NULL COMMENT '報名者編號',
   `class_id` smallint(6) unsigned NOT NULL  COMMENT '課程編號',
   `class_title` varchar(255) NOT NULL COMMENT '課程名稱',
-  `class_money` smallint(10) unsigned NOT NULL COMMENT '課程學費',
-  `class_fee` smallint(10) unsigned NOT NULL COMMENT '課程額外費用',
+  `class_money` smallint(6) unsigned NOT NULL COMMENT '課程學費',
+  `class_fee` smallint(6) unsigned NOT NULL COMMENT '課程額外費用',
   `reg_name` varchar(255) NOT NULL  COMMENT '報名者姓名',
-  `reg_grade` varchar(20) NOT NULL COMMENT '報名者年級',
-  `reg_class` varchar(5) NOT NULL COMMENT '報名者班級',
+  `reg_grade` varchar(255) NOT NULL COMMENT '報名者年級',
+  `reg_class` varchar(255) NOT NULL COMMENT '報名者班級',
   `reg_datetime` datetime NOT NULL COMMENT '報名日期',
   `reg_isreg` enum('1','0') NOT NULL  DEFAULT '0' COMMENT '是否後補',
   `reg_isfee` enum('1','0') NOT NULL  DEFAULT '0' COMMENT '是否繳費',
@@ -92,10 +92,10 @@ UNIQUE KEY `class_id_reg_uid` (`class_id`,`reg_uid`)
 ) ENGINE=MyISAM;
 
 -- CREATE TABLE `kw_club_files_center` (
--- `files_sn` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '檔案流水號',
+-- `files_sn` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '檔案流水號',
 -- `col_name` varchar(255) NOT NULL default '' COMMENT '欄位名稱',
--- `col_sn` smallint(5) unsigned NOT NULL default 0 COMMENT '欄位編號',
--- `sort` smallint(5) unsigned NOT NULL default 0 COMMENT '排序',
+-- `col_sn` smallint(6) unsigned NOT NULL default 0 COMMENT '欄位編號',
+-- `sort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
 -- `kind` enum('img','file') NOT NULL default 'img' COMMENT '檔案種類',
 -- `file_name` varchar(255) NOT NULL default '' COMMENT '檔案名稱',
 -- `file_type` varchar(255) NOT NULL default '' COMMENT '檔案類型',

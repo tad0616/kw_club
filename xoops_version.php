@@ -75,13 +75,13 @@ $modversion['hasMain'] = 1;
 $i                     = 0;
 $i++;
 $modversion['sub'][$i]['name'] = _MI_KWCLUB_SMNAME2;
-$modversion['sub'][$i]['url']  = "teacher.php";
+$modversion['sub'][$i]['url']  = "index.php?op=teacher";
 $i++;
 $modversion['sub'][$i]['name'] = _MI_KWCLUB_SMNAME3;
-$modversion['sub'][$i]['url']  = "myclass.php";
-$i++;
-$modversion['sub'][$i]['name'] = _MI_KWCLUB_SMNAME4;
-$modversion['sub'][$i]['url']  = "statistic.php";
+$modversion['sub'][$i]['url']  = "index.php?op=myclass";
+// $i++;
+// $modversion['sub'][$i]['name'] = _MI_KWCLUB_SMNAME4;
+// $modversion['sub'][$i]['url']  = "index.php?op=statistic";
 
 //---樣板設定---//
 $modversion['templates']                    = array();
