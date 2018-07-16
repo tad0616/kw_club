@@ -38,10 +38,16 @@ switch ($op) {
 
     default:
         reg_list($reg_sn);
+        $op = 'reg_list';
         break;
 
         /*---判斷動作請貼在上方---*/
 }
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign('op', $op);
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------功能函數區--------------*/
 //列出繳費模式
@@ -310,9 +316,3 @@ function reg_list($reg_sn = 0)
     $xoopsTpl->assign('today', $today);
     $xoopsTpl->assign('title', $title);
 }
-
-/*-----------秀出結果區--------------*/
-// $xoopsTpl->assign("isAdmin", $_SESSION['isClubAdmin']);
-// $xoopsTpl->assign('op', 'reg_list');
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-include_once XOOPS_ROOT_PATH . '/footer.php';

@@ -44,13 +44,19 @@ switch ($op) {
     default:
         if ($class_id) {
             class_show($class_id);
+            $op = 'class_show';
         } else {
             class_list();
+            $op = 'class_list';
         }
         break;
 
-        /*---判斷動作請貼在上方---*/
 }
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign('op', $op);
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------功能函數區--------------*/
 
@@ -74,7 +80,7 @@ function class_form($class_id = '')
     $ck->setHeight(350);
     $editor = $ck->render();
 
-    if (!power_chk("", 2) && !power_chk("", 1)) {
+    if (!$_SESSION['isclubAdmin'] && !$_SESSION['isclubUser']) {
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 
@@ -258,7 +264,7 @@ function insert_class()
     global $xoopsDB, $xoopsUser;
 
     //檢查權限
-    if (!power_chk("", 2) && !power_chk("", 1)) {
+    if (!$_SESSION['isclubAdmin'] && !$_SESSION['isclubUser']) {
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 //     if (!$_SESSION['isclubAdmin']) {
@@ -380,7 +386,7 @@ function update_class($class_id = '')
     global $xoopsDB, $xoopsUser;
 
     //檢查權限
-    if (!power_chk("", 2) && !power_chk("", 1)) {
+    if (!$_SESSION['isclubAdmin'] && !$_SESSION['isclubUser']) {
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 
@@ -465,7 +471,7 @@ function delete_class($class_id)
     global $xoopsDB, $xoopsUser;
 
     //檢查權限
-    if (!power_chk("", 2) && !power_chk("", 1)) {
+    if (!$_SESSION['isclubAdmin'] && !$_SESSION['isclubUser']) {
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 
@@ -492,7 +498,3 @@ function delete_class($class_id)
     // $xoopsDB->queryF($sql) or web_error($sql);
 
 }
-/*-----------秀出結果區--------------*/
-
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-include_once XOOPS_ROOT_PATH . '/footer.php';

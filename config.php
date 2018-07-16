@@ -31,9 +31,14 @@ switch ($op) {
 
     default:
         club_form();
+        $op = 'club_form';
         break;
-
 }
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign('op', $op);
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+include_once XOOPS_ROOT_PATH . '/footer.php';
 
 function club_form()
 {
@@ -87,26 +92,31 @@ function set_config()
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
 
-    $uid        = $xoopsUser->uid();
-    $semester   = system_CleanVars($_REQUEST, 'kw_club_year', '', 'int');
-    $start_reg  = system_CleanVars($_REQUEST, 'start_reg', '', 'datetime');
-    $end_reg    = system_CleanVars($_REQUEST, 'end_reg', '', 'datetime');
-    $isfree_reg = system_CleanVars($_REQUEST, 'isfree_reg', '', '');
-    $backup_num = system_CleanVars($_REQUEST, 'backup_num', '', 'int');
-    //db
-    $myts   = MyTextSanitizer::getInstance();
-    $sql    = "select `club_year` from `" . $xoopsDB->prefix('kw_club_info') . "` where `club_year` = {$semester}";
+    $uid = $xoopsUser->uid();
+
+    $myts = MyTextSanitizer::getInstance();
+
+    $club_year       = (int) $_POST['club_year'];
+    $club_start_date = $myts->addSlashes($_POST['club_start_date']);
+    $club_end_date   = $myts->addSlashes($_POST['club_end_date']);
+    $club_isfree     = (int) $_POST['club_isfree'];
+    $club_backup_num = (int) $_POST['club_backup_num'];
+
+    $sql    = "select `club_year` from `" . $xoopsDB->prefix('kw_club_info') . "` where `club_year` = {$club_year}";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     //check club_year isreset
     if (list($club_year) = $xoopsDB->fetchRow($result)) {
         $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
-        `club_start_date`  =  '{$start_reg}',
-        `club_end_date` =  '{$end_reg}',
+        `club_start_date`  =  '{$club_start_date}',
+        `club_end_date` =  '{$club_end_date}',
+        `club_isfree` = '{$club_isfree}',
+        `club_backup_num` =  '{$club_backup_num}',
         `club_uid` = '{$uid}',
         `club_datetime` = NOW(),
-        `club_enable` = '1'";
-        $xoopsDB->query($sql) or web_error($sql);
+        `club_enable` = '1'
+        where `club_year`='{$club_year}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
     } else {
         //new
         $sql = "insert into `" . $xoopsDB->prefix('kw_club_info') . "` (
@@ -119,11 +129,11 @@ function set_config()
             `club_datetime`,
             `club_enable`
             ) values(
-            '{$semester}',
-            '{$start_reg}',
-            '{$end_reg}',
-            '{$isfree_reg}',
-            '{$backup_num}',
+            '{$club_year}',
+            '{$club_start_date}',
+            '{$club_end_date}',
+            '{$club_isfree}',
+            '{$club_backup_num}',
             '{$uid}',
             NOW(),
             '1'
@@ -131,16 +141,16 @@ function set_config()
         $xoopsDB->query($sql) or web_error($sql);
     }
     //json
-    $kw_club = array('semester' => $semester, 'start_reg' => $start_reg, 'end_reg' => $end_reg, 'isfree_reg' => $isfree_reg, 'backup_num' => $backup_num);
+    $kw_club = array('club_year' => $club_year, 'club_start_date' => $club_start_date, 'club_end_date' => $club_end_date, 'club_isfree' => $club_isfree, 'club_backup_num' => $club_backup_num);
     $json    = json_encode($kw_club, JSON_UNESCAPED_UNICODE);
     file_put_contents(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json", $json);
 
     //設定相關變數
-    $_SESSION['club_year']       = $semester;
-    $_SESSION['club_start_date'] = $start_reg;
-    $_SESSION['club_end_date']   = $end_reg;
-    $_SESSION['club_isfreereg']  = $isfree_reg;
-    $_SESSION['club_backup_num'] = $backup_num;
+    $_SESSION['club_year']       = $club_year;
+    $_SESSION['club_start_date'] = $club_start_date;
+    $_SESSION['club_end_date']   = $club_end_date;
+    $_SESSION['club_isfree']  = $club_isfree;
+    $_SESSION['club_backup_num'] = $club_backup_num;
 
 }
 
@@ -152,25 +162,29 @@ function update_config()
     $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
     $kw_club = json_decode($json, true);
 
-    $start_reg = system_CleanVars($_REQUEST, 'start_reg', '', 'datetime');
-    $end_reg   = system_CleanVars($_REQUEST, 'end_reg', '', 'datetime');
-    $kw_club   = array('semester' => $kw_club['semester'], 'start_reg' => $kw_club['start_reg'], 'end_reg' => $kw_club['end_reg'], 'isfree_reg' => $kw_club['isfree_reg'], 'backup_num' => $kw_club['backup_num']);
-    $json      = json_encode($kw_club, JSON_UNESCAPED_UNICODE);
+    $myts = MyTextSanitizer::getInstance();
+
+    $club_start_date = $myts->addSlashes($_POST['club_start_date']);
+    $club_end_date   = $myts->addSlashes($_POST['club_end_date']);
+    $club_backup_num = (int) $_POST['club_backup_num'];
+
+    $kw_club = array('club_year' => $kw_club['club_year'], 'club_start_date' => $_POST['club_start_date'], 'club_end_date' => $_POST['club_end_date'], 'club_isfree' => $_POST['club_isfree'], 'club_backup_num' => $club_backup_num);
+    $json    = json_encode($kw_club, JSON_UNESCAPED_UNICODE);
     file_put_contents(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json", $json);
 
     //update db
     $uid = $xoopsUser->uid();
     $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
-    `club_start_date`  =  '{$start_reg}',
-    `club_end_date` =  '{$end_reg}',
+    `club_start_date`  =  '{$club_start_date}',
+    `club_end_date` =  '{$club_end_date}',
     `club_uid` = '{$uid}',
-    `backup_num` = '{$backup_num}',
+    `club_backup_num` = '{$club_backup_num}',
     `club_datetime` = NOW()";
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //update session
-    $_SESSION['club_start_date'] = $start_reg;
-    $_SESSION['club_end_date']   = $end_reg;
+    $_SESSION['club_start_date'] = $club_start_date;
+    $_SESSION['club_end_date']   = $club_end_date;
 
 }
 
@@ -179,24 +193,23 @@ function reset_config()
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
 
-    if (!isset($_SESSION['club_year'])) {
-        redirect_header("config.php", 3, '尚未設定社團期別，請先設定社團資料!');
-    } else {
-        $year = $_SESSION['club_year'];
-    }
-
-    $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
-    `club_enable`  =  '0',
-    `club_uid` = '{$uid}',
-    `club_datetime` = NOW()";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
+    //已設定
     if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
+        $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
+        $kw_club = json_decode($json, true);
+        foreach ($kw_club as $key => $value) {
+            $$key = $value;
+        }
+
+        $uid = $xoopsUser->uid();
+
+        $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
+        `club_enable`  =  '0',
+        `club_uid` = '{$uid}',
+        `club_datetime` = NOW()
+        where `club_year`='{$club_year}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+
         unlink(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json");
     }
-
 }
-
-/*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-include_once XOOPS_ROOT_PATH . '/footer.php';

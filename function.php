@@ -616,11 +616,11 @@ function get_club_info()
 
         //到期判斷
         $today = Date("Y-m-d");
-        if($today >  $kw_club['end_reg'])
+        if($today >  $kw_club['club_end_date'])
         {
             $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
             `club_enable`  =  '0',
-            `club_datetime` = NOW() where `club_year` = {$kw_club['kw_club_year']}";
+            `club_datetime` = NOW() where `club_year` = {$kw_club['club_year']}";
             $xoopsDB->queryF($sql) or web_error($sql);
         
             if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
@@ -629,11 +629,11 @@ function get_club_info()
             return false;
         }
         else{
-            $_SESSION['club_year']       = $kw_club['kw_club_year'];
-            $_SESSION['club_start_date'] = $kw_club['start_reg'];
-            $_SESSION['club_end_date']   = $kw_club['end_reg'];
-            $_SESSION['club_isfreereg']  = $kw_club['isfree_reg'];
-            $_SESSION['club_backup_num']  = $kw_club['backup_num'];
+            $_SESSION['club_year']       = $kw_club['club_year'];
+            $_SESSION['club_start_date'] = $kw_club['club_start_date'];
+            $_SESSION['club_end_date']   = $kw_club['club_end_date'];
+            $_SESSION['club_isfree']  = $kw_club['club_isfree'];
+            $_SESSION['club_backup_num']  = $kw_club['club_backup_num'];
             return true; 
         }   
     }

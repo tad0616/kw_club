@@ -106,12 +106,12 @@ $modversion['templates'][$i]['file']        = 'kw_club_cate.tpl';
 $modversion['templates'][$i]['description'] = 'kw_club_cate.tpl';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'kw_club_adm_main.tpl';
-$modversion['templates'][$i]['description'] = 'kw_club_adm_main.tpl';
+$modversion['templates'][$i]['file']        = 'kw_club_statistics.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_statistics.tpl';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'kw_club_adm_register.tpl';
-$modversion['templates'][$i]['description'] = 'kw_club_adm_register.tpl';
+$modversion['templates'][$i]['file']        = 'kw_club_adm_main.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_adm_main.tpl';
 
 //---區塊設定---//
 $i = 0;
@@ -139,22 +139,6 @@ $i                    = 0;
 // $modversion['config'][$i]['default']     = '';
 // $i++;
 
-// $modversion['config'][$i]['name']        = 'kw_club_start_reg';
-// $modversion['config'][$i]['title']       = '_MI_KW_CLUB_START_DATE';
-// $modversion['config'][$i]['description'] = '_MI_KW_CLUB_START_DATE_DESC';
-// $modversion['config'][$i]['formtype']    = 'text';
-// $modversion['config'][$i]['valuetype']   = 'datetime';
-// $modversion['config'][$i]['options']     = "";
-// $modversion['config'][$i]['default']     = Date("Y-m-d H:m:s");
-// $i++;
-// $modversion['config'][$i]['name']         = 'kw_club_end_reg';
-// $modversion['config'][$i]['title']        = '_MI_KW_CLUB_START_DATE';
-// $modv8ersion['config'][$i]['description'] = '_MI_KW_CLUB_START_DATE_DESC';
-// $modversion['config'][$i]['formtype']     = 'text';
-// $modversion['config'][$i]['valuetype']    = 'datetime';
-// $modversion['config'][$i]['options']      = "";
-// $modversion['config'][$i]['default']      = Date("Y-m-d H:m:s");
-// $i++;
 $modversion['config'][$i]['name']        = 'show_num';
 $modversion['config'][$i]['title']       = '_MI_KW_CLUB_SHOW_NUM';
 $modversion['config'][$i]['description'] = '_MI_KW_CLUB_SHOW_NUM_DESC';

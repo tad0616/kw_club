@@ -50,14 +50,19 @@ switch ($op) {
     default:
         if ($class_id) {
             class_show($class_id);
-
+            $op = 'class_show';
         } else {
             class_list();
-
+            $op = 'class_list';
         }
 
         break;
 }
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign('op', $op);
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------function區--------------*/
 
@@ -85,7 +90,7 @@ function reg_form()
     }
 
     //自由報名
-    if ($_SESSION['club_isfreereg'] == '0') {
+    if ($_SESSION['club_isfree'] == '0') {
 
         include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
         include_once XOOPS_ROOT_PATH . "/class/xoopseditor/xoopseditor.php";
@@ -207,7 +212,7 @@ function insert_reg()
         // update xx_kw_club_class set class_regnum=class_regnum+1 where class_id =1;
         $update_sql = "update `" . $xoopsDB->prefix("kw_club_class") . "` set `class_regnum`=`class_regnum`+1 where `class_id`={$class_id}";
         $xoopsDB->query($update_sql);
-        
+
         redirect_header("index.php", 3, '報名成功!');
         //取得最後新增資料的流水編號
         // $reg_sn = $xoopsDB->getInsertId();
@@ -401,10 +406,3 @@ function class_showjson($class_id = '')
     $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
     $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
 }
-
-/*-----------秀出結果區--------------*/
-// $xoopsTpl->assign("isAdmin", true);
-// $xoopsTpl->assign('op', $op);
-
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-include_once XOOPS_ROOT_PATH . '/footer.php';

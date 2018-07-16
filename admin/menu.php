@@ -14,12 +14,6 @@ $adminmenu[$i]['desc']  = _MI_KWCLUB_ADMENU1_DESC;
 $adminmenu[$i]['icon']  = "images/admin/button.png";
 
 $i++;
-$adminmenu[$i]['title'] = _MI_KWCLUB_ADMENU2;
-$adminmenu[$i]['link']  = 'admin/register.php';
-$adminmenu[$i]['desc']  = _MI_KWCLUB_ADMENU2_DESC;
-$adminmenu[$i]['icon']  = "images/admin/button.png";
-
-$i++;
 $adminmenu[$i]['title'] = _MI_TAD_ADMIN_ABOUT;
 $adminmenu[$i]['link']  = 'admin/about.php';
 $adminmenu[$i]['desc']  = _MI_TAD_ADMIN_ABOUT_DESC;

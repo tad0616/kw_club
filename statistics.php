@@ -1,10 +1,11 @@
 <?php
-
 /*-----------引入檔案區--------------*/
-// $isAdmin                      = true;
-$xoopsOption['template_main'] = 'kw_club_adm_register.tpl';
 include_once "header.php";
-include_once "../function.php";
+if (!$_SESSION['isclubAdmin']) {
+    redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
+}
+$xoopsOption['template_main'] = "kw_club_statistics.tpl";
+include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -33,10 +34,16 @@ switch ($op) {
 
     default:
         reg_list($reg_sn);
+        $op = 'reg_list';
         break;
 
         /*---判斷動作請貼在上方---*/
 }
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign('op', $op);
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------功能函數區--------------*/
 
@@ -219,8 +226,3 @@ function reg_list($reg_sn = 0)
     $xoopsTpl->assign('op', 'reg_list');
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
 }
-
-/*-----------秀出結果區--------------*/
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-include_once 'footer.php';

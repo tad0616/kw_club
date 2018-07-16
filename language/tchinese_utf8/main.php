@@ -80,3 +80,4 @@ define('_MD_KWCLUB_NOW_YEAR', '目前設定的期數是：');
 define('_MD_KWCLUB_YEAR_HELP', '（除非截止日期或重設，否則設定後就無法變更。00暑假、01第一學期、11寒假、02第二學期）');
 define('_MD_KWCLUB_ADMIN', '期別設定');
 define('_MD_KWCLUB_BACKUP_NUM', '候補人數');
+define('_MD_KWCLUB_STATISTICS', '報名統計');

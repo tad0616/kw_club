@@ -11,8 +11,6 @@ define('_MI_KWCLUB_DESC', '國小社團報名系統');
 define('_MI_KWCLUB_AUTHOR_WEB', 'https://github.com/laecych');
 define('_MI_KWCLUB_ADMENU1', '細部權限設定');
 define('_MI_KWCLUB_ADMENU1_DESC', '細部權限設定');
-define('_MI_KWCLUB_ADMENU2', '報名統計管理');
-define('_MI_KWCLUB_ADMENU2_DESC', '報名統計管理');
 define('_MI_KWCLUB_SMNAME2', '教師簡介');
 define('_MI_KWCLUB_SMNAME3', '我的社團');
 define('_MI_KWCLUB_SMNAME4', '報名統計');
