@@ -84,7 +84,7 @@ function class_form($class_id = '')
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 
-    if (!file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
+    if (!isset($_SESSION['club_year'])) {
         redirect_header("index.php", 3, '尚未設定社團期別，請管理員先設定社團資料!');
     }
 
@@ -278,17 +278,14 @@ function insert_class()
     // }
 
     //檢查期別
-    if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
-        $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
-        $kw_club = json_decode($json, true);
-    } else {
+    if (!isset($_SESSION['club_year'])) {
         redirect_header("club_info.php", 3, '尚未設定社團期別，請先設定社團資料!');
     }
 
     $myts = MyTextSanitizer::getInstance();
 
     $class_id        = $_POST['class_id'];
-    $class_year      = $kw_club['0'];
+    $class_year      = $_SESSION['club_year'];
     $class_num       = $_POST['class_num'];
     $class_title     = $myts->addSlashes($_POST['class_title']);
     $cate_id         = $_POST['cate_id'];
@@ -397,17 +394,14 @@ function update_class($class_id = '')
     }
 
     //檢查期別
-    if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
-        $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
-        $kw_club = json_decode($json, true);
-    } else {
+    if (!isset($_SESSION['club_year'])) {
         redirect_header("club_info.php", 3, '尚未設定社團期別，請先設定社團資料!');
     }
 
     $myts = MyTextSanitizer::getInstance();
 
     $class_id    = $_POST['class_id'];
-    $class_year  = $kw_club['0'];
+    $class_year  = $_SESSION['club_year'];
     $class_num   = $myts->addSlashes($_POST['class_num']);
     $class_title = $myts->addSlashes($_POST['class_title']);
     $cate_id     = $_POST['cate_id'];
