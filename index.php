@@ -8,11 +8,9 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op       = system_CleanVars($_REQUEST, 'op', '', 'string');
 $class_id = system_CleanVars($_REQUEST, 'class_id', '0', 'int');
-// $class_title = system_CleanVars($_REQUEST, 'class_title', '', 'string');
-// $class_grade = system_CleanVars($_REQUEST, 'class_grade', '', 'string');
-$cate_id = system_CleanVars($_REQUEST, 'cate_id', '0', 'int');
-$uid     = system_CleanVars($_REQUEST, 'uid', '', 'string');
-// $year        = system_CleanVars($_REQUEST, 'year', '', 'int');
+$cate_id  = system_CleanVars($_REQUEST, 'cate_id', '0', 'int');
+$uid      = system_CleanVars($_REQUEST, 'uid', '', 'string');
+$year     = system_CleanVars($_REQUEST, 'year', '', 'int');
 
 $today = date('Y-m-d');
 switch ($op) {
@@ -52,7 +50,7 @@ switch ($op) {
             class_show($class_id);
             $op = 'class_show';
         } else {
-            class_list();
+            class_list($year);
             $op = 'class_list';
         }
 
@@ -264,6 +262,7 @@ function check_class_date($reg_uid, $class_id)
         return false;
     }
 }
+
 function myclass()
 {
     global $xoopsDB, $xoopsTpl;

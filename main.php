@@ -13,7 +13,7 @@ $class_id   = system_CleanVars($_REQUEST, 'class_id', '', 'int');
 $place_id   = system_CleanVars($_REQUEST, 'place_id', '', 'int');
 $teacher_id = system_CleanVars($_REQUEST, 'teacher_id', '', 'int');
 $reg_sn     = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
-// $year       = system_CleanVars($_REQUEST, 'year', '', 'int');
+$year       = system_CleanVars($_REQUEST, 'year', '', 'int');
 switch ($op) {
 
     //新增資料
@@ -46,7 +46,7 @@ switch ($op) {
             class_show($class_id);
             $op = 'class_show';
         } else {
-            class_list();
+            class_list($year);
             $op = 'class_list';
         }
         break;

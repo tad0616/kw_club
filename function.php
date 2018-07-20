@@ -10,7 +10,25 @@ $semester_name_arr = array('00' => '暑假', '01' => '第一學期', '11' => '�
 
 //其他自訂的共同的函數
 
-//以流水號取得某筆kw_club_class資料
+//從json中取得社團期別資料（會在header.php中讀取）
+function get_club_info()
+{
+    global $xoopsDB, $xoopsTpl;
+
+    if (!isset($_SESSION['club_year']) or empty($_SESSION['club_year'])) {
+        $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_start_date`< now() and `club_end_date` > now()";
+
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $club_info   = $xoopsDB->fetchArray($result);
+
+        $_SESSION['club_year']       = $club_info['club_year'];
+        $_SESSION['club_start_date'] = $club_info['club_start_date'];
+        $_SESSION['club_end_date']   = $club_info['club_end_date'];
+        $_SESSION['club_isfree']     = $club_info['club_isfree'];
+        $_SESSION['club_backup_num'] = $club_info['club_backup_num'];
+    }
+}
+
 
 //以流水號取得某筆資料
 function get_cate($cate_id, $table, $type)
@@ -377,7 +395,7 @@ function class_show($class_id = '')
 }
 
 //列出所有kw_club_class資料
-function class_list()
+function class_list($year='')
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl, $today, $xoopsModuleConfig;
 
@@ -388,10 +406,9 @@ function class_list()
     $arr_year = get_all_year();
     $xoopsTpl->assign('arr_year', $arr_year);
 
-    $year = system_CleanVars($_REQUEST, 'year', '', 'int');
 
     //已有設定社團期別
-    if (isset($_SESSION['club_year'])) {
+    if (!empty($_SESSION['club_year'])) {
 
         if (empty($year)) {
             $year = $_SESSION['club_year'];
@@ -488,14 +505,13 @@ function class_list()
         $xoopsTpl->assign('reg_start', $_SESSION['club_start_date']);
         $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
 
-    } //end if year
+        $xoopsTpl->assign('year', $year);
+        $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
+    }else{
+        $xoopsTpl->assign('error', _MD_KWCLUB_NEED_CONFIG);
+    }
 
-    $xoopsTpl->assign('year', $year);
-    $xoopsTpl->assign('op', 'class_list');
-    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isUser', $_SESSION['isclubUser']);
 
-    // $xoopsTpl->assign('op', 'class_list');
 }
 
 function get_ip()
@@ -606,38 +622,6 @@ function js_class($class_num)
 
 }
 
-//從json中取得社團期別資料
-function get_club_info()
-{
-    global $xoopsDB, $xoopsTpl;
-
-    if (!isset($_SESSION['club_year']) or !isset($_SESSION['club_start_date'])) {
-        if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
-            $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
-            $kw_club = json_decode($json, true);
-
-            //到期判斷
-            $today = time();
-            if ($today > strtotime($kw_club['club_end_date'])) {
-                $sql = "update  `" . $xoopsDB->prefix('kw_club_info') . "` set " . "
-                `club_enable`  =  '0',
-                `club_datetime` = NOW() where `club_year` = {$kw_club['club_year']}";
-                $xoopsDB->queryF($sql) or web_error($sql);
-
-                if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
-                    unlink(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json");
-                }
-            } else {
-                $_SESSION['club_year']       = $kw_club['club_year'];
-                $_SESSION['club_start_date'] = $kw_club['club_start_date'];
-                $_SESSION['club_end_date']   = $kw_club['club_end_date'];
-                $_SESSION['club_isfree']     = $kw_club['club_isfree'];
-                $_SESSION['club_backup_num'] = $kw_club['club_backup_num'];
-                return true;
-            }
-        }
-    }
-}
 
 //以流水號秀出某筆kw_club_cate資料內容
 function cate_show($type, $table, $cate_id = '')
