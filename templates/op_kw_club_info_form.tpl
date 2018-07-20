@@ -6,13 +6,13 @@
         <div class="col-md-4">
             <{if $club_year}>
                 <div class="form-control-static">                
-                    <{$club_year}>
+                    <{$club_year_txt}>
                     <input type="hidden" name="club_year" id="club_year" value="<{$club_year}>">
                 </div>
             <{else}>   
                 <select class="form-control validate[required]" name="club_year" id="club_year" title="<{$smarty.const._MD_KWCLUB_YEAR}>">
-                    <{foreach from=$arr_semester key=semester item=semester_txt}>
-                        <option value="<{$semester}>" <{if $semester==$club_year}>selected<{/if}>><{$semester_txt}></option>
+                    <{foreach from=$arr_semester key=semester item=semester_opt}>
+                        <option value="<{$semester}>" <{if $semester==$club_year}>selected<{/if}> <{if $semester_opt.disabled}>disabled<{/if}>><{$semester_opt.opt}></option>
                     <{/foreach}>	
                 </select>
             <{/if}>

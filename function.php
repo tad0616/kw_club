@@ -199,8 +199,14 @@ function get_all_year()
 //取得學期
 function get_semester()
 {
-    global $semester_name_arr,$xoopsDB;
-    
+    global $semester_name_arr, $xoopsDB;
+
+    $sql    = "select club_year, club_start_date, club_end_date from `" . $xoopsDB->prefix("kw_club_info") . "` order by club_year desc";
+    $result = $xoopsDB->query($sql) or web_error($sql);
+    while (list($club_year, $club_start_date, $club_end_date) = $xoopsDB->fetchRow($result)) {
+        $all_semester[$club_year] = substr($club_start_date,0,10) . '~' . substr($club_end_date,0,10);
+    }
+
     //semester and year
     $arr_time  = getdate();
     $this_week = $arr_time['wday'];
@@ -235,10 +241,18 @@ function get_semester()
     // $second_semester='02';
 
     foreach ($semester_name_arr as $k => $v) {
-        $semester[$this_year . $k] = $this_year . " 學年度" . $v;
+        $semester[$this_year . $k]['opt'] = $this_year . " " . $v;
+        if (isset($all_semester[$this_year . $k])) {
+            $semester[$this_year . $k]['opt'] .= " ({$all_semester[$this_year . $k]})";
+            $semester[$this_year . $k]['disabled']=true;
+        }
     }
     foreach ($semester_name_arr as $k => $v) {
-        $semester[$next_year . $k] = $next_year . " 學年度" . $v;
+        $semester[$next_year . $k]['opt'] = $next_year . " " . $v;
+        if (isset($all_semester[$next_year . $k])) {
+            $semester[$next_year . $k]['opt'] .= " ({$all_semester[$next_year . $k]})";
+            $semester[$next_year . $k]['disabled']=true;
+        }
     }
 
     return $semester;
