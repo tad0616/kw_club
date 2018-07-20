@@ -1,4 +1,4 @@
-<{if isAdmin}>
+<{if $smarty.session.isclubAdmin}>
 
 <center>
 <select name="select_year" onChange="location.href=this.options[this.selectedIndex].value;">

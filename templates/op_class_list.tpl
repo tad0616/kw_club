@@ -88,7 +88,7 @@
                     <{$smarty.const._MD_KWCLUB_CLASS_YEAR}>
                     </th>
                     
-                    <{if $isAdmin || $isUser }>
+                    <{if $smarty.session.isclubAdmin || $smarty.session.isclubUser }>
                     <th colspan =3>
                         管理
                     </th>
@@ -175,7 +175,7 @@
                         <{$data.class_year}>
                         (<{$data.class_id}>)
                     </td>
-                    <{if $isAdmin || $uid == $data.class_uid}>
+                    <{if $smarty.session.isclubAdmin || $uid == $data.class_uid}>
                     
                     <td>
                         <!--是否啟用-->

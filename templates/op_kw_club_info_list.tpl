@@ -22,7 +22,7 @@
                 <th>
                     <{$smarty.const._MD_KWCLUB_END_DATE}>
                 </th>
-                <!--是否登入報名-->
+                <!--報名方式-->
                 <th>
                     <{$smarty.const._MD_KWCLUB_ISFREE}>
                 </th>
@@ -31,7 +31,7 @@
                     <{$smarty.const._MD_KWCLUB_BACKUP_NUM}>
                 </th>
 
-                <!--是否過期-->
+                <!--是否啟用-->
                 <th>
                     <{$smarty.const._MD_KWCLUB_ENABLE}>
                 </th>
@@ -60,9 +60,9 @@
                         <{$data.club_end_date}>
                     </td>
 
-                    <!--是否登入報名-->
+                    <!--報名方式-->
                     <td>
-                        <{$data.club_isfree}>
+                        <{$data.club_isfree_text}>
                     </td>
 
                     <!--候補人數-->
@@ -71,7 +71,7 @@
                     </td>
 
 
-                    <!--是否過期-->
+                    <!--是否啟用-->
                     <td>
                         <{$data.club_enable_pic}>
                     </td>
@@ -90,7 +90,7 @@
 
     <{if $smarty.session.isclubAdmin}>
         <div class="text-right">
-            <a href="<{$xoops_url}>/modules/kw_club?op=kw_club_info_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
+            <a href="<{$xoops_url}>/modules/kw_club/club_info.php?op=kw_club_info_form" class="btn btn-info"><{$smarty.const._MD_KWCLUB_ADD_CLUB_INFO}></a>
         </div>
     <{/if}>
 
@@ -98,9 +98,9 @@
 <{else}>
     <div class="jumbotron text-center">
         <{if $smarty.session.isclubAdmin}>
-            <a href="<{$xoops_url}>/modules/kw_club?op=kw_club_info_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
+            <a href="<{$xoops_url}>/modules/kw_club/club_info.php?op=kw_club_info_form" class="btn btn-info"><{$smarty.const._MD_KWCLUB_ADD_CLUB_INFO}></a>
         <{else}>
-            <h3><{$smarty.const._TAD_EMPTY}></h3>
+            <h3><{$smarty.const._MD_KWCLUB_EMPTY_YEAR}></h3>
         <{/if}>
     </div>
 <{/if}>

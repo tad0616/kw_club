@@ -3,11 +3,11 @@ CREATE TABLE `kw_club_info` (
   `club_year` tinyint(3) unsigned NOT NULL COMMENT '社團年度',
   `club_start_date` datetime NOT NULL COMMENT '報名起始日',
   `club_end_date` datetime NOT NULL COMMENT '報名終止日',
-  `club_isfree` enum('1','0') NOT NULL COMMENT '是否登入報名',
+  `club_isfree` enum('1','0') NOT NULL DEFAULT '0' COMMENT '報名方式',
   `club_backup_num` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '候補人數',
   `club_uid` mediumint(9) unsigned NOT NULL COMMENT '設定者',
   `club_datetime` datetime NOT NULL  COMMENT '設定時間',
-  `club_enable` enum('1','0') NOT NULL  DEFAULT '1'  COMMENT '是否過期',
+  `club_enable` enum('1','0') NOT NULL  DEFAULT '1'  COMMENT '是否啟用',
    PRIMARY KEY (`club_id`),
   UNIQUE KEY `club_year` (`club_year`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

@@ -6,6 +6,8 @@ if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php")) {
 }
 include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 
+$semester_name_arr = array('00' => '暑假', '01' => '第一學期', '11' => '寒假', '02' => '第二學期');
+
 //其他自訂的共同的函數
 
 //以流水號取得某筆kw_club_class資料
@@ -189,7 +191,7 @@ function get_all_year()
     $result   = $xoopsDB->query($sql) or web_error($sql);
     $arr_year = array();
     while (list($club_year) = $xoopsDB->fetchRow($result)) {
-        $arr_year[]        = (int)$club_year;
+        $arr_year[] = (int) $club_year;
     }
     return $arr_year;
 }
@@ -197,6 +199,8 @@ function get_all_year()
 //取得學期
 function get_semester()
 {
+    global $semester_name_arr,$xoopsDB;
+    
     //semester and year
     $arr_time  = getdate();
     $this_week = $arr_time['wday'];
@@ -229,12 +233,13 @@ function get_semester()
     // $first_semester='01';
     // $winter_semester='11';
     // $second_semester='02';
-    $semester[0] = $this_year . "00";
-    $semester[1] = $this_year . "01";
-    $semester[2] = $this_year . "11";
-    $semester[3] = $this_year . "02";
-    $semester[4] = $next_year . "00";
-    $semester[5] = $next_year . "01";
+
+    foreach ($semester_name_arr as $k => $v) {
+        $semester[$this_year . $k] = $this_year . " 學年度" . $v;
+    }
+    foreach ($semester_name_arr as $k => $v) {
+        $semester[$next_year . $k] = $next_year . " 學年度" . $v;
+    }
 
     return $semester;
 
@@ -592,7 +597,7 @@ function get_club_info()
 {
     global $xoopsDB, $xoopsTpl;
 
-    if(!isset($_SESSION['club_year']) or !isset($_SESSION['club_start_date']) ){
+    if (!isset($_SESSION['club_year']) or !isset($_SESSION['club_start_date'])) {
         if (file_exists(XOOPS_ROOT_PATH . "/uploads/kw_club/kw_club_config.json")) {
             $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
             $kw_club = json_decode($json, true);

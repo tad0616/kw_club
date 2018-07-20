@@ -228,7 +228,7 @@
     <{/if}>
 
 
-   <{if $isAdmin || $uid == $class_uid }>
+   <{if $smarty.session.isclubAdmin || $uid == $class_uid }>
 
     <{if $class_regnum == 0}>
      <a href="javascript:delete_class_func(<{$class_id}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
@@ -241,7 +241,7 @@
 <{$bar}>
 <br>
 
-<{if $isAdmin || $uid == $class_uid }>
+<{if $smarty.session.isclubAdmin || $uid == $class_uid }>
 <h2><font color=green><{$class_title}></font>社團報名列表<small>（共 <{$class_regnum}> 筆報名資料）</small></h2>
 
 <div id="kw_club_class_save_msg"></div>
