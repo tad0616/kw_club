@@ -3,9 +3,10 @@
 <!-- 社團期別下拉選單 -->
 <{if $arr_year}>
     <div class="alert alert-info" style="margin: 10px auto;"><{$smarty.const._MD_KWCLUB_SELECT_YEAR}>
-        <select name="select_year" onChange="location.href=this.options[this.selectedIndex].value;">
+        <select name="select_year" onChange="location.href='<{$action}>?year='+this.value">
+            <option value=""></option>
             <{foreach from=$arr_year item=arr_year}>
-                <option value="<{$action}>?year=<{$arr_year}>" <{if $arr_year==$year}>selected<{/if}>><{$arr_year}></option>
+                <option value="<{$arr_year}>" <{if $arr_year==$year}>selected<{/if}>><{$arr_year}></option>
             <{/foreach}>
         </select>
     </div>

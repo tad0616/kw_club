@@ -62,9 +62,9 @@ define('_MD_KWCLUB_REG_IP', 'IP');
 
 //by tad
 if ($_SESSION['isclubAdmin']) {
-    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，<a href="club_info.php">請先進行社團報名期別設定</a>後，再新增課程！');
+    define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，<a href="club_info.php?op=kw_club_info_form">請先進行社團報名期別設定</a>後，再新增課程！');
 } else {
-    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，請通知管理員，進行社團報名期別設定，以便新增課程！');
+    define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，請通知管理員，進行社團報名期別設定，以便新增課程！');
 }
 define('_MD_KWCLUB_SELECT_YEAR', '請選擇社團期別：');
 define('_MD_KWCLUB_EMPTY_YEAR', '目前沒有期別');

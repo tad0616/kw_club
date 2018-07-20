@@ -38,8 +38,3 @@ xoops_cp_header();
 $xoTheme->addStylesheet(XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname') . "/css/admin.css");
 //$xoTheme->addScript("browse.php?Frameworks/jquery/jquery.js");
 //$xoTheme->addScript("browse.php?modules/" . $xoopsModule->getVar("dirname") . "/js/admin.js");
-
-//設定isAdmin
-if (!isset($_SESSION['isClubModAdmin'])) {
-    $_SESSION['isClubModAdmin'] = ($xoopsUser) ? $xoopsUser->isAdmin() : false;
-}

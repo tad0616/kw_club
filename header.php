@@ -5,8 +5,8 @@ include_once "../../mainfile.php";
 include_once "function.php";
 
 //判斷是否對該模組有管理權限（通常就是站長了）
-if (!isset($_SESSION['isClubModAdmin'])) {
-    $_SESSION['isClubModAdmin'] = ($xoopsUser) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
+if (!isset($_SESSION['is_kw_club_Admin'])) {
+    $_SESSION['is_kw_club_Admin'] = ($xoopsUser) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
 }
 
 //有「管理社團」權限的用戶
@@ -49,7 +49,7 @@ if ($_SESSION['isclubAdmin']) {
     $interface_icon[_MD_KWCLUB_STATISTICS] = "fa-chevron-right";
 }
 
-if ($_SESSION['isClubModAdmin']) {
+if ($_SESSION['is_kw_club_Admin']) {
     $interface_menu[_TAD_TO_ADMIN] = "admin/main.php";
     $interface_icon[_TAD_TO_ADMIN] = "fa-chevron-right";
 }

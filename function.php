@@ -402,7 +402,7 @@ function class_list($year='')
     $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
     $xoopsTpl->assign('uid', $uid);
 
-    //從club_info取得目前報名的期別(select)
+    //從 club_info 取得目前報名的期別(select)
     $arr_year = get_all_year();
     $xoopsTpl->assign('arr_year', $arr_year);
 
