@@ -81,3 +81,11 @@ define('_MD_KWCLUB_YEAR_HELP', '（除非截止日期或重設，否則設定後
 define('_MD_KWCLUB_ADMIN', '期別設定');
 define('_MD_KWCLUB_BACKUP_NUM', '候補人數');
 define('_MD_KWCLUB_STATISTICS', '報名統計');
+define('_MD_KWCLUB_ADD_CLUB', '新增社團');
+
+define('_MD_KWCLUB_START_DATE', '報名起始日');
+define('_MD_KWCLUB_END_DATE', '報名終止日');
+define('_MD_KWCLUB_ISFREE', '是否登入報名');
+define('_MD_KWCLUB_UID', '設定者');
+define('_MD_KWCLUB_DATETIME', '設定時間');
+define('_MD_KWCLUB_ENABLE', '是否過期');

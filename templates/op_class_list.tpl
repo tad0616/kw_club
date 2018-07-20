@@ -209,7 +209,7 @@
 
     <{if $smarty.session.isclubAdmin}>
         <div class="jumbotron text-center">
-        <a href="<{$xoops_url}>/modules/kw_club/main.php?op=class_form&class_id=<{$class_id}>" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
+            <a href="<{$xoops_url}>/modules/kw_club/main.php?op=class_form" class="btn btn-info"><{$smarty.const._MD_KWCLUB_ADD_CLUB}></a>
         </div>
     <{/if}>
 

@@ -75,3 +75,6 @@
 </form>
 
 
+
+<{includeq file="$xoops_rootpath/modules/kw_club/templates/op_kw_club_info_list.tpl"}>
+

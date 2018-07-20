@@ -1,13 +1,13 @@
 <{if $class_id==""}>
-<h2>新增社團</h2>	
+    <h2>新增社團</h2>	
 <{else}>
-<h2>編輯<{$class_title}>社團 <{$class_id}></h2>	
+    <h2>編輯<{$class_title}>社團 <{$class_id}></h2>	
 <{/if}>
-<center>
+
 <h2>目前是第<{$club_year}>期社團</h2>
 
 <h3>開放報名期間：<font color='red'><{$reg_start}>~<{$reg_end}></font></h3>
-</center>
+
 
 
 <div>
@@ -200,6 +200,4 @@
     </div>
 </form>
 </div>
-
-
 

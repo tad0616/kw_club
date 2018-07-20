@@ -54,14 +54,4 @@ if ($_SESSION['isClubModAdmin']) {
     $interface_icon[_TAD_TO_ADMIN] = "fa-chevron-right";
 }
 
-// if (power_chk("", 2)) {
-//     $interface_menu[_MD_KWCLUB_INDEX_FORM] = "main.php?op=class_form";
-//     $interface_icon[_MD_KWCLUB_INDEX_FORM] = "fa-chevron-right";
-
-//     $interface_menu[_MD_KWCLUB_CATE] = "cate.php?type=cate&op=cate_form";
-//     $interface_icon[_MD_KWCLUB_CATE] = "fa-chevron-right";
-
-// }
-
-// session_start();
-$_SESSION['isActive'] = get_club_info();
+get_club_info();
