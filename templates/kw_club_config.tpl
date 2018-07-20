@@ -2,7 +2,7 @@
 
 <h2><{$smarty.const._MD_KWCLUB_INFO_SETUP}></h2>
 
-<form class="form-horizontal" name="classform" id="classform" action="config.php" method="post" enctype = "multipart/form-data">
+<form class="form-horizontal" name="classform" id="classform" action="club_info.php" method="post" enctype = "multipart/form-data">
 
     <{if $club_year}>
         <h3><{$smarty.const._MD_KWCLUB_NOW_YEAR}><{$club_year}></h3>   

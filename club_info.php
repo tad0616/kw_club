@@ -269,6 +269,7 @@ function kw_club_info_list()
         $all_kw_club_info[$i]['club_uid_name']   = $uid_name;
         $all_kw_club_info[$i]['club_datetime']   = $club_datetime;
         $all_kw_club_info[$i]['club_enable']     = $club_enable;
+        $all_kw_club_info[$i]['club_enable_pic'] = $club_enable_pic;
         $i++;
     }
 

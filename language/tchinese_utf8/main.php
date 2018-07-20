@@ -62,7 +62,7 @@ define('_MD_KWCLUB_REG_IP', 'IP');
 
 //by tad
 if ($_SESSION['isclubAdmin']) {
-    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，<a href="config.php">請先進行社團報名期別設定</a>後，再新增課程！');
+    define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，<a href="club_info.php">請先進行社團報名期別設定</a>後，再新增課程！');
 } else {
     define('_MD_KWCLUB_NEED_CONFIG', '尚未設定社團期別，請通知管理員，進行社團報名期別設定，以便新增課程！');
 }

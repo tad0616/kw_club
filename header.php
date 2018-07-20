@@ -42,7 +42,7 @@ if ($_SESSION['isclubAdmin']) {
     $interface_menu[_MD_KWCLUB_REG] = "register.php";
     $interface_icon[_MD_KWCLUB_REG] = "fa-chevron-right";
 
-    $interface_menu[_MD_KWCLUB_ADMIN] = "config.php";
+    $interface_menu[_MD_KWCLUB_ADMIN] = "club_info.php";
     $interface_icon[_MD_KWCLUB_ADMIN] = "fa-chevron-right";
 
     $interface_menu[_MD_KWCLUB_STATISTICS] = "statistics.php";

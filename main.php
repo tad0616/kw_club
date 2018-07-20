@@ -282,7 +282,7 @@ function insert_class()
         $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
         $kw_club = json_decode($json, true);
     } else {
-        redirect_header("config.php", 3, '尚未設定社團期別，請先設定社團資料!');
+        redirect_header("club_info.php", 3, '尚未設定社團期別，請先設定社團資料!');
     }
 
     $myts = MyTextSanitizer::getInstance();
@@ -401,7 +401,7 @@ function update_class($class_id = '')
         $json    = file_get_contents(XOOPS_URL . "/uploads/kw_club/kw_club_config.json");
         $kw_club = json_decode($json, true);
     } else {
-        redirect_header("config.php", 3, '尚未設定社團期別，請先設定社團資料!');
+        redirect_header("club_info.php", 3, '尚未設定社團期別，請先設定社團資料!');
     }
 
     $myts = MyTextSanitizer::getInstance();

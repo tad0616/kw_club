@@ -30,14 +30,7 @@
                 <th>
                     <{$smarty.const._MD_KWCLUB_BACKUP_NUM}>
                 </th>
-                <!--設定者-->
-                <th>
-                    <{$smarty.const._MD_KWCLUB_UID}>
-                </th>
-                <!--設定時間-->
-                <th>
-                    <{$smarty.const._MD_KWCLUB_DATETIME}>
-                </th>
+
                 <!--是否過期-->
                 <th>
                     <{$smarty.const._MD_KWCLUB_ENABLE}>
@@ -77,26 +70,16 @@
                         <{$data.club_backup_num}>
                     </td>
 
-                    <!--設定者-->
-                    <td>
-                        <{$data.club_uid}>
-                    </td>
-
-                    <!--設定時間-->
-                    <td>
-                        <{$data.club_datetime}>
-                    </td>
 
                     <!--是否過期-->
                     <td>
-                        <{$data.club_enable}>
+                        <{$data.club_enable_pic}>
                     </td>
 
                     <{if $smarty.session.isclubAdmin}>
                         <td>
                             <a href="javascript:delete_kw_club_info_func(<{$data.club_id}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-                            <a href="<{$xoops_url}>/modules/kw_club?op=kw_club_info_form&club_id=<{$data.club_id}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
-                            <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
+                            <a href="<{$xoops_url}>/modules/kw_club/club_info.php?op=kw_club_info_form&club_id=<{$data.club_id}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>                            
                         </td>
                     <{/if}>
                 </tr>
