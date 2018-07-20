@@ -243,7 +243,7 @@ function get_semester()
 //以流水號秀出某筆kw_club_class資料內容
 function class_show($class_id = '')
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl, $isAdmin, $today;
+    global $xoopsDB, $xoopsUser, $xoopsTpl, $today;
 
     if (empty($class_id)) {
         return;
@@ -355,7 +355,6 @@ function class_show($class_id = '')
     $xoopsTpl->assign('year', $_SESSION['club_year']);
     $xoopsTpl->assign('reg_start', $_SESSION['club_start_date']);
     $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
-    $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
 }
 
 //列出所有kw_club_class資料
@@ -475,7 +474,6 @@ function class_list()
     $xoopsTpl->assign('year', $year);
     $xoopsTpl->assign('op', 'class_list');
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
     $xoopsTpl->assign('isUser', $_SESSION['isclubUser']);
 
     // $xoopsTpl->assign('op', 'class_list');
@@ -688,7 +686,6 @@ function cate_list($type, $table)
 
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type={$type}");
-    $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
     $xoopsTpl->assign('all_content', $all_content);
     $xoopsTpl->assign('op', 'cate_list'); //template name
 

@@ -1,6 +1,6 @@
 <h2>期別列表</h2>
 <{if $all_kw_club_info}>
-    <{if $isAdmin}>
+    <{if $smarty.session.isclubAdmin}>
         <{$delete_kw_club_info_func}>        
     <{/if}>
 
@@ -42,7 +42,7 @@
                 <th>
                     <{$smarty.const._MD_KWCLUB_ENABLE}>
                 </th>
-                <{if $isAdmin}>
+                <{if $smarty.session.isclubAdmin}>
                     <th><{$smarty.const._TAD_FUNCTION}></th>
                 <{/if}>
             </tr>
@@ -92,7 +92,7 @@
                         <{$data.club_enable}>
                     </td>
 
-                    <{if $isAdmin}>
+                    <{if $smarty.session.isclubAdmin}>
                         <td>
                             <a href="javascript:delete_kw_club_info_func(<{$data.club_id}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                             <a href="<{$xoops_url}>/modules/kw_club?op=kw_club_info_form&club_id=<{$data.club_id}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -105,7 +105,7 @@
     </table>
 
 
-    <{if $isAdmin}>
+    <{if $smarty.session.isclubAdmin}>
         <div class="text-right">
             <a href="<{$xoops_url}>/modules/kw_club?op=kw_club_info_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
         </div>
@@ -114,7 +114,7 @@
     <{$bar}>
 <{else}>
     <div class="jumbotron text-center">
-        <{if $isAdmin}>
+        <{if $smarty.session.isclubAdmin}>
             <a href="<{$xoops_url}>/modules/kw_club?op=kw_club_info_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
         <{else}>
             <h3><{$smarty.const._TAD_EMPTY}></h3>

@@ -61,7 +61,7 @@
 <table class="table table-bordered table-hover table-striped">
   <thead>
     <tr class="">
-        <{if $isAdmin}>
+        <{if $smarty.session.isclubAdmin}>
         <th>
           <!--社團年度-->
           <{$smarty.const._MD_KWCLUB_REG_SN}>

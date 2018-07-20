@@ -50,7 +50,7 @@ include_once XOOPS_ROOT_PATH . '/footer.php';
 //新增資料到kw_club_reg中
 function insert_reg()
 {
-    global $xoopsDB, $xoopsUser, $isAdmin;
+    global $xoopsDB, $xoopsUser;
     if (!$_SESSION['isclubAdmin']) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
@@ -112,7 +112,7 @@ function insert_reg()
 //更新kw_club_reg某一筆資料
 function update_reg($reg_sn = '')
 {
-    global $xoopsDB, $isAdmin, $xoopsUser;
+    global $xoopsDB, $xoopsUser;
     if (!$_SESSION['isclubAdmin']) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
@@ -221,7 +221,6 @@ function reg_list($reg_sn = 0)
     $xoopsTpl->assign('total', $total);
     $xoopsTpl->assign('reg_sn', $reg_sn);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
     $xoopsTpl->assign('all_content', $all_content);
     $xoopsTpl->assign('op', 'reg_list');
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);

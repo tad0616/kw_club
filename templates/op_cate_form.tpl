@@ -43,7 +43,7 @@
           <!--類型說明-->
           <{$smarty.const._MD_KWCLUB_CATE_DESC}>
         </th>
-      <{if $isAdmin}>
+      <{if $smarty.session.isclubAdmin}>
         <th>
         <!--類型排序-->
          <{$smarty.const._MD_KWCLUB_CATE_SORT}>
@@ -73,7 +73,7 @@
             <!--類型說明-->
             <{$data[2]}>
           </td>
-        <{if $isAdmin}>
+        <{if $smarty.session.isclubAdmin}>
           <td>
              <!--類型排序-->
                 <{$data[3]}>

@@ -40,6 +40,6 @@ $xoTheme->addStylesheet(XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname'
 //$xoTheme->addScript("browse.php?modules/" . $xoopsModule->getVar("dirname") . "/js/admin.js");
 
 //設定isAdmin
-if (!isset($_SESSION['isclubAdmin'])) {
-    $_SESSION['isclubAdmin'] = ($xoopsUser) ? $xoopsUser->isAdmin() : false;
+if (!isset($_SESSION['isClubModAdmin'])) {
+    $_SESSION['isClubModAdmin'] = ($xoopsUser) ? $xoopsUser->isAdmin() : false;
 }

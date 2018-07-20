@@ -344,7 +344,6 @@ function myclass()
     $xoopsTpl->assign('uid', $reg_uid);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('op', 'myclass');
-    $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
 }
 
 function class_showjson($class_id = '')
@@ -404,5 +403,3 @@ function class_showjson($class_id = '')
     $xoopsTpl->assign('year', $_SESSION['club_year']);
     $xoopsTpl->assign('reg_start', $_SESSION['club_start_date']);
     $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
-    $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
-}

@@ -218,7 +218,7 @@ function reset_config()
 //列出所有kw_club_info資料
 function kw_club_info_list()
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
+    global $xoopsDB, $xoopsTpl;
 
     $myts = MyTextSanitizer::getInstance();
 
@@ -284,6 +284,5 @@ function kw_club_info_list()
 
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $isAdmin);
     $xoopsTpl->assign('all_kw_club_info', $all_kw_club_info);
 }

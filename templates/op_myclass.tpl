@@ -30,7 +30,7 @@
     <th>是否繳費</th>
 
 
-    <{if $isAdmin}>
+    <{if $smarty.session.isclubAdmin}>
     <th>社團編號</th>
     <th>報名IP</th>
     <{/if}>
@@ -64,7 +64,7 @@
             <font color='red'>未繳費</font>
         <{/if}>    
     </td>
-    <{if $isAdmin}>
+    <{if $smarty.session.isclubAdmin}>
         <td><{$data.class_id}></td>
         <td><{$data.reg_ip}></td>
     <{/if}>

@@ -179,7 +179,7 @@
    </div>
  </div>
 
- <{if $isAdmin}>
+ <{if $smarty.session.isclubAdmin}>
  <!--社團年度-->
  <div class="row">
     <label class="col-sm-3 text-right">
@@ -271,7 +271,7 @@
             <!--報名時間-->
             <{$smarty.const._MD_KWCLUB_REG_DATETIME}>
           </th>
-          <{if $isAdmin}>
+          <{if $smarty.session.isclubAdmin}>
         <th>
             <!--是否後補-->
             <{$smarty.const._MD_KWCLUB_REG_ISREG}>
@@ -308,7 +308,7 @@
       <td>
           <{$data.reg_datetime}>
       </td>
-      <{if $isAdmin}>
+      <{if $smarty.session.isclubAdmin}>
       <td>
         <{$data.reg_isreg}>
       </td>

@@ -156,7 +156,6 @@ function cate_form($cate_id = '')
 
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}");
-    $xoopsTpl->assign('isAdmin', $_SESSION['isclubAdmin']);
     $xoopsTpl->assign('all_content', $all_content);
 
     $xoopsTpl->assign('op', 'cate_form');
