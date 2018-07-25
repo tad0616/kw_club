@@ -276,7 +276,7 @@ function insert_class()
 
     //檢查期別
     if (!isset($_SESSION['club_year'])) {
-        redirect_header("club_info.php", 3, _MD_KWCLUB_NEED_CONFIG);
+        redirect_header("config.php", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
     $myts = MyTextSanitizer::getInstance();
@@ -392,7 +392,7 @@ function update_class($class_id = '')
 
     //檢查期別
     if (!isset($_SESSION['club_year'])) {
-        redirect_header("club_info.php", 3, _MD_KWCLUB_NEED_CONFIG);
+        redirect_header("config.php", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
     $myts = MyTextSanitizer::getInstance();

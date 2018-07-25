@@ -16,13 +16,12 @@ $today = date('Y-m-d');
 switch ($op) {
 
     case "teacher":
-        $type  = 'teacher'; //database name
-        $table = "kw_club_" . $type;
+        $type = 'teacher'; //database name
 
         if (empty($cate_id)) {
-            cate_list($type, $table);
+            cate_list($type);
         } else {
-            cate_show($type, $table, $cate_id);
+            cate_show($type, $cate_id);
         }
         break;
 

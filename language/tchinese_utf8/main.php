@@ -34,7 +34,7 @@ define('_MD_KWCLUB_CLASS_UID', 'UID');
 define('_MD_KWCLUB_INDEX_MYCLASS', '我的社團');
 define('_MD_KWCLUB_INDEX_TEACHER', '教師簡介');
 define('_MD_KWCLUB_INDEX_FORM', '開設課程');
-define('_MD_KWCLUB_CATE', '新增項目');
+define('_MD_KWCLUB_CATE', '初始設定');
 define('_MD_KWCLUB_REG', '報名統計');
 
 //教師列表
@@ -61,7 +61,7 @@ define('_MD_KWCLUB_REG_IP', 'IP');
 
 //by tad
 if ($_SESSION['isclubAdmin']) {
-    define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，<a href="club_info.php?op=kw_club_info_form">請先進行社團報名期別設定</a>後，再新增課程！');
+    define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，<a href="config.php?op=kw_club_info_form">請先進行社團報名期別設定</a>後，再新增課程！');
 } else {
     define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，請通知管理員，進行社團報名期別設定，以便新增課程！');
 }
@@ -98,3 +98,4 @@ define('_MD_KWCLUB_ADD_CLASS', '新增課程');
 define('_MD_KWCLUB_MODIFY_CLUB', '修改社團');
 
 define('_MD_KWCLUB_SELECT', '請選擇');
+define('_MD_KWCLUB_SETUP', '報名設定');

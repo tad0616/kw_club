@@ -17,9 +17,9 @@ function get_club_info()
 
     if (!isset($_SESSION['club_year']) or empty($_SESSION['club_year'])) {
         // $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_start_date`< now() and `club_end_date` > now()";
-        $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
-        $club_info   = $xoopsDB->fetchArray($result);
+        $sql       = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1'";
+        $result    = $xoopsDB->query($sql) or web_error($sql);
+        $club_info = $xoopsDB->fetchArray($result);
 
         $_SESSION['club_year']       = $club_info['club_year'];
         $_SESSION['club_start_date'] = $club_info['club_start_date'];
@@ -29,18 +29,17 @@ function get_club_info()
     }
 }
 
-
 //以流水號取得某筆資料
-function get_cate($cate_id, $table, $type)
+function get_cate($cate_id, $type)
 {
     global $xoopsDB;
 
-    if (empty($cate_id) || empty($table || empty($type))) {
+    if (empty($cate_id) || empty($type)) {
         return;
     }
 
     $type_id = $type . "_id";
-    $sql     = "select * from `" . $xoopsDB->prefix($table) . "`
+    $sql     = "select * from `" . $xoopsDB->prefix('kw_club_'.$type) . "`
     where `" . $type . "_id` = '{$cate_id}'";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
@@ -222,7 +221,7 @@ function get_semester()
     $sql    = "select club_year, club_start_date, club_end_date from `" . $xoopsDB->prefix("kw_club_info") . "` order by club_year desc";
     $result = $xoopsDB->query($sql) or web_error($sql);
     while (list($club_year, $club_start_date, $club_end_date) = $xoopsDB->fetchRow($result)) {
-        $all_semester[$club_year] = substr($club_start_date,0,10) . '~' . substr($club_end_date,0,10);
+        $all_semester[$club_year] = substr($club_start_date, 0, 10) . '~' . substr($club_end_date, 0, 10);
     }
 
     //semester and year
@@ -262,14 +261,14 @@ function get_semester()
         $semester[$this_year . $k]['opt'] = $this_year . " " . $v;
         if (isset($all_semester[$this_year . $k])) {
             $semester[$this_year . $k]['opt'] .= " ({$all_semester[$this_year . $k]})";
-            $semester[$this_year . $k]['disabled']=true;
+            $semester[$this_year . $k]['disabled'] = true;
         }
     }
     foreach ($semester_name_arr as $k => $v) {
         $semester[$next_year . $k]['opt'] = $next_year . " " . $v;
         if (isset($all_semester[$next_year . $k])) {
             $semester[$next_year . $k]['opt'] .= " ({$all_semester[$next_year . $k]})";
-            $semester[$next_year . $k]['disabled']=true;
+            $semester[$next_year . $k]['disabled'] = true;
         }
     }
 
@@ -392,7 +391,7 @@ function class_show($class_id = '')
 }
 
 //列出所有kw_club_class資料
-function class_list($year='')
+function class_list($year = '')
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl, $today, $xoopsModuleConfig;
 
@@ -413,7 +412,7 @@ function class_list($year='')
         } else {
             $year = $year; //已有設定社團期別
         }
-        
+
         $xoopsTpl->assign('year', $year);
 
         //社團列表
@@ -502,11 +501,9 @@ function class_list($year='')
 
         $xoopsTpl->assign('all_content', $all_content);
 
-
-    }else{
+    } else {
         $xoopsTpl->assign('error', _MD_KWCLUB_NEED_CONFIG);
     }
-
 
 }
 
@@ -618,13 +615,12 @@ function js_class($class_num)
 
 }
 
-
 //以流水號秀出某筆kw_club_cate資料內容
-function cate_show($type, $table, $cate_id = '')
+function cate_show($type, $cate_id = '')
 {
     global $xoopsDB, $xoopsTpl;
 
-    if (empty($cate_id) || empty($type) || empty($table)) {
+    if (empty($cate_id) || empty($type)) {
         return;
     } else {
         $cate_id = intval($cate_id);
@@ -632,7 +628,7 @@ function cate_show($type, $table, $cate_id = '')
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql = "select * from `" . $xoopsDB->prefix($table) . "`
+    $sql = "select * from `" . $xoopsDB->prefix('kw_club_'.$type) . "`
     where `" . $type . "_id` = '{$cate_id}' ";
     $result = $xoopsDB->query($sql) or web_error($sql);
     // $all    = $xoopsDB->fetchArray($result);
@@ -651,27 +647,24 @@ function cate_show($type, $table, $cate_id = '')
     $xoopsTpl->assign('op', 'cate_show'); //template name
 
 }
+
 //列出所有kw_club_cate資料
-function cate_list($type, $table)
+function cate_list($type)
 {
     global $xoopsDB, $xoopsTpl;
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql = "select * from `" . $xoopsDB->prefix($table) . "` order by " . $type . "_sort";
-    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10);
-    $bar     = $PageBar['bar'];
-    $sql     = $PageBar['sql'];
-    $total   = $PageBar['total'];
-
+    $sql    = "select * from `" . $xoopsDB->prefix('kw_club_'.$type) . "` order by " . $type . "_sort";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
-    $all_content = '';
-    $i           = 0;
-    while ($all = $result->fetch_row()) {
-        $all_content[$i] = $all;
-        $i++;
+    $all_content = array();
+    while ($all = $xoopsDB->fetchArray($result)) {
+
+        //過濾讀出的變數值
+        $all["{$type}_title"] = $myts->htmlSpecialChars($all["{$type}_title"]);
+        $all["{$type}_desc"]  = $myts->htmlSpecialChars($all["{$type}_desc"]);
+        $all_content[]        = $all;
     }
 
     //刪除確認的JS
@@ -683,11 +676,8 @@ function cate_list($type, $table)
     $delete_cate_func = $sweet_alert_obj->render('delete_cate_func', "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_cate&cate_id=", "cate_id");
     $xoopsTpl->assign('delete_cate_func', $delete_cate_func);
 
-    $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type={$type}");
-    $xoopsTpl->assign('all_content', $all_content);
-    $xoopsTpl->assign('op', 'cate_list'); //template name
-
+    $xoopsTpl->assign("all_{$type}_content", $all_content);
 }
 
 //刪除reg某筆資料資料

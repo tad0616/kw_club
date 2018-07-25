@@ -33,8 +33,6 @@ if ($_SESSION['isclubUser']) {
     $interface_menu[_MD_KWCLUB_INDEX_FORM] = "club.php?op=class_form";
     $interface_icon[_MD_KWCLUB_INDEX_FORM] = "fa-chevron-right";
 
-    $interface_menu[_MD_KWCLUB_CATE] = "cate.php?type=cate&op=cate_form";
-    $interface_icon[_MD_KWCLUB_CATE] = "fa-chevron-right";
 }
 
 //模組後台
@@ -42,11 +40,14 @@ if ($_SESSION['isclubAdmin']) {
     $interface_menu[_MD_KWCLUB_REG] = "register.php";
     $interface_icon[_MD_KWCLUB_REG] = "fa-chevron-right";
 
-    $interface_menu[_MD_KWCLUB_ADMIN] = "club_info.php";
-    $interface_icon[_MD_KWCLUB_ADMIN] = "fa-chevron-right";
-
     $interface_menu[_MD_KWCLUB_STATISTICS] = "statistics.php";
     $interface_icon[_MD_KWCLUB_STATISTICS] = "fa-chevron-right";
+
+    $interface_menu[_MD_KWCLUB_SETUP] = "config.php";
+    $interface_icon[_MD_KWCLUB_SETUP] = "fa-chevron-right";
+
+    $interface_menu[_MD_KWCLUB_CATE] = "config.php?type=cate&op=cate_form";
+    $interface_icon[_MD_KWCLUB_CATE] = "fa-chevron-right";
 }
 
 if ($_SESSION['is_kw_club_Admin']) {

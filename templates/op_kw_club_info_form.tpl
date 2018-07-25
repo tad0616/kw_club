@@ -1,4 +1,4 @@
-<form action="club_info.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+<form action="config.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
              
     <div class="form-group">
         <!--社團期別-->

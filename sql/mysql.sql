@@ -23,6 +23,17 @@ PRIMARY KEY  (`cate_id`),
  UNIQUE KEY `cate_sort` (`cate_sort`)
 ) ENGINE=MyISAM;
 
+CREATE TABLE `kw_club_place` (
+  `place_id` smallint(6) unsigned NOT NULL auto_increment COMMENT '地點編號',
+  `place_title` varchar(255) NOT NULL default '' COMMENT '地點標題',
+  `place_desc` varchar(255) NOT NULL default '' COMMENT '地點說明',
+  `place_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '地點排序',
+  `place_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
+PRIMARY KEY  (`place_id`),
+UNIQUE KEY `place_sort` (`place_sort`)
+) ENGINE=MyISAM;
+
+
 CREATE TABLE `kw_club_class` (
   `class_id` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水號',
   `class_year` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '社團年度',
@@ -52,25 +63,6 @@ CREATE TABLE `kw_club_class` (
   UNIQUE KEY `class_year_class_num` (`class_year`,`class_num`)
 ) ENGINE=MyISAM;
 
-CREATE TABLE `kw_club_place` (
-  `place_id` smallint(6) unsigned NOT NULL auto_increment COMMENT '地點編號',
-  `place_title` varchar(255) NOT NULL default '' COMMENT '地點標題',
-  `place_desc` varchar(255) NOT NULL default '' COMMENT '地點說明',
-  `place_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '地點排序',
-  `place_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-PRIMARY KEY  (`place_id`),
-UNIQUE KEY `place_sort` (`place_sort`)
-) ENGINE=MyISAM;
-
-CREATE TABLE `kw_club_teacher` (
-  `teacher_id` smallint(6) unsigned NOT NULL auto_increment COMMENT '教師編號',
-  `teacher_title` varchar(255) NOT NULL default '' COMMENT '教師姓名',
-  `teacher_desc` varchar(255) NOT NULL default '' COMMENT '教師簡介',
-  `teacher_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '教師排序',
-  `teacher_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-PRIMARY KEY  (`teacher_id`),
-UNIQUE KEY `teacher_sort` (`teacher_sort`)
-) ENGINE=MyISAM;
 
 CREATE TABLE `kw_club_reg` (
   `reg_sn` smallint(6) unsigned NOT NULL auto_increment COMMENT '報名編號',

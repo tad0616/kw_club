@@ -58,12 +58,12 @@ $modversion['system_menu'] = 1;
 
 //---資料表架構---//
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
-$modversion['tables'][1]        = "kw_club_cate";
-$modversion['tables'][2]        = "kw_club_class";
-$modversion['tables'][3]        = "kw_club_place";
-$modversion['tables'][4]        = "kw_club_teacher";
-$modversion['tables'][5]        = "kw_club_reg";
-$modversion['tables'][6]        = "kw_club_info";
+$modversion['tables'][]         = "kw_club_info";
+$modversion['tables'][]         = "kw_club_cate";
+$modversion['tables'][]         = "kw_club_place";
+$modversion['tables'][]         = "kw_club_class";
+$modversion['tables'][]         = "kw_club_reg";
+$modversion['tables'][]         = "kw_club_files_center";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;
@@ -86,8 +86,8 @@ $modversion['sub'][$i]['url']  = "index.php?op=myclass";
 //---樣板設定---//
 $modversion['templates']                    = array();
 $i                                          = 1;
-$modversion['templates'][$i]['file']        = 'kw_club_info.tpl';
-$modversion['templates'][$i]['description'] = 'kw_club_info.tpl';
+$modversion['templates'][$i]['file']        = 'kw_club_config.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_config.tpl';
 
 $i++;
 $modversion['templates'][$i]['file']        = 'kw_club_register.tpl';
