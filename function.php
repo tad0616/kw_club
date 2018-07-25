@@ -16,8 +16,8 @@ function get_club_info()
     global $xoopsDB, $xoopsTpl;
 
     if (!isset($_SESSION['club_year']) or empty($_SESSION['club_year'])) {
-        $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_start_date`< now() and `club_end_date` > now()";
-
+        // $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_start_date`< now() and `club_end_date` > now()";
+        $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1'";
         $result = $xoopsDB->query($sql) or web_error($sql);
         $club_info   = $xoopsDB->fetchArray($result);
 
@@ -382,7 +382,7 @@ function class_show($class_id = '')
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
     $sweet_alert_obj   = new sweet_alert();
-    $delete_class_func = $sweet_alert_obj->render('delete_class_func', "main.php?op=delete_class&class_id=", "class_id");
+    $delete_class_func = $sweet_alert_obj->render('delete_class_func', "club.php?op=delete_class&class_id=", "class_id");
     $xoopsTpl->assign('delete_class_func', $delete_class_func);
 
     //轉向網頁
@@ -406,6 +406,7 @@ function class_list($year='')
     $arr_year = get_all_year();
     $xoopsTpl->assign('arr_year', $arr_year);
 
+    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
 
     //已有設定社團期別
     if (!empty($_SESSION['club_year'])) {
@@ -415,6 +416,8 @@ function class_list($year='')
         } else {
             $year = $year; //已有設定社團期別
         }
+        
+        $xoopsTpl->assign('year', $year);
 
         //社團列表
         $myts = MyTextSanitizer::getInstance();
@@ -497,7 +500,7 @@ function class_list($year='')
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert_obj   = new sweet_alert();
         $delete_class_func = $sweet_alert_obj->render('delete_class_func',
-            "main.php?op=delete_class&class_id=", "class_id");
+            "club.php?op=delete_class&class_id=", "class_id");
         $xoopsTpl->assign('delete_class_func', $delete_class_func);
 
         $xoopsTpl->assign('all_content', $all_content);
@@ -505,8 +508,6 @@ function class_list($year='')
         $xoopsTpl->assign('reg_start', $_SESSION['club_start_date']);
         $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
 
-        $xoopsTpl->assign('year', $year);
-        $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     }else{
         $xoopsTpl->assign('error', _MD_KWCLUB_NEED_CONFIG);
     }

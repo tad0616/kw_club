@@ -233,8 +233,8 @@
     <{if $class_regnum == 0}>
      <a href="javascript:delete_class_func(<{$class_id}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
      <{/if}>
-     <a href="<{$xoops_url}>/modules/kw_club/main.php?op=class_form&class_id=<{$class_id}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
-     <a href="<{$xoops_url}>/modules/kw_club/main.php?op=class_form" class="btn btn-primary"><{$smarty.const._TAD_ADD}></a>
+     <a href="<{$xoops_url}>/modules/kw_club/club.php?op=class_form&class_id=<{$class_id}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+     <a href="<{$xoops_url}>/modules/kw_club/club.php?op=class_form" class="btn btn-primary"><{$smarty.const._TAD_ADD}></a>
    <{/if}>
    <a href="<{$action}>" class="btn btn-success"><{$smarty.const._TAD_HOME}></a>
  </div>

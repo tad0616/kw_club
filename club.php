@@ -2,7 +2,7 @@
 /*-----------引入檔案區--------------*/
 
 include_once "header.php";
-$xoopsOption['template_main'] = "kw_club_main.tpl";
+$xoopsOption['template_main'] = "kw_club_club.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
@@ -279,7 +279,7 @@ function insert_class()
 
     //檢查期別
     if (!isset($_SESSION['club_year'])) {
-        redirect_header("club_info.php", 3, '尚未設定社團期別，請先設定社團資料!');
+        redirect_header("club_info.php", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
     $myts = MyTextSanitizer::getInstance();
@@ -395,7 +395,7 @@ function update_class($class_id = '')
 
     //檢查期別
     if (!isset($_SESSION['club_year'])) {
-        redirect_header("club_info.php", 3, '尚未設定社團期別，請先設定社團資料!');
+        redirect_header("club_info.php", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
     $myts = MyTextSanitizer::getInstance();
@@ -472,7 +472,7 @@ function delete_class($class_id)
     if (empty($class_id)) {
         redirect_header("index.php", 3, '錯誤!!');
     } else if (check_class_reg($class_id)) {
-        redirect_header("main.php", 3, '警告!!此課程已有學生報名!!無法刪除!!');
+        redirect_header("club.php", 3, '警告!!此課程已有學生報名!!無法刪除!!');
     } else {
 
         $tbl = $xoopsDB->prefix('kw_club_class');

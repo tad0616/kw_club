@@ -30,7 +30,7 @@ $interface_menu[_MD_KWCLUB_INDEX_TEACHER] = "index.php?op=teacher";
 $interface_icon[_MD_KWCLUB_INDEX_TEACHER] = "fa-chevron-right";
 
 if ($_SESSION['isclubUser']) {
-    $interface_menu[_MD_KWCLUB_INDEX_FORM] = "main.php?op=class_form";
+    $interface_menu[_MD_KWCLUB_INDEX_FORM] = "club.php?op=class_form";
     $interface_icon[_MD_KWCLUB_INDEX_FORM] = "fa-chevron-right";
 
     $interface_menu[_MD_KWCLUB_CATE] = "cate.php?type=cate&op=cate_form";

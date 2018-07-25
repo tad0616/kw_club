@@ -4,7 +4,7 @@ include_once "header.php";
 if (!$_SESSION['isclubAdmin']) {
     redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
 }
-$xoopsOption['template_main'] = "kw_club_config.tpl";
+$xoopsOption['template_main'] = "kw_club_info.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/

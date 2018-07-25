@@ -11,14 +11,14 @@
 
 
 <div>
-    <form class="form-horizontal" name="classform" id="classform" action="main.php" method="post" onsubmit="return xoopsFormValidate_classform();" enctype = "multipart/form-data">
+    <form class="form-horizontal" name="classform" id="classform" action="club.php" method="post" onsubmit="return xoopsFormValidate_classform();" enctype = "multipart/form-data">
 
     <div class="form-group">
         <label for="class_num" class="col-md-2 control-label">挑選社團<span class="caption-required">*</span></label>
         <div class="col-md-10">
             <!-- <input class='form-control validate[required, custom[integer]]' type='text' name='class_num' title='社團編號' id='class_num' value='<{$class_num}>' /> -->
 
-            <select class="form-control" size="1" name="class_num" id="class_num" title="社團編號" onChange="location.href='main.php?op=class_form&class_num='+this.value">
+            <select class="form-control" size="1" name="class_num" id="class_num" title="社團編號" onChange="location.href='club.php?op=class_form&class_num='+this.value">
                 <{if $class_id==""}>
                     
                     <option value="<{$num}>">新增課程</option> 

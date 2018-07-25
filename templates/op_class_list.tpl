@@ -190,7 +190,7 @@
                         </td>
                     <td>
                         
-                        <a href="<{$xoops_url}>/modules/kw_club/main.php?op=class_form&class_id=<{$data.class_id}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+                        <a href="<{$xoops_url}>/modules/kw_club/club.php?op=class_form&class_id=<{$data.class_id}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
                         <{if $data.class_regnum == 0}>
                         <a href="javascript:delete_class_func(<{$data.class_id}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                         <{/if}>
@@ -210,7 +210,7 @@
 
     <{if $smarty.session.isclubAdmin}>
         <div class="jumbotron text-center">
-            <a href="<{$xoops_url}>/modules/kw_club/main.php?op=class_form" class="btn btn-info"><{$smarty.const._MD_KWCLUB_ADD_CLUB}></a>
+            <a href="<{$xoops_url}>/modules/kw_club/club.php?op=class_form" class="btn btn-info"><{$smarty.const._MD_KWCLUB_ADD_CLUB}></a>
         </div>
     <{/if}>
 

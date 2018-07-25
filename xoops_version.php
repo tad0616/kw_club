@@ -86,8 +86,8 @@ $modversion['sub'][$i]['url']  = "index.php?op=myclass";
 //---樣板設定---//
 $modversion['templates']                    = array();
 $i                                          = 1;
-$modversion['templates'][$i]['file']        = 'kw_club_config.tpl';
-$modversion['templates'][$i]['description'] = 'kw_club_config.tpl';
+$modversion['templates'][$i]['file']        = 'kw_club_info.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_info.tpl';
 
 $i++;
 $modversion['templates'][$i]['file']        = 'kw_club_register.tpl';
@@ -98,8 +98,8 @@ $modversion['templates'][$i]['file']        = 'kw_club_index.tpl';
 $modversion['templates'][$i]['description'] = 'kw_club_index.tpl';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'kw_club_main.tpl';
-$modversion['templates'][$i]['description'] = 'kw_club_main.tpl';
+$modversion['templates'][$i]['file']        = 'kw_club_club.tpl';
+$modversion['templates'][$i]['description'] = 'kw_club_club.tpl';
 
 $i++;
 $modversion['templates'][$i]['file']        = 'kw_club_cate.tpl';
