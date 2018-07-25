@@ -18,37 +18,37 @@
 
       <select name="review" onChange="location.href=this.options[this.selectedIndex].value;">
         <{if $review=='reg_sn'}>
-        <option value="<{$action}>?year=<{$year}>&review=reg_sn"  selected>依報名排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=class_id" >依社團排序</option>        
-        <option value="<{$action}>?year=<{$year}>&review=grade" >依年級排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=reg_uid" >依報名者排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_sn"  selected>依報名排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=class_id" >依社團排序</option>        
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=grade" >依年級排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_uid" >依報名者排序</option>
         <{elseif $review=='class_id'}>
-        <option value="<{$action}>?year=<{$year}>&review=reg_sn"  >依報名排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=class_id"  selected>依社團排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=grade" >依年級排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=reg_uid" >依報名者排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_sn"  >依報名排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=class_id"  selected>依社團排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=grade" >依年級排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_uid" >依報名者排序</option>
         <{elseif $review=='grade'}>
-        <option value="<{$action}>?year=<{$year}>&review=reg_sn"  >依報名排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=class_id" >依社團排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=grade" selected>依年級排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=reg_uid" >依報名者排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_sn"  >依報名排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=class_id" >依社團排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=grade" selected>依年級排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_uid" >依報名者排序</option>
         <{elseif $review=='reg_uid'}>
-        <option value="<{$action}>?year=<{$year}>&review=reg_sn"  >依報名排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=class_id" >依社團排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=grade" >依年級排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=reg_uid" selected>依報名者排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_sn"  >依報名排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=class_id" >依社團排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=grade" >依年級排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_uid" selected>依報名者排序</option>
         <{else}>
-        <option value="<{$action}>?year=<{$year}>&review=reg_sn"  >依報名排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=class_id" >依社團排序</option>        
-        <option value="<{$action}>?year=<{$year}>&review=grade" >依年級排序</option>
-        <option value="<{$action}>?year=<{$year}>&review=reg_uid" >依報名者排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_sn"  >依報名排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=class_id" >依社團排序</option>        
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=grade" >依年級排序</option>
+        <option value="<{$action}>?year=<{$smarty.session.club_year}>&review=reg_uid" >依報名者排序</option>
         <{/if}>
       </select>
     </div>
    
 <div align="right">
-    <a href="register.php?op=reg_uid&year=<{$year}>" class="btn btn-info">繳費統計模式</a>
-        <a href="excel.php?year=<{$year}>&review=<{$review}>" class="btn btn-info">所有報名列表匯出excel</a>
+    <a href="register.php?op=reg_uid&year=<{$smarty.session.club_year}>" class="btn btn-info">繳費統計模式</a>
+        <a href="excel.php?year=<{$smarty.session.club_year}>&review=<{$review}>" class="btn btn-info">所有報名列表匯出excel</a>
        
 </div>  
 

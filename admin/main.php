@@ -7,11 +7,11 @@ include_once "../function.php";
 /*-----------執行動作判斷區----------*/
 include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 //權限項目陣列（編號超級重要！設定後，以後切勿隨便亂改。）
 $item_list = array(
-    '1' => "新增社團",
+    '1' => _MD_KWCLUB_ADD_CLUB,
     '2' => "管理社團",
 );
 

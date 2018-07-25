@@ -244,9 +244,6 @@ function class_form($class_id = '')
     }
     $xoopsTpl->assign('arr_place', $options_array_place);
     $xoopsTpl->assign('op', 'class_form');
-    $xoopsTpl->assign('reg_start', $_SESSION['club_start_date']);
-    $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
-    $xoopsTpl->assign('club_year', $_SESSION['club_year']);
 
     //套用formValidator驗證機制
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {

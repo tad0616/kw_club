@@ -389,9 +389,6 @@ function class_show($class_id = '')
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('op', 'class_show');
 
-    $xoopsTpl->assign('year', $_SESSION['club_year']);
-    $xoopsTpl->assign('reg_start', $_SESSION['club_start_date']);
-    $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
 }
 
 //列出所有kw_club_class資料
@@ -505,8 +502,6 @@ function class_list($year='')
 
         $xoopsTpl->assign('all_content', $all_content);
 
-        $xoopsTpl->assign('reg_start', $_SESSION['club_start_date']);
-        $xoopsTpl->assign('reg_end', $_SESSION['club_end_date']);
 
     }else{
         $xoopsTpl->assign('error', _MD_KWCLUB_NEED_CONFIG);

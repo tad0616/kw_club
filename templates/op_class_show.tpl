@@ -1,6 +1,6 @@
 <h2 class="text-center"><{$class_title}></h2>
 
-<p align='right'>目前是第<font color='blue'><{$year}></font>期社團，報名期間：<font color='red'><{$reg_start}>~<{$reg_end}></font></p>
+<p align='right'>目前是第<font color='blue'><{$smarty.session.club_year}></font>期社團，報名期間：<font color='red'><{$smarty.session.club_start_date}>~<{$smarty.session.club_end_date}></font></p>
  
  <!--社團編號-->
  <div class="row">

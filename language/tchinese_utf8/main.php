@@ -70,7 +70,7 @@ define('_MD_KWCLUB_SELECT_YEAR', '請選擇社團期別：');
 define('_MD_KWCLUB_EMPTY_YEAR', '目前沒有期別');
 define('_MD_KWCLUB', '社團報名');
 define('_MD_KWCLUB_LIST', '期社團列表');
-define('_MD_KWCLUB_APPLY_DATE', '報名起訖時間');
+define('_MD_KWCLUB_APPLY_DATE', '開放報名期間');
 define('_MD_KWCLUB_APPLY_FROM_TO', '起至');
 define('_MD_KWCLUB_EMPTY_CLUB', '此期尚未新增社團！');
 define('_MD_KWCLUB_FORBBIDEN', '您沒有執行此動作的權限！');

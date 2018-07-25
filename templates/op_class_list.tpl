@@ -19,10 +19,10 @@
 
 <{if $year}>
     <h2>
-        <span style="color:blue;"><{$year}></span><{$smarty.const._MD_KWCLUB_LIST}>
+        <span style="color:blue;"><{$smarty.session.club_year}></span><{$smarty.const._MD_KWCLUB_LIST}>
         <small>（共 <{$total}> 筆活動）</small> 
     </h2>
-    <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:red"><{$reg_start}>~<{$reg_end}></span>
+    <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:rgb(190, 63, 4);"><{$smarty.session.club_start_date}>~<{$smarty.session.club_end_date}></span>
     
     <{if $all_content}>
         <table class="table table-bordered table-hover table-striped">

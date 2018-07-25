@@ -1,12 +1,12 @@
 <{if $class_id==""}>
-    <h2>新增社團</h2>	
+    <h2><{$smarty.const._MD_KWCLUB_ADD_CLUB}><small>（目前是第 <{$smarty.session.club_year}> 期社團）</small></h2>	
 <{else}>
-    <h2>編輯<{$class_title}>社團 <{$class_id}></h2>	
+    <h2>編輯<{$class_title}>社團 <{$class_id}><small>（目前是第 <{$smarty.session.club_year}> 期社團）</small></h>	
 <{/if}>
 
-<h2>目前是第<{$club_year}>期社團</h2>
 
-<h3>開放報名期間：<font color='red'><{$reg_start}>~<{$reg_end}></font></h3>
+
+<h3><{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:rgb(190, 63, 4);"><{$smarty.session.club_start_date}>~<{$smarty.session.club_end_date}></span></h3>
 
 
 
@@ -142,7 +142,7 @@
         <label for="class_date_open" class="col-md-2 control-label">開課日期<span class="caption-required">*</span></label>
         <div class="input-group col-md-2">
             <input class = "form-control col-sm-6 validate[required]" type="text" name="class_date_open" id="class_date_open" size="30" maxlength="25" value="<{$class_date_open}>" 
-            onclick="WdatePicker({minDate:'<{$reg_end}>' })"  >
+            onclick="WdatePicker({minDate:'<{$smarty.session.club_end_date}>' })"  >
         </div>
         <label for="class_date_close" class="col-md-2 control-label">終止日期<span class="caption-required">*</span></label>
         <div class="input-group col-md-2">

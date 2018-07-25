@@ -17,7 +17,7 @@
 
         <div align="right">
         <a href="register.php" class="btn btn-info">報名統計列表模式</a>
-        <a href="pdf.php?year=<{$year}>" class="btn btn-info">匯出繳費pdf</a>
+        <a href="pdf.php?year=<{$smarty.session.club_year}>" class="btn btn-info">匯出繳費pdf</a>
     </div>
 </center>
 <h2>所有報名繳費列表<small>（共  筆）</small></h2>
