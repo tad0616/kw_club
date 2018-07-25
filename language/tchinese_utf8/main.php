@@ -31,7 +31,6 @@ define('_MD_KWCLUB_CLASS_DESC', '社團簡介');
 define('_MD_KWCLUB_CLASS_UID', 'UID');
 
 //前台選單
-define('_MD_KWCLUB_INDEX_LIST', '社團列表');
 define('_MD_KWCLUB_INDEX_MYCLASS', '我的社團');
 define('_MD_KWCLUB_INDEX_TEACHER', '教師簡介');
 define('_MD_KWCLUB_INDEX_FORM', '開設課程');
@@ -91,3 +90,11 @@ define('_MD_KWCLUB_DATETIME', '設定時間');
 define('_MD_KWCLUB_ENABLE', '是否啟用');
 
 define('_MD_KWCLUB_ID', '流水號');
+define('_MD_KWCLUB_Y', '期');
+define('_MD_KWCLUB_CLUB', '社團');
+define('_MD_KWCLUB_PICK_CLUB', '挑選社團');
+define('_MD_KWCLUB_CLASS_NUM', '社團編號');
+define('_MD_KWCLUB_ADD_CLASS', '新增課程');
+define('_MD_KWCLUB_MODIFY_CLUB', '修改社團');
+
+define('_MD_KWCLUB_SELECT', '請選擇');

@@ -22,7 +22,7 @@
         <span style="color:blue;"><{$smarty.session.club_year}></span><{$smarty.const._MD_KWCLUB_LIST}>
         <small>（共 <{$total}> 筆活動）</small> 
     </h2>
-    <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:rgb(190, 63, 4);"><{$smarty.session.club_start_date}>~<{$smarty.session.club_end_date}></span>
+    <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:rgb(190, 63, 4);"><{$smarty.session.club_start_date|date_format:"%Y/%m/%d %H:%M"}> ~ <{$smarty.session.club_end_date|date_format:"%Y/%m/%d %H:%M"}></span>
     
     <{if $all_content}>
         <table class="table table-bordered table-hover table-striped">
