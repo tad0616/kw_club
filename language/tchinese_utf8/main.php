@@ -102,3 +102,9 @@ define('_MD_KWCLUB_PLACE_TITLE', '地點');
 define('_MD_KWCLUB_PLACE_DESC', '說明');
 define('_MD_KWCLUB_PLACE_SORT', '排序');
 define('_MD_KWCLUB_PLACE_ENABLE', '狀態');
+
+define('_MD_KWCLUB_ADMIN_GROUP', '社團管理');
+define('_MD_KWCLUB_TEACHER_GROUP', '社團老師');
+define('_MD_KWCLUB_GROUP_NOTE', '：為社團報名模組用，勿刪，勿修改');
+
+define('_MD_KWCLUB_SETUP_TEACHER', '社團老師設定');

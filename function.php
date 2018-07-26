@@ -39,7 +39,7 @@ function get_cate($cate_id, $type)
     }
 
     $type_id = $type . "_id";
-    $sql     = "select * from `" . $xoopsDB->prefix('kw_club_'.$type) . "`
+    $sql     = "select * from `" . $xoopsDB->prefix('kw_club_' . $type) . "`
     where `" . $type . "_id` = '{$cate_id}'";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
@@ -164,7 +164,7 @@ function get_place_all()
     return $data_arr;
 }
 
-//取得所有社團教師陣列
+//取得所有社團老師陣列
 function get_teacher_all()
 {
     global $xoopsDB;
@@ -628,7 +628,7 @@ function cate_show($type, $cate_id = '')
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql = "select * from `" . $xoopsDB->prefix('kw_club_'.$type) . "`
+    $sql = "select * from `" . $xoopsDB->prefix('kw_club_' . $type) . "`
     where `" . $type . "_id` = '{$cate_id}' ";
     $result = $xoopsDB->query($sql) or web_error($sql);
     // $all    = $xoopsDB->fetchArray($result);
@@ -639,7 +639,7 @@ function cate_show($type, $cate_id = '')
     }
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj  = new sweet_alert();
+    $sweet_alert_obj = new sweet_alert();
     $sweet_alert_obj->render("delete_{$type}_func", "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_{$type}&{$type}_id=", "{$type}_id");
     $xoopsTpl->assign('arr', $arr);
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
@@ -654,7 +654,7 @@ function cate_list($type)
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql    = "select * from `" . $xoopsDB->prefix('kw_club_'.$type) . "` order by " . $type . "_sort";
+    $sql    = "select * from `" . $xoopsDB->prefix('kw_club_' . $type) . "` order by " . $type . "_sort";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     $all_content = array();
@@ -671,7 +671,7 @@ function cate_list($type)
         redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj  = new sweet_alert();
+    $sweet_alert_obj = new sweet_alert();
     $sweet_alert_obj->render("delete_{$type}_func", "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_{$type}&{$type}_id=", "{$type}_id");
 
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type={$type}");
@@ -704,4 +704,32 @@ function delete_reg()
     $sql = "delete from `" . $xoopsDB->prefix("kw_club_reg") . "`  where `reg_sn` = '{$reg_sn}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+}
+
+//根據名稱找群組編號
+function group_id_from_name($group_name = "")
+{
+    global $xoopsDB;
+    $sql           = "select groupid from " . $xoopsDB->prefix("groups") . " where `name`='{$group_name}'";
+    $result        = $xoopsDB->queryF($sql) or web_error($sql);
+    list($groupid) = $xoopsDB->fetchRow($result);
+    return $groupid;
+}
+
+//判斷身份
+function isclub($group_name = '')
+{
+    global $xoopsUser;
+    if ($xoopsUser) {
+        $groupid = group_id_from_name($group_name);
+        var_dump($groupid);
+        if($groupid){
+            $groups = $xoopsUser->getGroups();
+            var_dump($groups);
+            if(in_array($groupid,$groups)){
+                return true;
+            }
+        }
+    }
+    return false;
 }

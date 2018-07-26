@@ -2,8 +2,8 @@
 
 function xoops_module_install_kw_club(&$module)
 {
-    mk_group("社團管理", "社團報名模組用，勿刪，勿修改");
-    mk_group("社團老師", "社團報名模組用，勿刪，勿修改");
+    mk_group(_MI_KWCLUB_ADMIN_GROUP, _MI_KWCLUB_ADMIN_GROUP . _MI_KWCLUB_GROUP_NOTE);
+    mk_group(_MI_KWCLUB_TEACHER_GROUP, _MI_KWCLUB_TEACHER_GROUP . _MI_KWCLUB_GROUP_NOTE);
     mk_dir(XOOPS_ROOT_PATH . "/uploads/kw_club");
     mk_dir(XOOPS_ROOT_PATH . "/uploads/kw_club/class");
 
@@ -24,11 +24,3 @@ function mk_group($name = "", $description = "")
     }
     return $groupid;
 }
-
-// function mk_group($name)
-// {
-//     $member_handler = xoops_gethandler('member');
-//     $group          = $member_handler->createGroup();
-//     $group->setVar("name", $name);
-//     $member_handler->insertGroup($group);
-// }

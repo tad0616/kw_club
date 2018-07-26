@@ -9,8 +9,7 @@ define('_MI_KWCLUB_AUTHOR', '社團報名系統');
 define('_MI_KWCLUB_CREDITS', '');
 define('_MI_KWCLUB_DESC', '國小社團報名系統');
 define('_MI_KWCLUB_AUTHOR_WEB', 'https://github.com/laecych');
-define('_MI_KWCLUB_ADMENU1', '細部權限設定');
-define('_MI_KWCLUB_ADMENU1_DESC', '細部權限設定');
+
 define('_MI_KWCLUB_SMNAME2', '教師簡介');
 define('_MI_KWCLUB_SMNAME3', '我的社團');
 define('_MI_KWCLUB_SMNAME4', '報名統計');
@@ -26,3 +25,9 @@ define('_MI_KW_CLUB_START_DATE_DESC', '社團報名起始時間說明');
 
 define('_MI_KW_CLUB_END_DATE', '社團報名終止時間');
 define('_MI_KW_CLUB_END_DATE_DESC', '社團報名終止時間說明');
+
+define('_MI_KWCLUB_ADMIN_GROUP', '社團管理');
+define('_MI_KWCLUB_TEACHER_GROUP', '社團老師');
+define('_MI_KWCLUB_GROUP_NOTE', '：為社團報名模組用，勿刪，勿修改');
+define('_MI_KWCLUB_SETUP_ADMIN', '社團管理設定');
+define('_MI_KWCLUB_SETUP_TEACHER', '社團老師設定');

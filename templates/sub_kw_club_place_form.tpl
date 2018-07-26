@@ -37,14 +37,11 @@
         </div>
     </div>
 
-    <div class="text-center">
-        
-        <!--類型編號-->
-        <input type='hidden' name="place_id" value="<{$place_id}>">
+    <div class="text-center">      
 
         <{$place_token}>
 
-    <!--類型排序-->
+        <!--類型排序-->
         <input type="hidden" name="place_sort"  value="<{$place_sort}>" >
         <input type="hidden" name="type" value="place">
         <input type="hidden" name="op" value="<{$place_op}>">

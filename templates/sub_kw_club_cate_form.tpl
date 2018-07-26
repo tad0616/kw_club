@@ -41,9 +41,6 @@
 
     <div class="text-center">
         
-        <!--類型編號-->
-        <input type='hidden' name="cate_id" value="<{$cate_id}>">
-
         <{$cate_token}>
 
     <!--類型排序-->

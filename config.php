@@ -9,11 +9,12 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op       = system_CleanVars($_REQUEST, 'op', '', 'string');
-$type     = system_CleanVars($_REQUEST, 'type', '', 'string');
-$club_id  = system_CleanVars($_REQUEST, 'club_id', '', 'int');
-$cate_id  = system_CleanVars($_REQUEST, 'cate_id', '', 'int');
-$place_id = system_CleanVars($_REQUEST, 'place_id', '', 'int');
+$op        = system_CleanVars($_REQUEST, 'op', '', 'string');
+$type      = system_CleanVars($_REQUEST, 'type', '', 'string');
+$club_id   = system_CleanVars($_REQUEST, 'club_id', '', 'int');
+$cate_id   = system_CleanVars($_REQUEST, 'cate_id', '', 'int');
+$place_id  = system_CleanVars($_REQUEST, 'place_id', '', 'int');
+$users_uid = system_CleanVars($_REQUEST, 'users_uid', '', 'string');
 
 switch ($op) {
 
@@ -33,40 +34,46 @@ switch ($op) {
         kw_club_info_form($club_id);
         break;
 
+    case "save_club_teacher":
+        save_club_teacher($users_uid);
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab2");
+        exit;
+
     //新增資料
     case "insert_cate":
         insert_cate($type);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab2");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
         exit;
 
     case "insert_place":
         insert_cate($type);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab4");
         exit;
 
     //更新資料
     case "update_cate":
         update_cate($type, $cate_id);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab2");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
         exit;
 
     case "update_place":
         update_cate($type, $place_id);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab4");
         exit;
 
     case "delete_cate":
         delete_cate($type, $cate_id);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab2");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
         exit;
 
     case "delete_place":
         delete_cate($type, $place_id);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab4");
         exit;
 
     default:
         kw_club_info_list();
+        get_club_teacher();
         cate_list('cate');
         cate_form('cate', $cate_id);
         cate_list('place');
@@ -523,4 +530,73 @@ function kw_club_max_sort($type)
     $result     = $xoopsDB->query($sql) or web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
+}
+
+//設定社團老師
+function get_club_teacher()
+{
+    global $xoopsTpl, $xoopsDB;
+    $groupid  = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
+    $user_arr = array();
+    //列出群組中有哪些人
+    if ($groupid) {
+        $member_handler = xoops_gethandler('member');
+        $user_arr       = $member_handler->getUsersByGroup($groupid);
+    }
+
+    $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
+    $result = $xoopsDB->query($sql) or web_error($sql);
+
+    $myts    = MyTextSanitizer::getInstance();
+    $user_ok = $user_yet = "";
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+        $name  = $myts->htmlSpecialChars($name);
+        $uname = $myts->htmlSpecialChars($uname);
+        $name  = empty($name) ? "" : " ({$name})";
+        if (!empty($user_arr) and in_array($uid, $user_arr)) {
+            $user_ok .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
+        } else {
+            $user_yet .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
+        }
+    }
+    //加入Token安全機制
+    include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
+    $token = new XoopsFormHiddenToken();
+    $xoopsTpl->assign("teacher_token", $token->render());
+    $xoopsTpl->assign("user_arr", implode(',', $user_arr));
+    $xoopsTpl->assign("user_ok", $user_ok);
+    $xoopsTpl->assign("user_yet", $user_yet);
+
+}
+
+//儲存社團老師
+function save_club_teacher($users_uid)
+{
+    //XOOPS表單安全檢查
+    if (!$GLOBALS['xoopsSecurity']->check()) {
+        $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
+        redirect_header($_SERVER['PHP_SELF'], 3, $error);
+    }
+
+    $users   = explode(',', $users_uid);
+    $groupid = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
+
+    //列出群組中有哪些人
+    if ($groupid) {
+        $member_handler = xoops_gethandler('member');
+        $user_arr       = $member_handler->getUsersByGroup($groupid);
+        //先從群組移除
+        $member_handler->removeUsersFromGroup($groupid, $user_arr);
+        //再加入群組
+        if (is_array($users)) {
+            $member_handler = xoops_gethandler('member');
+            foreach ($users as $uid) {
+                $member_handler->addUserToGroup($groupid, $uid);
+            }
+        }
+    }
+
 }
