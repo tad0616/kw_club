@@ -34,7 +34,6 @@ define('_MD_KWCLUB_CLASS_UID', 'UID');
 define('_MD_KWCLUB_INDEX_MYCLASS', '我的社團');
 define('_MD_KWCLUB_INDEX_TEACHER', '教師簡介');
 define('_MD_KWCLUB_INDEX_FORM', '開設課程');
-define('_MD_KWCLUB_CATE', '初始設定');
 define('_MD_KWCLUB_REG', '報名統計');
 
 //教師列表
@@ -93,9 +92,13 @@ define('_MD_KWCLUB_ID', '流水號');
 define('_MD_KWCLUB_Y', '期');
 define('_MD_KWCLUB_CLUB', '社團');
 define('_MD_KWCLUB_PICK_CLUB', '挑選社團');
-define('_MD_KWCLUB_CLASS_NUM', '社團編號');
 define('_MD_KWCLUB_ADD_CLASS', '新增課程');
 define('_MD_KWCLUB_MODIFY_CLUB', '修改社團');
 
 define('_MD_KWCLUB_SELECT', '請選擇');
 define('_MD_KWCLUB_SETUP', '報名設定');
+
+define('_MD_KWCLUB_PLACE_TITLE', '地點');
+define('_MD_KWCLUB_PLACE_DESC', '說明');
+define('_MD_KWCLUB_PLACE_SORT', '排序');
+define('_MD_KWCLUB_PLACE_ENABLE', '狀態');

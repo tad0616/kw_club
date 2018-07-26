@@ -640,8 +640,7 @@ function cate_show($type, $cate_id = '')
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
     $sweet_alert_obj  = new sweet_alert();
-    $delete_cate_func = $sweet_alert_obj->render('delete_cate_func', "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_cate&cate_id=", "cate_id");
-    $xoopsTpl->assign('delete_cate_func', $delete_cate_func);
+    $sweet_alert_obj->render("delete_{$type}_func", "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_{$type}&{$type}_id=", "{$type}_id");
     $xoopsTpl->assign('arr', $arr);
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
     $xoopsTpl->assign('op', 'cate_show'); //template name
@@ -673,8 +672,7 @@ function cate_list($type)
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
     $sweet_alert_obj  = new sweet_alert();
-    $delete_cate_func = $sweet_alert_obj->render('delete_cate_func', "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_cate&cate_id=", "cate_id");
-    $xoopsTpl->assign('delete_cate_func', $delete_cate_func);
+    $sweet_alert_obj->render("delete_{$type}_func", "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_{$type}&{$type}_id=", "{$type}_id");
 
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type={$type}");
     $xoopsTpl->assign("all_{$type}_content", $all_content);

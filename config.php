@@ -9,10 +9,11 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
-$club_id = system_CleanVars($_REQUEST, 'club_id', '', 'int');
-$type    = system_CleanVars($_REQUEST, 'type', '', 'string');
-$cate_id = system_CleanVars($_REQUEST, 'cate_id', '', 'int');
+$op       = system_CleanVars($_REQUEST, 'op', '', 'string');
+$type     = system_CleanVars($_REQUEST, 'type', '', 'string');
+$club_id  = system_CleanVars($_REQUEST, 'club_id', '', 'int');
+$cate_id  = system_CleanVars($_REQUEST, 'cate_id', '', 'int');
+$place_id = system_CleanVars($_REQUEST, 'place_id', '', 'int');
 
 switch ($op) {
 
@@ -35,29 +36,42 @@ switch ($op) {
     //新增資料
     case "insert_cate":
         insert_cate($type);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab2");
+        exit;
+
+    case "insert_place":
+        insert_cate($type);
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
         exit;
 
     //更新資料
     case "update_cate":
         update_cate($type, $cate_id);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab2");
+        exit;
+
+    case "update_place":
+        update_cate($type, $place_id);
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
         exit;
 
     case "delete_cate":
         delete_cate($type, $cate_id);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab2");
         exit;
 
-    case "cate_form":
-        cate_form($type, $cate_id);
-        break;
+    case "delete_place":
+        delete_cate($type, $place_id);
+        header("location: {$_SERVER['PHP_SELF']}?type=$type#setupTab3");
+        exit;
 
     default:
         kw_club_info_list();
         cate_list('cate');
+        cate_form('cate', $cate_id);
         cate_list('place');
-        $op = 'kw_club_info_list';
+        cate_form('place', $place_id);
+        $op = 'kw_club_config';
         break;
 }
 
@@ -376,113 +390,53 @@ function cate_form($type, $cate_id = '')
     global $xoopsDB, $xoopsTpl, $xoopsUser;
 
     //抓取預設值
-    if (!empty($cate_id)) {
-        $DBV = get_cate($cate_id, $type);
-
-    } else {
-        $DBV = array();
-    }
+    $DBV = empty($cate_id) ? array() : get_cate($cate_id, $type);
 
     //預設值設定
+    $xoopsTpl->assign('type', $type);
 
     //設定 cate_id 欄位的預設值
-    $cate_id = !isset($DBV[$type . '_id']) ? "" : $DBV[$type . '_id'];
-    $xoopsTpl->assign('cate_id', $cate_id);
-    //設定 cate_title 欄位的預設值
-    $cate_title = !isset($DBV[$type . '_title']) ? "" : $DBV[$type . '_title'];
-    $xoopsTpl->assign('cate_title', $cate_title);
-    //設定 cate_desc 欄位的預設值
-    $cate_desc = !isset($DBV[$type . '_desc']) ? "" : $DBV[$type . '_desc'];
-    $xoopsTpl->assign('cate_desc', $cate_desc);
-    //設定 cate_sort 欄位的預設值
-    $cate_sort = !isset($DBV[$type . '_sort']) ? "" : $DBV[$type . '_sort'];
-    $xoopsTpl->assign('cate_sort', $cate_sort);
-    //設定 cate_enable 欄位的預設值
-    $cate_enable = !isset($DBV[$type . '_enable']) ? "" : $DBV[$type . '_enable'];
-    $xoopsTpl->assign('cate_enable', $cate_enable);
+    $id = !isset($DBV[$type . '_id']) ? $cate_id : $DBV[$type . '_id'];
+    $xoopsTpl->assign($type . '_id', $id);
 
-    $op     = empty($cate_id) ? "insert_cate" : "update_cate";
-    $enable = empty($cate_enable) ? "1" : $cate_enable;
-    //$op="replace_kw_club_cate";
+    //設定 title 欄位的預設值
+    $title = !isset($DBV[$type . '_title']) ? "" : $DBV[$type . '_title'];
+    $xoopsTpl->assign($type . '_title', $title);
 
-    $span = $_SESSION['bootstrap'] == '3' ? 'form-control col-sm-' : 'span';
-    $form = new XoopsThemeForm('', 'form', $_SERVER['PHP_SELF'], 'post', true);
-    $form->setExtra('enctype = "multipart/form-data"');
+    //設定 desc 欄位的預設值
+    $desc = !isset($DBV[$type . '_desc']) ? "" : $DBV[$type . '_desc'];
+    $xoopsTpl->assign($type . '_desc', $desc);
 
-    //類型標題
-    $cate_titleText = new XoopsFormText(_MD_KWCLUB_CATE_TITLE, "cate_title", 30, 255, $cate_title);
-    $cate_titleText->setExtra("class = '{$span}6'");
-    $form->addElement($cate_titleText, true);
+    //設定 sort 欄位的預設值
+    $sort = !isset($DBV[$type . '_sort']) ? kw_club_max_sort($type) : $DBV[$type . '_sort'];
+    $xoopsTpl->assign($type . '_sort', $sort);
 
-    //類型排序
-    $cate_sortText = new XoopsFormText(_MD_KWCLUB_CATE_SORT, "cate_sort", 30, 255, $cate_sort);
-    $cate_sortText->setExtra("class = '{$span}6'");
-    $form->addElement($cate_sortText, true);
+    //設定 enable 欄位的預設值
+    $enable = !isset($DBV[$type . '_enable']) ? "" : $DBV[$type . '_enable'];
+    $xoopsTpl->assign($type . '_enable', $enable);
 
-    //類型說明
-    $cate_descText = new XoopsFormText(_MD_KWCLUB_CATE_DESC, "cate_desc", 30, 255, $cate_desc);
-    $cate_descText->setExtra("class = '{$span}6'");
-    $form->addElement($cate_descText, false);
+    $op = empty($cate_id) ? "insert_{$type}" : "update_{$type}";
+    $xoopsTpl->assign($type . '_op', $op);
 
-    //是否啟用
+    //加入Token安全機制
+    include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
+    $token      = new XoopsFormHiddenToken();
+    $token_form = $token->render();
+    $xoopsTpl->assign($type . "_token", $token_form);
 
-    $cate_isopenRadio          = new XoopsFormRadio(_MD_KWCLUB_CATE_ENABLE, 'cate_enable', $enable);
-    $options_array_isshow['1'] = '啟用';
-    $options_array_isshow['0'] = '停用';
-    $cate_isopenRadio->addOptionArray($options_array_isshow);
-    $form->addElement($cate_isopenRadio, true);
-
-    //hidden
-    $form->addElement(new XoopsFormHidden("op", $op));
-    $form->addElement(new XoopsFormHidden("type", $type));
-    $form->addElement(new XoopsFormHidden("cate_id", $cate_id));
-    $form->addElement(new XoopsFormHiddenToken());
-
-    $SubmitTray = new XoopsFormElementTray('', '', '', true);
-    $SubmitTray->addElement(new XoopsFormButton('', '', _TAD_SUBMIT, 'submit'));
-    $form->addElement($SubmitTray);
-    $xoopsform = $form->render();
-    $xoopsTpl->assign('xoopsform', $xoopsform);
-
-    //列表
-    $myts = MyTextSanitizer::getInstance();
-    $sql  = "select * from `" . $xoopsDB->prefix($table) . "` order by " . $type . "_sort";
-    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10);
-    $bar     = $PageBar['bar'];
-    $sql     = $PageBar['sql'];
-    $total   = $PageBar['total'];
-
-    $result = $xoopsDB->query($sql) or web_error($sql);
-
-    $all_cate_content = array();
-    $i                = 0;
-    while ($all = $result->fetch_row()) {
-        $all_cate_content[$i] = $all;
-        $i++;
+    //套用formValidator驗證機制
+    if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+        redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
     }
-
-    //刪除確認的JS
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj  = new sweet_alert();
-    $delete_cate_func = $sweet_alert_obj->render('delete_cate_func', "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_cate&cate_id=", "cate_id");
-    $xoopsTpl->assign('delete_cate_func', $delete_cate_func);
-
-    $xoopsTpl->assign('bar', $bar);
-    $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}");
-    $xoopsTpl->assign('all_cate_content', $all_cate_content);
-
-    $xoopsTpl->assign('op', 'cate_form');
-
+    include_once TADTOOLS_PATH . "/formValidator.php";
+    $formValidator = new formValidator(".myForm", true);
+    $formValidator->render();
 }
 
 //新增資料到kw_club_cate中
 function insert_cate($type)
 {
-    global $xoopsDB, $xoopsTpl, $error;
+    global $xoopsDB, $xoopsTpl;
 
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -492,49 +446,35 @@ function insert_cate($type)
 
     $myts = MyTextSanitizer::getInstance();
 
-    $cate_id     = $_POST['cate_id'];
-    $cate_title  = $myts->addSlashes($_POST['cate_title']);
-    $cate_desc   = $myts->addSlashes($_POST['cate_desc']);
-    $cate_sort   = $_POST['cate_sort'];
-    $cate_enable = $_POST['cate_enable'];
-    // $type        = $_POST['type'];
+    $title  = $myts->addSlashes($_POST[$type . '_title']);
+    $desc   = $myts->addSlashes($_POST[$type . '_desc']);
+    $sort   = (int) $_POST[$type . '_sort'];
+    $enable = (int) $_POST[$type . '_enable'];
 
-    $sql    = "select * from `" . $xoopsDB->prefix('kw_club_' . $type) . "` where `{$type}_sort`={$cate_sort}";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $num    = $result->num_rows;
-
-    if ($num > 0) {
-        $error = "排序的數字已存在，請輸入其他阿拉伯數字";
-        // $xoopsTpl->assign('error', $error);
-
-        header("location: {$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
-        exit;
-    } else {
-
-        $sql = "insert into `" . $xoopsDB->prefix('kw_club_' . $type) . "` (" .
-            "`" . $type . "_title`, " .
-            "`" . $type . "_desc`, " .
-            "`" . $type . "_sort`, " .
-            "`" . $type . "_enable` " .
-            ") values(
-        '{$cate_title}',
-        '{$cate_desc}',
-        '{$cate_sort}',
-        '{$cate_enable}'
+    $sql = "insert into `" . $xoopsDB->prefix('kw_club_' . $type) . "` (
+        `{$type}_title`,
+        `{$type}_desc`,
+        `{$type}_sort`,
+        `{$type}_enable`
+        ) values(
+        '{$title}',
+        '{$desc}',
+        '{$sort}',
+        '{$enable}'
     )";
-        $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or web_error($sql);
 
-        //取得最後新增資料的流水編號
-        $cate_id = $xoopsDB->getInsertId();
+    //取得最後新增資料的流水編號
+    $id = $xoopsDB->getInsertId();
 
-        return $cate_id;
-    }
+    return $id;
+
 }
 
 //更新kw_club_cate某一筆資料
 function update_cate($type, $cate_id = '')
 {
-    global $xoopsDB, $xoopsTpl, $error;
+    global $xoopsDB, $xoopsTpl;
 
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -544,35 +484,20 @@ function update_cate($type, $cate_id = '')
 
     $myts = MyTextSanitizer::getInstance();
 
-    $cate_id     = $_POST['cate_id'];
-    $cate_title  = $myts->addSlashes($_POST['cate_title']);
-    $cate_desc   = $myts->addSlashes($_POST['cate_desc']);
-    $cate_sort   = $_POST['cate_sort'];
-    $cate_enable = $_POST['cate_enable'];
+    $title  = $myts->addSlashes($_POST[$type . '_title']);
+    $desc   = $myts->addSlashes($_POST[$type . '_desc']);
+    $sort   = (int) $_POST[$type . '_sort'];
+    $enable = (int) $_POST[$type . '_enable'];
 
-    // //check sort
-    $sql    = "select * from `" . $xoopsDB->prefix('kw_club_' . $type) . "` where `{$type}_sort`={$cate_sort}";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $num    = $result->num_rows;
+    $sql = "update `" . $xoopsDB->prefix('kw_club_' . $type) . "` set
+        `{$type}_title` = '{$title}',
+        `{$type}_desc` = '{$desc}',
+        `{$type}_sort` = '{$sort}',
+        `{$type}_enable` = '{$enable}'
+    where `{$type}_id` = '{$cate_id}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
 
-    if ($num > 0) {
-        $error = "排序的數字已存在，請輸入其他阿拉伯數字";
-        // $xoopsTpl->assign('error', $error);
-        header("location: {$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
-        exit;
-    } else {
-
-        $sql = "update `" . $xoopsDB->prefix('kw_club_' . $type) . "` set" .
-            "`" . $type . "_title` = '{$cate_title}'," .
-            "`" . $type . "_desc` = '{$cate_desc}'," .
-            "`" . $type . "_sort` = '{$cate_sort}'," .
-            "`" . $type . "_enable` = '{$cate_enable}'
-    where `" . $type . "_id` = '$cate_id'";
-        $xoopsDB->queryF($sql) or web_error($sql);
-
-        return $cate_id;
-    }
-
+    return $cate_id;
 }
 
 //刪除kw_club_cate某筆資料資料
@@ -588,4 +513,14 @@ function delete_cate($type, $cate_id = '')
     where `" . $type . "_id` = '{$cate_id}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+}
+
+//自動取得kw_club_cate的最新排序
+function kw_club_max_sort($type)
+{
+    global $xoopsDB;
+    $sql        = "select max(`{$type}_sort`) from `" . $xoopsDB->prefix('kw_club_' . $type) . "`";
+    $result     = $xoopsDB->query($sql) or web_error($sql);
+    list($sort) = $xoopsDB->fetchRow($result);
+    return ++$sort;
 }

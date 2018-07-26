@@ -1,5 +1,5 @@
 <{if $smarty.session.isclubAdmin}>
-<{$delete_cate_func}>
+
 <{/if}>
 <h2 class="text-center"><{$arr[1]}></h2>
 

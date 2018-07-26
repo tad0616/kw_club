@@ -19,8 +19,7 @@ CREATE TABLE `kw_club_cate` (
   `cate_desc` varchar(255) NOT NULL default '' COMMENT '類型說明',
   `cate_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '類型排序',
   `cate_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-PRIMARY KEY  (`cate_id`),
- UNIQUE KEY `cate_sort` (`cate_sort`)
+PRIMARY KEY  (`cate_id`)
 ) ENGINE=MyISAM;
 
 CREATE TABLE `kw_club_place` (
@@ -29,8 +28,7 @@ CREATE TABLE `kw_club_place` (
   `place_desc` varchar(255) NOT NULL default '' COMMENT '地點說明',
   `place_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '地點排序',
   `place_enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-PRIMARY KEY  (`place_id`),
-UNIQUE KEY `place_sort` (`place_sort`)
+PRIMARY KEY  (`place_id`)
 ) ENGINE=MyISAM;
 
 

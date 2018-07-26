@@ -47,3 +47,6 @@ define('_MA_KWCLUB_REG_UID', '報名者編號');
 define('_MA_KWCLUB_REG_DATETIME', '報名日期');
 define('_MA_KWCLUB_REG_ISREG', '是否後補');
 define('_MA_KWCLUB_REG_ISFEE', '是否繳費');
+
+define('_MA_KWCLUB_ADD_CLUB', '新增社團（有開課權限者）');
+define('_MA_KWCLUB_ADM_CLUB', '管理社團（負責社團報名業務者）');

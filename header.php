@@ -45,9 +45,6 @@ if ($_SESSION['isclubAdmin']) {
 
     $interface_menu[_MD_KWCLUB_SETUP] = "config.php";
     $interface_icon[_MD_KWCLUB_SETUP] = "fa-chevron-right";
-
-    $interface_menu[_MD_KWCLUB_CATE] = "config.php?type=cate&op=cate_form";
-    $interface_icon[_MD_KWCLUB_CATE] = "fa-chevron-right";
 }
 
 if ($_SESSION['is_kw_club_Admin']) {
