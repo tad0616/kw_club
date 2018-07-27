@@ -91,7 +91,8 @@ function class_form($class_id = '')
     // include_once(XOOPS_ROOT_PATH."/class/xoopsformloader.php");
     // include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
     $class_num = system_CleanVars($_REQUEST, 'class_num', '', 'int');
-//取得此期已有的class_num
+
+    //取得此期已有的class_num
     $arr_num = get_class_num();
 
     //判斷修改or新增(取預設值)
@@ -230,12 +231,18 @@ function class_form($class_id = '')
     }
     $xoopsTpl->assign('arr_cate', $options_array_cate);
 
-    $sql    = "select `teacher_id`, `teacher_title` from `" . $xoopsDB->prefix("kw_club_teacher") . "` where `teacher_enable`='1' order by `teacher_sort`";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    while (list($teacher_id, $teacher_title) = $xoopsDB->fetchRow($result)) {
-        $options_array_teacher[$teacher_id] = $teacher_title;
+    //開課教師
+    $groupid = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
+    $sql     = "select b.* from `" . $xoopsDB->prefix("groups_users_link") . "` as a
+    join " . $xoopsDB->prefix("users") . " as b on a.`uid`=b.`uid`
+    where a.`groupid`='{$groupid}' order by b.`name`";
+    $result      = $xoopsDB->query($sql) or web_error($sql);
+    $arr_teacher = array();
+    while ($teacher = $xoopsDB->fetchArray($result)) {
+        $uid               = $teacher['uid'];
+        $arr_teacher[$uid] = $teacher;
     }
-    $xoopsTpl->assign('arr_teacher', $options_array_teacher);
+    $xoopsTpl->assign('arr_teacher', $arr_teacher);
 
     $sql    = "select `place_id`, `place_title` from `" . $xoopsDB->prefix("kw_club_place") . "` where `place_enable`='1' order by `place_sort`";
     $result = $xoopsDB->query($sql) or web_error($sql);

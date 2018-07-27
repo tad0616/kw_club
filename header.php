@@ -11,12 +11,12 @@ if ($xoopsUser) {
 
     //是否為「社團管理」的用戶
     if (!isset($_SESSION['isclubAdmin'])) {
-        $_SESSION['isclubAdmin'] = isclub(_MD_KWCLUB_ADMIN_GROUP);
+        $_SESSION['isclubAdmin'] = $_SESSION['is_kw_club_Admin'] ? true : isclub(_MD_KWCLUB_ADMIN_GROUP);
     }
 
     //是否為「社團老師」的用戶
     if (!isset($_SESSION['isclubUser'])) {
-        $_SESSION['isclubUser'] = isclub(_MD_KWCLUB_TEACHER_GROUP);
+        $_SESSION['isclubUser'] = $_SESSION['isclubAdmin'] ? true : isclub(_MD_KWCLUB_TEACHER_GROUP);
     }
 } else {
     unset($_SESSION['is_kw_club_Admin']);
