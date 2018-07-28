@@ -59,9 +59,9 @@
     </td>
     <td>
         <{ if $data.reg_isfee==1}>
-            <font color='green'>已繳費</font>    
+            <span style='color: green'>已繳費</span>    
         <{else}>
-            <font color='red'>未繳費</font>
+            <span style='color: red'>未繳費</span>
         <{/if}>    
     </td>
     <{if $smarty.session.isclubAdmin}>
@@ -82,7 +82,7 @@
     <{/foreach}>
     <tr>
         <td colspan="2" align='center'>總繳費金額</td>
-        <td  colspan="6" align='right'>總共<{$money}>元，已繳<font color='green'><{$in_money}></font>元，未繳<font color='red'><{$un_money}></font>元</td></tr>
+        <td  colspan="6" align='right'>總共<{$money}>元，已繳<span style='color: green'><{$in_money}></span>元，未繳<span style='color: red'><{$un_money}></span>元</td></tr>
     </tbody>
 </table>
 <{else}>

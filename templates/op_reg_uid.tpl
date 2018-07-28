@@ -25,7 +25,7 @@
 <div id="kw_club_class_save_msg"></div>
 
 <{foreach from=$reg_uid_all key=sn item=uid}>
-<font color=blue><{$reg_name_all[$uid]}> </font>的報名結果 <{$uid}>
+<span style="color:blue"><{$reg_name_all[$uid]}> </span>的報名結果 <{$uid}>
 <table class="table table-bordered table-hover table-striped">
   <thead>
     <tr class="">
@@ -58,9 +58,9 @@
     </td>
     <td>
         <{ if $data.reg_isfee==1}>
-            <font color='green'>已繳費</font>    
+            <span style='color: green'>已繳費</span>    
         <{else}>
-            <font color='red'>未繳費</font>
+            <span style='color: red'>未繳費</span>
         <{/if}>    
     </td>
     <td>
@@ -77,7 +77,7 @@
     <{/foreach}>
     <tr>
         <td colspan="2" align='center'>總繳費金額</td>
-        <td  colspan="6" align='right'>總共<{$money_all[$uid]}>元，已繳<font color='green'><{$in_money_all[$uid]}></font>元，未繳<font color='red'><{$un_money_all[$uid]}></font>元</td></tr>
+        <td  colspan="6" align='right'>總共<{$money_all[$uid]}>元，已繳<span style='color: green'><{$in_money_all[$uid]}></span>元，未繳<span style='color: red'><{$un_money_all[$uid]}></span>元</td></tr>
     </tbody>
 </table>
 <{/foreach}>
