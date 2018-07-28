@@ -6,7 +6,3 @@
         <{$error}>
     </div>
 <{/if}>
-
-<{foreach from=$smarty.session key=k item=v}>
-    $_SESSION['<{$k}>'] = '<{$v}>';<br>
-<{/foreach}>

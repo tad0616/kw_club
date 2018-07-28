@@ -306,7 +306,9 @@ function insert_kw_club_info()
     //設定相關變數
     $_SESSION['club_year']       = $club_year;
     $_SESSION['club_start_date'] = $club_start_date;
+    $_SESSION['club_start_date_ts'] = strtotime($club_start_date);
     $_SESSION['club_end_date']   = $club_end_date;
+    $_SESSION['club_end_date_ts']   = strtotime($club_end_date);
     $_SESSION['club_isfree']     = $club_isfree;
     $_SESSION['club_backup_num'] = $club_backup_num;
 
@@ -353,7 +355,9 @@ function update_kw_club_info($club_id = '')
     //update session
     $_SESSION['club_year']       = $club_year;
     $_SESSION['club_start_date'] = $club_start_date;
+    $_SESSION['club_start_date_ts'] = strtotime($club_start_date);
     $_SESSION['club_end_date']   = $club_end_date;
+    $_SESSION['club_end_date_ts']   = strtotime($club_end_date);
     $_SESSION['club_isfree']     = $club_isfree;
     $_SESSION['club_backup_num'] = $club_backup_num;
 

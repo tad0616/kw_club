@@ -2,8 +2,8 @@
              
     <div class="form-group">
         <!--社團期別-->
-        <label for="club_year" class="col-md-2 control-label"><{$smarty.const._MD_KWCLUB_YEAR}></label>
-        <div class="col-md-4">
+        <label for="club_year" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_YEAR}></label>
+        <div class="col-sm-4">
             <{if $club_year}>
                 <div class="form-control-static">                
                     <{$club_year_txt}>
@@ -35,8 +35,8 @@
 
     <!--報名起訖-->
     <div class="form-group">
-        <label for="class_date_open" class="col-md-2 control-label"><{$smarty.const._MD_KWCLUB_APPLY_DATE}></label>
-        <div class="col-md-10">
+        <label for="class_date_open" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_APPLY_DATE}></label>
+        <div class="col-sm-10">
             <div class="input-group">
                 <input type="text" name="club_start_date" id="club_start_date" value="<{$club_start_date}>" class = "form-control validate[required]" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm', startDate:'%y-%M-%d %H:%m'})">
                 <span class="input-group-addon"><{$smarty.const._MD_KWCLUB_APPLY_FROM_TO}></span>
@@ -47,8 +47,8 @@
 
     <!--    
     <div class="form-group">
-        <label for="class_isopen" class="col-md-2 control-label">報名方式</label>
-        <div class="col-md-10">
+        <label for="class_isopen" class="col-sm-2 control-label">報名方式</label>
+        <div class="col-sm-10">
             <label class="radio-inline">
                 <input type='radio' name='club_isfree' id='class_isopen1' title='自由報名' value='0' <{if $club_isfree!=1}>checked<{/if}>>
                 自由報名（不登入可報名）
@@ -67,10 +67,10 @@
     <div class="form-group">
         
         <!--候補人數-->
-        <label for="club_backup_num" class="col-md-2 control-label">
+        <label for="club_backup_num" class="col-sm-2 control-label">
             <{$smarty.const._MD_KWCLUB_BACKUP_NUM}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
             <select class="form-control validate[required]" size="1" class = 'form-control col-sm-6' name="club_backup_num" id="club_backup_num" title="<{$smarty.const._MD_KWCLUB_BACKUP_NUM}>">
                 <{foreach from=$arr_num item=num}>
                     <option value="<{$num}>" <{if $club_backup_num==$num}>selected<{/if}>><{$num}>人</option>

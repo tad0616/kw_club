@@ -19,36 +19,28 @@ switch ($op) {
     //新增資料
     case "insert_class":
         $class_id = insert_class();
-        header("location: {$_SERVER['PHP_SELF']}?class_id=$class_id");
+        header("location: index.php?class_id=$class_id");
         exit;
 
     //更新資料
     case "update_class":
         update_class($class_id);
-        header("location: {$_SERVER['PHP_SELF']}?class_id=$class_id");
+        header("location: index.php?class_id=$class_id");
         exit;
 
     case "delete_class":
         delete_class($class_id);
-        header("location: {$_SERVER['PHP_SELF']}");
+        header("location: index.php");
         exit;
 
-    case "class_form":
+    default:
         if (!empty($class_id)) {
             class_form($class_id);
         } else {
             class_form();
         }
-        break;
+        $op = 'class_form';
 
-    default:
-        if ($class_id) {
-            class_show($class_id);
-            $op = 'class_show';
-        } else {
-            class_list($year);
-            $op = 'class_list';
-        }
         break;
 
 }
@@ -158,14 +150,14 @@ function class_form($class_id = '')
     $xoopsTpl->assign('teacher_id', $teacher_id);
     //設定 class_week 欄位的預設值
     $class_week     = !isset($DBV['class_week']) ? "" : $DBV['class_week'];
-    $class_week_arr = explode(" ", $class_week);
+    $class_week_arr = explode("、", $class_week);
     // $class_week_arr = str_split($class_week);
     $xoopsTpl->assign('class_week', $class_week_arr);
     $xoopsTpl->assign('c_week', array('日', '一', '二', '三', '四', '五', '六'));
 
     //設定 class_grade 欄位的預設值
     $class_grade     = !isset($DBV['class_grade']) ? "" : $DBV['class_grade'];
-    $class_grade_arr = explode(" ", $class_grade);
+    $class_grade_arr = explode("、", $class_grade);
     $xoopsTpl->assign('class_grade', $class_grade_arr);
     $xoopsTpl->assign('c_grade', array('幼', '一', '二', '三', '四', '五', '六'));
 
@@ -215,10 +207,6 @@ function class_form($class_id = '')
     $class_desc = !isset($DBV['class_desc']) ? "" : $DBV['class_desc'];
     $xoopsTpl->assign('class_desc', $class_desc);
 
-    //op
-    // $op = empty($class_id) ? "insert_class" : "update_class";
-    // $xoopsTpl->assign('op', $op);
-
     //semester
     $arr_semester = get_semester();
     $xoopsTpl->assign('arr_semester', $arr_semester);
@@ -232,17 +220,7 @@ function class_form($class_id = '')
     $xoopsTpl->assign('arr_cate', $options_array_cate);
 
     //開課教師
-    $groupid = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
-    $sql     = "select b.* from `" . $xoopsDB->prefix("groups_users_link") . "` as a
-    join " . $xoopsDB->prefix("users") . " as b on a.`uid`=b.`uid`
-    where a.`groupid`='{$groupid}' order by b.`name`";
-    $result      = $xoopsDB->query($sql) or web_error($sql);
-    $arr_teacher = array();
-    while ($teacher = $xoopsDB->fetchArray($result)) {
-        $uid               = $teacher['uid'];
-        $arr_teacher[$uid] = $teacher;
-    }
-    $xoopsTpl->assign('arr_teacher', $arr_teacher);
+    $xoopsTpl->assign('arr_teacher', get_teacher_all());
 
     $sql    = "select `place_id`, `place_title` from `" . $xoopsDB->prefix("kw_club_place") . "` where `place_enable`='1' order by `place_sort`";
     $result = $xoopsDB->query($sql) or web_error($sql);
@@ -250,7 +228,6 @@ function class_form($class_id = '')
         $options_array_place[$place_id] = $place_title;
     }
     $xoopsTpl->assign('arr_place', $options_array_place);
-    $xoopsTpl->assign('op', 'class_form');
 
     //套用formValidator驗證機制
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -271,15 +248,12 @@ function insert_class()
     if (!$_SESSION['isclubAdmin'] && !$_SESSION['isclubUser']) {
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
-//     if (!$_SESSION['isclubAdmin']) {
-    //     redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    // }
 
     //XOOPS表單安全檢查
-    // if (!$GLOBALS['xoopsSecurity']->check()) {
-    //     $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
-    //     redirect_header($_SERVER['PHP_SELF'], 3, $error);
-    // }
+    if (!$GLOBALS['xoopsSecurity']->check()) {
+        $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
+        redirect_header($_SERVER['PHP_SELF'], 3, $error);
+    }
 
     //檢查期別
     if (!isset($_SESSION['club_year'])) {
@@ -300,8 +274,8 @@ function insert_class()
     // die($class_week_arr);
     // for ($i=0; $i<count($class_week );$i++)
     //     $class_week_arr[]=$class_week[$i];
-    $class_week  = implode(" ", $class_week_arr);
-    $class_grade = implode(" ", $class_grade_arr);
+    $class_week  = implode("、", $class_week_arr);
+    $class_grade = implode("、", $class_grade_arr);
 
     // die($class_week_arr);
 
@@ -312,11 +286,6 @@ function insert_class()
 
     $class_menber = $myts->addSlashes($_POST['class_menber']);
     $class_money  = $myts->addSlashes($_POST['class_money']);
-
-    if (empty($class_title) || empty($class_num) || empty($cate_id) || empty($teacher_id) || empty($place_id) || empty($class_week) || empty($class_grade) || empty($class_date_open) || empty($class_date_close) || empty($class_time_start) || empty($class_time_end)) {
-        echo "<script type='text/javascript'>window.alert('有資料沒填寫!!');</script>";
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    }
 
     $class_fee  = $myts->addSlashes($_POST['class_fee']);
     $class_note = $myts->addSlashes($_POST['class_note']);
@@ -414,8 +383,8 @@ function update_class($class_id = '')
     // $class_week = $_POST['class_week'];
     $class_week_arr  = $_POST['class_week'];
     $class_grade_arr = $_POST['class_grade'];
-    $class_week      = implode(" ", $class_week_arr);
-    $class_grade     = implode(" ", $class_grade_arr);
+    $class_week      = implode("、", $class_week_arr);
+    $class_grade     = implode("、", $class_grade_arr);
 
     $class_date_open  = $myts->addSlashes($_POST['class_date_open']);
     $class_date_close = $myts->addSlashes($_POST['class_date_close']);

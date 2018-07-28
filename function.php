@@ -23,7 +23,9 @@ function get_club_info()
 
         $_SESSION['club_year']       = $club_info['club_year'];
         $_SESSION['club_start_date'] = $club_info['club_start_date'];
+        $_SESSION['club_start_date_ts'] = strtotime($club_info['club_start_date']);
         $_SESSION['club_end_date']   = $club_info['club_end_date'];
+        $_SESSION['club_end_date_ts']   = strtotime($club_info['club_end_date']);
         $_SESSION['club_isfree']     = $club_info['club_isfree'];
         $_SESSION['club_backup_num'] = $club_info['club_backup_num'];
     }
@@ -142,7 +144,7 @@ function get_cate_all()
     global $xoopsDB;
     $sql      = "select * from `" . $xoopsDB->prefix("kw_club_cate") . "`";
     $result   = $xoopsDB->query($sql) or web_error($sql);
-    $data_arr = '';
+    $data_arr = array();
     while ($data = $xoopsDB->fetchArray($result)) {
         $cate_id            = $data['cate_id'];
         $data_arr[$cate_id] = $data;
@@ -156,7 +158,7 @@ function get_place_all()
     global $xoopsDB;
     $sql      = "select * from `" . $xoopsDB->prefix("kw_club_place") . "`";
     $result   = $xoopsDB->query($sql) or web_error($sql);
-    $data_arr = '';
+    $data_arr = array();
     while ($data = $xoopsDB->fetchArray($result)) {
         $cate_id            = $data['place_id'];
         $data_arr[$cate_id] = $data;
@@ -168,14 +170,18 @@ function get_place_all()
 function get_teacher_all()
 {
     global $xoopsDB;
-    $sql      = "select * from `" . $xoopsDB->prefix("kw_club_teacher") . "`";
-    $result   = $xoopsDB->query($sql) or web_error($sql);
-    $data_arr = '';
-    while ($data = $xoopsDB->fetchArray($result)) {
-        $teacher_id            = $data['teacher_id'];
-        $data_arr[$teacher_id] = $data;
-    }
-    return $data_arr;
+   //開課教師
+   $groupid = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
+   $sql     = "select b.* from `" . $xoopsDB->prefix("groups_users_link") . "` as a
+   join " . $xoopsDB->prefix("users") . " as b on a.`uid`=b.`uid`
+   where a.`groupid`='{$groupid}' order by b.`name`";
+   $result      = $xoopsDB->query($sql) or web_error($sql);
+   $arr_teacher = array();
+   while ($teacher = $xoopsDB->fetchArray($result)) {
+       $uid               = $teacher['uid'];
+       $arr_teacher[$uid] = $teacher;
+   }
+    return $arr_teacher;
 }
 
 //取得所有社團資料陣列
@@ -188,7 +194,7 @@ function get_class_all()
 
         $sql      = "select * from `" . $xoopsDB->prefix("kw_club_class") . "` where `class_year`= {$year}";
         $result   = $xoopsDB->query($sql) or web_error($sql);
-        $data_arr = '';
+        $data_arr = array();
         while ($data = $xoopsDB->fetchArray($result)) {
             $class_id            = $data['class_id'];
             $data_arr[$class_id] = $data;
@@ -276,236 +282,8 @@ function get_semester()
 
 }
 
-//以流水號秀出某筆kw_club_class資料內容
-function class_show($class_id = '')
-{
-    global $xoopsDB, $xoopsUser, $xoopsTpl, $today;
 
-    if (empty($class_id)) {
-        return;
-    } else {
-        $class_id = intval($class_id);
-    }
 
-    $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
-    $xoopsTpl->assign('uid', $uid);
-
-    $myts = MyTextSanitizer::getInstance();
-
-    $sql = "select * from `" . $xoopsDB->prefix("kw_club_class") . "`
-    where `class_id` = '{$class_id}' ";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $all    = $xoopsDB->fetchArray($result);
-
-    //檢查報名是否可行
-    if ($_SESSION['club_start_date'] > $today || $_SESSION['club_end_date'] < $today) {
-        $xoopsTpl->assign('is_timeout', 'yes');
-    }
-    if (($all['class_menber'] + $_SESSION['club_backup_num']) <= $all['class_regnum']) {
-        $xoopsTpl->assign('is_full', 'yes');
-    }
-
-    //以下會產生這些變數： $class_id, $class_year, $class_num, $cate_id, $class_title, $teacher_id, $class_week, $class_date_open, $class_date_close, $class_time_start, $class_time_end, $place_id, $class_menber, $class_money, $class_fee, $class_regnum, $class_note, $class_date_start, $class_date_end, $class_ischecked, $class_isopen, $class_desc
-    foreach ($all as $k => $v) {
-        $$k = $v;
-    }
-
-    //取得分類資料()
-    $cate_arr    = get_cate($cate_id, 'kw_club_cate', 'cate');
-    $teacher_arr = get_cate($teacher_id, 'kw_club_teacher', 'teacher');
-    $place_arr   = get_cate($place_id, 'kw_club_place', 'place');
-
-    //將是/否選項轉換為圖示
-    $class_isopen = ($class_isopen == 1) ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
-
-    //過濾讀出的變數值
-    $class_num   = $myts->htmlSpecialChars($class_num);
-    $class_title = $myts->htmlSpecialChars($class_title);
-
-    $class_menber     = $myts->htmlSpecialChars($class_menber);
-    $class_money      = $myts->htmlSpecialChars($class_money);
-    $class_fee        = $myts->htmlSpecialChars($class_fee);
-    $class_note       = $myts->htmlSpecialChars($class_note);
-    $class_date_open  = $myts->htmlSpecialChars($class_date_open);
-    $class_date_close = $myts->htmlSpecialChars($class_date_close);
-    $class_time_start = $myts->htmlSpecialChars($class_time_start);
-    $class_time_end   = $myts->htmlSpecialChars($class_time_end);
-    $class_desc       = $myts->displayTarea($class_desc, 1, 1, 0, 1, 0);
-
-    $xoopsTpl->assign('class_id', $class_id);
-    $xoopsTpl->assign('class_year', $class_year);
-    $xoopsTpl->assign('class_num', $class_num);
-    $xoopsTpl->assign('cate_id', $cate_id);
-    $xoopsTpl->assign('cate_id_title', $cate_arr['cate_title']);
-    $xoopsTpl->assign('class_title', $class_title);
-    $xoopsTpl->assign('teacher_id', $teacher_id);
-    $xoopsTpl->assign('teacher_id_title', $teacher_arr['teacher_title']);
-    $xoopsTpl->assign('class_week', $class_week);
-    $xoopsTpl->assign('class_grade', $class_grade);
-    $xoopsTpl->assign('class_date_open', $class_date_open);
-    $xoopsTpl->assign('class_date_close', $class_date_close);
-    $xoopsTpl->assign('class_time_start', $class_time_start);
-    $xoopsTpl->assign('class_time_end', $class_time_end);
-    $xoopsTpl->assign('place_id', $place_id);
-    $xoopsTpl->assign('place_id_title', $place_arr['place_title']);
-    $xoopsTpl->assign('class_menber', $class_menber);
-    $xoopsTpl->assign('class_money', $class_money);
-    $xoopsTpl->assign('class_fee', $class_fee);
-    $xoopsTpl->assign('class_regnum', $class_regnum);
-    $xoopsTpl->assign('class_note', $class_note);
-    $xoopsTpl->assign('class_date_start', $class_date_start);
-    $xoopsTpl->assign('class_date_end', $class_date_end);
-    $xoopsTpl->assign('class_ischecked', $class_ischecked);
-    $xoopsTpl->assign('class_isopen', $class_isopen);
-    $xoopsTpl->assign('class_desc', $class_desc);
-    $xoopsTpl->assign('class_uid', $class_uid);
-
-    //已有人報名 報名列表
-    if ($class_regnum > 0) {
-        $sql     = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` where `reg_year`='{$class_year}' and `class_id`='{$class_id}' ";
-        $result  = $xoopsDB->query($sql) or web_error($sql);
-        $all_reg = [];
-        $i       = 0;
-        while ($all = $xoopsDB->fetchArray($result)) {
-
-            $all_reg[$i] = $all;
-            $i++;
-        }
-
-        $xoopsTpl->assign('all_reg', $all_reg);
-    }
-
-    //刪除訊息警告
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj   = new sweet_alert();
-    $delete_class_func = $sweet_alert_obj->render('delete_class_func', "club.php?op=delete_class&class_id=", "class_id");
-    $xoopsTpl->assign('delete_class_func', $delete_class_func);
-
-    //轉向網頁
-    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('op', 'class_show');
-
-}
-
-//列出所有kw_club_class資料
-function class_list($year = '')
-{
-    global $xoopsDB, $xoopsUser, $xoopsTpl, $today, $xoopsModuleConfig;
-
-    $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
-    $xoopsTpl->assign('uid', $uid);
-
-    //從 club_info 取得目前報名的期別(select)
-    $arr_year = get_all_year();
-    $xoopsTpl->assign('arr_year', $arr_year);
-
-    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-
-    //已有設定社團期別
-    if (!empty($_SESSION['club_year'])) {
-
-        if (empty($year)) {
-            $year = $_SESSION['club_year'];
-        } else {
-            $year = $year; //已有設定社團期別
-        }
-
-        $xoopsTpl->assign('year', $year);
-
-        //社團列表
-        $myts = MyTextSanitizer::getInstance();
-        $sql  = "select * from `" . $xoopsDB->prefix("kw_club_class") . "` where `class_year`= {$year} order by class_num ";
-
-        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar = getPageBar($sql, $xoopsModuleConfig['show_num'], 10);
-        $bar     = $PageBar['bar'];
-        $sql     = $PageBar['sql'];
-        $total   = $PageBar['total'];
-        $result  = $xoopsDB->query($sql) or web_error($sql);
-        $xoopsTpl->assign('bar', $bar);
-        $xoopsTpl->assign('total', $total);
-
-        //取得分類所有資料陣列
-        $all_cate_arr    = get_cate_all();
-        $all_place_arr   = get_place_all();
-        $all_teacher_arr = get_teacher_all();
-        $all_content     = '';
-        $i               = 0;
-        while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $class_id, $class_year, $class_num, $cate_id, $class_title, $teacher_id, $class_week, $class_date_open, $class_date_close, $class_time_start, $class_time_end, $place_id, $class_menber, $class_money, $class_fee, $class_regnum, $class_note, $class_date_start, $class_date_end, $class_ischecked, $class_isopen, $class_desc
-            foreach ($all as $k => $v) {
-                $$k = $v;
-            }
-
-            //將是/否選項轉換為圖示
-            $class_isopen = $class_isopen == 1 ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
-
-            //過濾讀出的變數值
-            $class_num        = $myts->htmlSpecialChars($class_num);
-            $class_title      = $myts->htmlSpecialChars($class_title);
-            $class_date_open  = $myts->htmlSpecialChars($class_date_open);
-            $class_date_close = $myts->htmlSpecialChars($class_date_close);
-            $class_time_start = $myts->htmlSpecialChars($class_time_start);
-            $class_time_end   = $myts->htmlSpecialChars($class_time_end);
-            $class_menber     = $myts->htmlSpecialChars($class_menber);
-            $class_money      = $myts->htmlSpecialChars($class_money);
-            $class_fee        = $myts->htmlSpecialChars($class_fee);
-            $class_note       = $myts->htmlSpecialChars($class_note);
-            $class_date_start = $myts->htmlSpecialChars($class_date_start);
-            $class_date_end   = $myts->htmlSpecialChars($class_date_end);
-            $class_desc       = $myts->displayTarea($class_desc, 1, 1, 0, 1, 0);
-
-            $all_content[$i]['class_id']         = $class_id;
-            $all_content[$i]['class_year']       = $class_year;
-            $all_content[$i]['class_num']        = $class_num;
-            $all_content[$i]['cate_id']          = $all_cate_arr[$cate_id]['cate_title'];
-            $all_content[$i]['class_title']      = $class_title;
-            $all_content[$i]['teacher_id']       = $all_teacher_arr[$teacher_id]['teacher_title'];
-            $all_content[$i]['class_week']       = $class_week;
-            $all_content[$i]['class_grade']      = $class_grade;
-            $all_content[$i]['class_date_open']  = $class_date_open;
-            $all_content[$i]['class_date_close'] = $class_date_close;
-            $all_content[$i]['class_time_start'] = $class_time_start;
-            $all_content[$i]['class_time_end']   = $class_time_end;
-            $all_content[$i]['place_id']         = $all_place_arr[$place_id]['place_title'];
-            $all_content[$i]['class_menber']     = $class_menber;
-            $all_content[$i]['class_money']      = $class_money;
-            $all_content[$i]['class_fee']        = $class_fee;
-            $all_content[$i]['class_regnum']     = $class_regnum;
-            $all_content[$i]['class_note']       = $class_note;
-            $all_content[$i]['class_date_start'] = $class_date_start;
-            $all_content[$i]['class_date_end']   = $class_date_end;
-            $all_content[$i]['class_ischecked']  = $class_ischecked;
-            $all_content[$i]['class_isopen']     = $class_isopen;
-            $all_content[$i]['class_desc']       = $class_desc;
-            $all_content[$i]['class_uid']        = $class_uid;
-            $uid_name                            = XoopsUser::getUnameFromId($class_uid, 1);
-            $all_content[$i]['class_uidname']    = $uid_name;
-
-            $i++;
-
-        }
-
-        //刪除確認的JS
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-        }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert_obj   = new sweet_alert();
-        $delete_class_func = $sweet_alert_obj->render('delete_class_func',
-            "club.php?op=delete_class&class_id=", "class_id");
-        $xoopsTpl->assign('delete_class_func', $delete_class_func);
-
-        $xoopsTpl->assign('all_content', $all_content);
-
-    } else {
-        $xoopsTpl->assign('error', _MD_KWCLUB_NEED_CONFIG);
-    }
-
-}
 
 function get_ip()
 {
@@ -643,7 +421,7 @@ function cate_show($type, $cate_id = '')
     $sweet_alert_obj->render("delete_{$type}_func", "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_{$type}&{$type}_id=", "{$type}_id");
     $xoopsTpl->assign('arr', $arr);
     $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
-    $xoopsTpl->assign('op', 'cate_show'); //template name
+    // $xoopsTpl->assign('op', 'cate_show'); //template name
 
 }
 
@@ -732,4 +510,12 @@ function isclub($group_name = '')
         }
     }
     return false;
+}
+
+//檢查是否為報名時間
+function chk_time(){
+    $today = time();
+    if ($_SESSION['club_start_date_ts'] > $today || $_SESSION['club_end_date_ts'] < $today) {
+        redirect_header("index.php", 5, "目前不是報名時間喔！<p>報名期間為 {$_SESSION['club_start_date']} ~ {$_SESSION['club_end_date']}</p>");
+    }
 }

@@ -222,6 +222,6 @@ function reg_list($reg_sn = 0)
     $xoopsTpl->assign('reg_sn', $reg_sn);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('all_content', $all_content);
-    $xoopsTpl->assign('op', 'reg_list');
+    // $xoopsTpl->assign('op', 'reg_list');
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
 }

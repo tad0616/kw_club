@@ -121,7 +121,7 @@ function reg_uid()
     $xoopsTpl->assign('arr_reg', $arr_reg);
 
     $xoopsTpl->assign('reg_uid_all', $reg_uid_all);
-    $xoopsTpl->assign('op', 'reg_uid');
+    // $xoopsTpl->assign('op', 'reg_uid');
 
 }
 //新增資料到kw_club_reg中
@@ -284,12 +284,7 @@ function reg_list($reg_sn = 0)
         $i++;
     }
     //判斷報名時間
-    $today = Date("Y-m-d");
-    if ($today < $_SESSION['club_start_date'] || $today > $_SESSION['club_end_date']) {
-        $title = "<h2><font color=green>目前不是報名時間</font></h2>";
-    } else {
-        $title = "<h2><font color=red>報名日期：{$_SESSION['club_start_date']}~~{$_SESSION['club_end_date']}</font></h2>";
-    }
+    chk_time();
 
     //刪除確認的JS
     {
@@ -309,7 +304,7 @@ function reg_list($reg_sn = 0)
     $xoopsTpl->assign('reg_sn', $reg_sn);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('all_content', $all_content);
-    $xoopsTpl->assign('op', 'reg_list');
+    // $xoopsTpl->assign('op', 'reg_list');
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('today', $today);
     $xoopsTpl->assign('title', $title);
