@@ -85,6 +85,7 @@ switch ($op) {
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/kw_club/css/module.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';
 
 //列出所有kw_club_info資料

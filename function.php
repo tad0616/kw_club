@@ -15,19 +15,19 @@ function get_club_info()
 {
     global $xoopsDB, $xoopsTpl;
 
-    if (!isset($_SESSION['club_year']) or empty($_SESSION['club_year'])) {
+    if (!isset($_SESSION['club_start_date_ts']) or empty($_SESSION['club_start_date_ts'])) {
         // $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_start_date`< now() and `club_end_date` > now()";
-        $sql       = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1'";
+        $sql       = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' order by club_start_date desc limit 0,1";
         $result    = $xoopsDB->query($sql) or web_error($sql);
         $club_info = $xoopsDB->fetchArray($result);
 
-        $_SESSION['club_year']       = $club_info['club_year'];
-        $_SESSION['club_start_date'] = $club_info['club_start_date'];
+        $_SESSION['club_year']          = $club_info['club_year'];
+        $_SESSION['club_start_date']    = $club_info['club_start_date'];
         $_SESSION['club_start_date_ts'] = strtotime($club_info['club_start_date']);
-        $_SESSION['club_end_date']   = $club_info['club_end_date'];
+        $_SESSION['club_end_date']      = $club_info['club_end_date'];
         $_SESSION['club_end_date_ts']   = strtotime($club_info['club_end_date']);
-        $_SESSION['club_isfree']     = $club_info['club_isfree'];
-        $_SESSION['club_backup_num'] = $club_info['club_backup_num'];
+        $_SESSION['club_isfree']        = $club_info['club_isfree'];
+        $_SESSION['club_backup_num']    = $club_info['club_backup_num'];
     }
 }
 
@@ -170,17 +170,17 @@ function get_place_all()
 function get_teacher_all()
 {
     global $xoopsDB;
-   //開課教師
-   $groupid = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
-   $sql     = "select b.* from `" . $xoopsDB->prefix("groups_users_link") . "` as a
+    //開課教師
+    $groupid = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
+    $sql     = "select b.* from `" . $xoopsDB->prefix("groups_users_link") . "` as a
    join " . $xoopsDB->prefix("users") . " as b on a.`uid`=b.`uid`
    where a.`groupid`='{$groupid}' order by b.`name`";
-   $result      = $xoopsDB->query($sql) or web_error($sql);
-   $arr_teacher = array();
-   while ($teacher = $xoopsDB->fetchArray($result)) {
-       $uid               = $teacher['uid'];
-       $arr_teacher[$uid] = $teacher;
-   }
+    $result      = $xoopsDB->query($sql) or web_error($sql);
+    $arr_teacher = array();
+    while ($teacher = $xoopsDB->fetchArray($result)) {
+        $uid               = $teacher['uid'];
+        $arr_teacher[$uid] = $teacher;
+    }
     return $arr_teacher;
 }
 
@@ -281,9 +281,6 @@ function get_semester()
     return $semester;
 
 }
-
-
-
 
 function get_ip()
 {
@@ -501,10 +498,10 @@ function isclub($group_name = '')
     if ($xoopsUser) {
         $groupid = group_id_from_name($group_name);
         var_dump($groupid);
-        if($groupid){
+        if ($groupid) {
             $groups = $xoopsUser->getGroups();
             var_dump($groups);
-            if(in_array($groupid,$groups)){
+            if (in_array($groupid, $groups)) {
                 return true;
             }
         }
@@ -513,9 +510,15 @@ function isclub($group_name = '')
 }
 
 //檢查是否為報名時間
-function chk_time(){
+function chk_time($mode = '')
+{
     $today = time();
     if ($_SESSION['club_start_date_ts'] > $today || $_SESSION['club_end_date_ts'] < $today) {
-        redirect_header("index.php", 5, "目前不是報名時間喔！<p>報名期間為 {$_SESSION['club_start_date']} ~ {$_SESSION['club_end_date']}</p>");
+        if ($mode == 'return') {
+            return false;
+        } else {
+            redirect_header("index.php", 5, "目前不是報名時間喔！<p>報名期間為 {$_SESSION['club_start_date']} ~ {$_SESSION['club_end_date']}</p>");
+        }
     }
+    return true;
 }

@@ -1,35 +1,4 @@
 <h1><{$smarty.const._MD_KWCLUB}></h1>
-<style>
-    span.number_b{
-        font-family: Arial, Verdana, 'Segoe UI', Tahoma, Geneva, sans-serif; 
-        color:rgb(29, 26, 196);
-    }
-    span.number_o{
-        font-family: Arial, Verdana, 'Segoe UI', Tahoma, Geneva, sans-serif; 
-        color:rgb(168, 31, 7);
-    }
-    span.text_g{
-        font-weight: bold;
-        color:rgb(12, 87, 18);
-    }
-    span.circle{
-        font-size: 12px;
-        font-family: 新細明體;
-        -webkit-border-radius: 16px;
-        -moz-border-radius: 16px;
-        border-radius: 16px;
-        background-color: red;
-        display: inline-block;
-        color: #fff;
-        /* float: left; */
-        height: 20px;
-        padding: 2px ;
-        text-align: center;
-        vertical-align: top;
-        width: 20px;
-        margin-top: 2px;
-    }
-</style>
 
 <!-- 社團期別下拉選單 -->
 <{if $arr_year}>
@@ -61,7 +30,7 @@
         </div>
         <div class="col-sm-2" style="padding-top: 40px;">
             <{if $smarty.session.isclubAdmin || $smarty.session.isclubUser}>
-                <a href="club.php" class="btn btn-primary btn-block"><{$smarty.const._MD_KWCLUB_ADD_CLUB}></a>             
+                <a href="club.php" class="btn btn-primary btn-block"><{$smarty.const._MD_KWCLUB_ADD_CLUB}></a>
             <{/if}>
         </div>
     </div>

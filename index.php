@@ -59,6 +59,7 @@ switch ($op) {
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/kw_club/css/module.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------function區--------------*/
@@ -418,11 +419,13 @@ function class_show($class_id = '')
     $all    = $xoopsDB->fetchArray($result);
 
     //檢查報名是否可行
-    // chk_time();
+    $xoopsTpl->assign('chk_time', chk_time('return'));
 
+    $is_full = false;
     if (($all['class_menber'] + $_SESSION['club_backup_num']) <= $all['class_regnum']) {
-        $xoopsTpl->assign('is_full', 'yes');
+        $is_full = true;
     }
+    $xoopsTpl->assign('is_full', $is_full);
 
     //以下會產生這些變數： $class_id, $class_year, $class_num, $cate_id, $class_title, $teacher_id, $class_week, $class_date_open, $class_date_close, $class_time_start, $class_time_end, $place_id, $class_menber, $class_money, $class_fee, $class_regnum, $class_note, $class_date_start, $class_date_end, $class_ischecked, $class_isopen, $class_desc
     foreach ($all as $k => $v) {
@@ -509,7 +512,6 @@ function class_show($class_id = '')
 
 }
 
-
 //列出所有社團資料
 function class_list($club_year = '')
 {
@@ -532,23 +534,25 @@ function class_list($club_year = '')
         $xoopsTpl->assign('year', $club_year);
 
         //社團列表
-        $myts = MyTextSanitizer::getInstance();
-        $sql  = "select * from `" . $xoopsDB->prefix("kw_club_class") . "` where `class_year`= '{$club_year}' order by class_num ";
-        $result  = $xoopsDB->query($sql) or web_error($sql);
+        $myts   = MyTextSanitizer::getInstance();
+        $sql    = "select * from `" . $xoopsDB->prefix("kw_club_class") . "` where `class_year`= '{$club_year}' order by class_num ";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $total=$xoopsDB->getRowsNum($result);
+        $xoopsTpl->assign('total', $total);
 
         //取得分類所有資料陣列
-        $all_cate_arr    = get_cate_all();
-        $all_place_arr   = get_place_all();
-        $all_teacher_arr = get_teacher_all();
-        $all_class_content     = array();
-        $i               = 0;
+        $all_cate_arr      = get_cate_all();
+        $all_place_arr     = get_place_all();
+        $all_teacher_arr   = get_teacher_all();
+        $all_class_content = array();
+        $i                 = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $class_id, $class_year, $class_num, $cate_id, $class_title, $teacher_id, $class_week, $class_date_open, $class_date_close, $class_time_start, $class_time_end, $place_id, $class_menber, $class_money, $class_fee, $class_regnum, $class_note, $class_date_start, $class_date_end, $class_ischecked, $class_isopen, $class_desc
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
 
-            $all_class_content[$i]['class_id']         = (int)$class_id;
+            $all_class_content[$i]['class_id']         = (int) $class_id;
             $all_class_content[$i]['class_year']       = $class_year;
             $all_class_content[$i]['class_num']        = $class_num;
             $all_class_content[$i]['class_title']      = $myts->htmlSpecialChars($class_title);
@@ -561,18 +565,18 @@ function class_list($club_year = '')
             $all_class_content[$i]['cate_id']          = $myts->htmlSpecialChars($all_cate_arr[$cate_id]['cate_title']);
             $all_class_content[$i]['teacher_id']       = $myts->htmlSpecialChars($all_teacher_arr[$teacher_id]['name']);
             $all_class_content[$i]['place_id']         = $myts->htmlSpecialChars($all_place_arr[$place_id]['place_title']);
-            $all_class_content[$i]['class_menber']     = (int)$class_menber;
-            $all_class_content[$i]['class_money']      = (int)$class_money;
-            $all_class_content[$i]['class_fee']        = (int)$class_fee;
-            $all_class_content[$i]['class_pay']        = $class_money+$class_fee;
-            $all_class_content[$i]['class_regnum']     = (int)$class_regnum;
+            $all_class_content[$i]['class_menber']     = (int) $class_menber;
+            $all_class_content[$i]['class_money']      = (int) $class_money;
+            $all_class_content[$i]['class_fee']        = (int) $class_fee;
+            $all_class_content[$i]['class_pay']        = $class_money + $class_fee;
+            $all_class_content[$i]['class_regnum']     = (int) $class_regnum;
             $all_class_content[$i]['class_note']       = $myts->htmlSpecialChars($class_note);
             $all_class_content[$i]['class_date_start'] = $myts->htmlSpecialChars($class_date_start);
             $all_class_content[$i]['class_date_end']   = $myts->htmlSpecialChars($class_date_end);
-            $all_class_content[$i]['class_ischecked']  = (int)$class_ischecked;
+            $all_class_content[$i]['class_ischecked']  = (int) $class_ischecked;
             $all_class_content[$i]['class_isopen']     = $class_isopen ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
             $all_class_content[$i]['class_desc']       = $myts->displayTarea($class_desc, 1, 1, 0, 1, 0);
-            $all_class_content[$i]['class_uid']        = (int)$class_uid;
+            $all_class_content[$i]['class_uid']        = (int) $class_uid;
 
             $i++;
 
@@ -584,9 +588,8 @@ function class_list($club_year = '')
             redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert_obj   = new sweet_alert();
+        $sweet_alert_obj = new sweet_alert();
         $sweet_alert_obj->render('delete_class_func', "club.php?op=delete_class&class_id=", "class_id");
-
 
     } else {
         $xoopsTpl->assign('error', _MD_KWCLUB_NEED_CONFIG);
