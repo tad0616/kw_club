@@ -7,6 +7,7 @@ if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php")) {
 include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 
 $semester_name_arr = array('00' => '暑假', '01' => '第一學期', '11' => '寒假', '02' => '第二學期');
+$grade_name_arr = array('幼','一','二','三','四','五','六','七','八','九');
 
 //其他自訂的共同的函數
 
@@ -94,7 +95,7 @@ function get_class_num()
 }
 
 //以流水號取得某筆社團資料
-function alter_class($class_id = '')
+function get_club_class($class_id = '')
 {
     global $xoopsDB;
 

@@ -32,7 +32,7 @@
     <div class="form-group">
         <label for="class_title" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_CLASS_TITLE}><span class="caption-required">*</span></label>
         <div class="col-sm-10">
-            <input class='form-control validate[required]' type='text' name='class_title' title='<{$smarty.const._MD_KWCLUB_CLASS_TITLE}>' id='class_title' value='<{$class_title}>' /> 
+            <input class='form-control validate[required]' type='text' name='class_title' title='<{$smarty.const._MD_KWCLUB_CLASS_TITLE}>' id='class_title' value='<{$class_title}>'> 
         </div>
     </div>
 
@@ -88,6 +88,7 @@
         </div>
     </div>
 
+    <!-- 上課星期 -->
     <div class="form-group">
         <label for="class_week" class="col-sm-2 control-label">上課星期<span class="caption-required">*</span></label>
         <div class="col-sm-10">
@@ -98,36 +99,46 @@
             <{/foreach}>
         </div>
     </div>
+
+    <!-- 招收對象 -->
     <div class="form-group">
-        <label for="class_grade" class="col-sm-2 control-label">招收對象<span class="caption-required">*</span></label>
+        <label for="class_grade" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_CLASS_GRADE}><span class="caption-required">*</span></label>
         <div class="col-sm-10">
             <{foreach from = $c_grade key=v item=gname}>            
                 <label class="checkbox-inline">
-                    <{if $v==0}>                          
-                        <input type='checkbox' name='class_grade[]' id="class_grade<{$v}>" title='<{$v}>' value='<{$gname}>' <{if in_array($gname,$class_grade)}>checked="checked"<{/if}>><{$gname}>兒園
+                    <{if $gname=='幼'}>                          
+                        <input type='checkbox' name='class_grade[]' id="class_grade<{$v}>" title='<{$gname}>兒園' value='<{$gname}>' <{if in_array($gname,$class_grade)}>checked="checked"<{/if}>><{$gname}>兒園
                     <{else}>                        
-                        <input type='checkbox' name='class_grade[]' id="class_grade<{$v}>" title='<{$v}>' value='<{$gname}>' <{if in_array($gname,$class_grade)}>checked="checked"<{/if}>><{$gname}>年級
+                        <input type='checkbox' name='class_grade[]' id="class_grade<{$v}>" title='<{$gname}>年級' value='<{$gname}>' <{if in_array($gname,$class_grade)}>checked="checked"<{/if}>><{$gname}>年級
                     <{/if}>
                 </label>  
             <{/foreach}>               
         </div>
     </div>
+
+    <!-- 招收人數 -->
     <div class="form-group">
         <label for="class_menber" class="col-sm-2 control-label">招收人數<span class="caption-required">*</span></label>
-        <div class="col-sm-10"><input class='form-control validate[required]' type='text' name='class_menber' title='招收人數' id='class_menber' size='30' maxlength='255' value='<{$class_menber}>' />
+        <div class="col-sm-10"><input class='form-control validate[required]' type='text' name='class_menber' title='招收人數' id='class_menber' size='30' maxlength='255' value='<{$class_menber}>'>
         </div>
     </div>
+
+    <!-- 社團學費 -->
     <div class="form-group">
         <label for="class_money" class="col-sm-2 control-label">社團學費<span class="caption-required">*</span></label>
         <div class="col-sm-10">
-            <input class='form-control validate[required]' type='text' name='class_money' title='社團學費' id='class_money' size='30' maxlength='255' value='<{$class_money}>' />
+            <input class='form-control validate[required]' type='text' name='class_money' title='社團學費' id='class_money' size='30' maxlength='255' value='<{$class_money}>'>
         </div>
     </div>
+
+    <!-- 額外費用 -->
     <div class="form-group">
         <label for="class_fee" class="col-sm-2 control-label">額外費用<span class="caption-required"></span></label>
-        <div class="col-sm-10"><input class='form-control' type='text' name='class_fee' title='額外費用' id='class_fee' size='30' maxlength='255' value='<{$class_fee}>' />
+        <div class="col-sm-10"><input class='form-control' type='text' name='class_fee' title='額外費用' id='class_fee' size='30' maxlength='255' value='<{$class_fee}>'>
         </div>
     </div>
+
+    <!-- 開課日期 -->
     <div class="form-group">
         <label for="class_date_open" class="col-sm-2 control-label">開課日期<span class="caption-required">*</span></label>
         <div class="col-sm-2">
@@ -140,6 +151,7 @@
         </div>
     </div>
 
+    <!-- 起始時間 -->
     <div class="form-group">
         <label for="class_date_open" class="col-sm-2 control-label">起始時間<span class="caption-required">*</span></label>
         <div class="col-sm-2">
@@ -152,11 +164,15 @@
         </div>
     </div>
 
+    <!-- 社團備註 -->
     <div class="form-group">
-            <label for="class_note" class="col-sm-2 control-label">社團備註</label>
-            <div class="col-sm-10"><input class='form-control ' type='text' name='class_note' title='社團備註' id='class_note' size='30' maxlength='255' value='<{$class_note}>' />
-            </div>
+        <label for="class_note" class="col-sm-2 control-label">社團備註</label>
+        <div class="col-sm-10">
+            <input class='form-control ' type='text' name='class_note' title='社團備註' id='class_note' size='30' maxlength='255' value='<{$class_note}>'>
         </div>
+    </div>
+
+    <!-- 是否啟用 -->
     <div class="form-group">
         <label for="class_isopen" class="col-sm-2 control-label">是否啟用<span class="caption-required">*</span></label>
         <div class="col-sm-10">
@@ -164,6 +180,8 @@
             <label class="radio-inline"><input type='radio' name='class_isopen' id='class_isopen2' title='停用' value='0'>停用&nbsp;</label>
         </div>
     </div>
+
+    <!-- 社團簡介 -->
     <div class="form-group">
         <label for="class_desc" class="col-sm-2 control-label">社團簡介<span class="caption-required">*</span></label>
         <div class="col-sm-10">      
@@ -171,21 +189,20 @@
             <script>
                     CKEDITOR.replace('class_desc');
             </script>
+        </div>
     </div>
-    </div>
-   
     
     <{if !empty($class_id) }>
-        <input type="hidden" name="class_id" id="class_id" value="<{$class_id}>" />
-        <input type="hidden" name="op" id="op" value="update_class" />
+        <input type="hidden" name="class_id" id="class_id" value="<{$class_id}>">
+        <input type="hidden" name="op" id="op" value="update_class">
     <{else}>
-        <input type="hidden" name="op" id="op" value="insert_class" />
+        <input type="hidden" name="op" id="op" value="insert_class">
     <{/if}>
     <{$token}>
     <div class="form-group">
-            <div class="col-sm-2"> </div>
-            <div class="col-sm-10"><span class="form-inline">
-                <input type='submit' class='btn btn-default' name=''  id='' value='送出' title='送出'></span>
+            <label class="col-sm-2 control-label"> </label>
+            <div class="col-sm-10">
+                <button type='submit' class='btn btn-primary'>儲存</button>
             </div>
     </div>
 </form>

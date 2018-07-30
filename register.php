@@ -15,12 +15,6 @@ $reg_sn   = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
 
 switch ($op) {
 
-    //新增資料
-    case "insert_reg":
-        $reg_sn = insert_reg();
-        header("location: {$_SERVER['PHP_SELF']}?reg_sn=$reg_sn");
-        exit;
-
     //更新資料
     case "update_reg":
         update_reg($reg_sn);
@@ -89,7 +83,7 @@ function reg_uid()
         $un_money = 0;
         while ($arr = $xoopsDB->fetchArray($result)) {
 
-            // $class = alter_class($arr['class_id']);
+            // $class = get_club_class($arr['class_id']);
             // array_push($arr, $class['class_num'],
             //     $class['class_date_open'], $class['class_date_close'],
             //     $class['class_time_start'], $class['class_time_end'],
@@ -124,67 +118,6 @@ function reg_uid()
     $xoopsTpl->assign('reg_uid_all', $reg_uid_all);
     // $xoopsTpl->assign('op', 'reg_uid');
 
-}
-//新增資料到kw_club_reg中
-function insert_reg()
-{
-    global $xoopsDB, $xoopsUser;
-    if (!$_SESSION['isclubAdmin']) {
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    }
-
-    //XOOPS表單安全檢查
-    if (!$GLOBALS['xoopsSecurity']->check()) {
-        $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
-        redirect_header($_SERVER['PHP_SELF'], 3, $error);
-    }
-
-    $myts = MyTextSanitizer::getInstance();
-
-    $reg_sn       = $_POST['reg_sn'];
-    $reg_year     = $_POST['reg_year'];
-    $class_id     = $_POST['class_id'];
-    $class_title  = $_POST['class_title'];
-    $reg_uid      = strtolower($_POST['reg_uid']);
-    $reg_name     = $myts->addSlashes($_POST['reg_name']);
-    $reg_grade    = $myts->addSlashes($_POST['reg_grade']);
-    $reg_class    = $myts->addSlashes($_POST['reg_class']);
-    $reg_datetime = $_POST['reg_datetime'];
-    $reg_isreg    = $_POST['reg_isreg'];
-    $reg_isfee    = $_POST['reg_isfee'];
-    $reg_ip       = $_POST['reg_ip'];
-
-    $sql = "insert into `" . $xoopsDB->prefix("kw_club_reg") . "` (
-        `reg_year`,
-        `class_id`,
-        `class_title`,
-        `reg_uid`,
-        `reg_name`,
-        `reg_grade`,
-        `reg_class`,
-        `reg_datetime`,
-        `reg_isreg`,
-        `reg_isfee`,
-        `reg_ip`
-    ) values(
-        '{$reg_year}',
-        '{$class_id}',
-        '{$class_title}',
-        '{$reg_uid}',
-        '{$reg_name}',
-        '{$reg_grade}',
-        '{$reg_class}',
-        '{$reg_datetime}',
-        '{$reg_isreg}',
-        '{$reg_isfee}',
-        '{$reg_ip}'
-    )";
-    $xoopsDB->query($sql) or web_error($sql);
-
-    //取得最後新增資料的流水編號
-    $reg_sn = $xoopsDB->getInsertId();
-
-    return $reg_sn;
 }
 
 //更新kw_club_reg某一筆資料
@@ -265,12 +198,6 @@ function reg_list($reg_sn = 0)
     } else {
         $sql = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` where `reg_year`={$reg_year} ORDER BY {$review} DESC";
     }
-
-    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, $xoopsModuleConfig['show_num'], 10);
-    $bar     = $PageBar['bar'];
-    $sql     = $PageBar['sql'];
-    $total   = $PageBar['total'];
 
     $result = $xoopsDB->query($sql) or web_error($sql);
 

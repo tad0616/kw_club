@@ -32,7 +32,7 @@
 
     <{if $smarty.session.isclubAdmin}>
     <th>社團編號</th>
-    <th>報名IP</th>
+    <!-- <th>報名IP</th> -->
     <{/if}>
     <th>取消報名</th>
     </tr>

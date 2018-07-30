@@ -11,6 +11,7 @@ $class_id = system_CleanVars($_REQUEST, 'class_id', '0', 'int');
 $cate_id  = system_CleanVars($_REQUEST, 'cate_id', '0', 'int');
 $uid      = system_CleanVars($_REQUEST, 'uid', '', 'string');
 $year     = system_CleanVars($_REQUEST, 'year', '', 'int');
+$reg_sn     = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
 
 $today = date('Y-m-d');
 switch ($op) {
@@ -30,8 +31,7 @@ switch ($op) {
         break;
 
     case "reg_form":
-        reg_form();
-
+        reg_form($class_id);
         break;
 
     case "insert_reg":
@@ -64,84 +64,35 @@ include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------function區--------------*/
 
-function reg_class($class_id)
+//報名表單
+function reg_form($class_id = "")
 {
-    global $xoopsTpl;
+    global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig;
 
-    $main = "模組開發中";
-    $xoopsTpl->assign('content', $main);
-}
+    if (empty($class_id)) {
+        redirect_header($_SERVER['PHP_SELF'], 3, '沒有指定的社團課程編號');
+    } elseif ($_SESSION['club_isfree'] == '0') {
+        $class = get_club_class($class_id);
+        $xoopsTpl->assign('class', $class);
+        $class_grade_arr = explode("、", $class['class_grade']);
+        $xoopsTpl->assign('class_grade_arr', $class_grade_arr);
+        $xoopsTpl->assign('class_id', $class_id);
 
-//reg編輯表單
-function reg_form()
-{
-    global $xoopsDB, $xoopsTpl, $xoopsUser, $today;
-    $class_id = system_CleanVars($_REQUEST, 'class_id', '0', 'int');
-    // $class_title = system_CleanVars($_REQUEST, 'class_title', '', 'string');
-    $class_grade = system_CleanVars($_REQUEST, 'class_grade', '', 'string');
-
-    //是否報名額滿
-    $is_full = ($is_full == 'yes') ? 1 : 0;
-
-    if (empty($class_id) || empty($class_grade)) {
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    }
-
-    //自由報名
-    if ($_SESSION['club_isfree'] == '0') {
-
-        include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
-        include_once XOOPS_ROOT_PATH . "/class/xoopseditor/xoopseditor.php";
-
-        $span = $_SESSION['bootstrap'] == '3' ? 'form-control col-sm-' : 'span';
-        $form = new XoopsThemeForm('', 'form', $_SERVER['PHP_SELF'], 'post', true);
-
-        //報名者身分字號
-        $reg_uidText = new XoopsFormText(_MD_KWCLUB_REG_USERID, "reg_uid", 25, 255, '請填身分證字號');
-        $reg_uidText->setExtra("class = '{$span}5'");
-        $form->addElement($reg_uidText, true);
-
-        //報名者姓名
-        $reg_nameText = new XoopsFormText(_MD_KWCLUB_REG_NAME, "reg_name", 25, 255, '請填姓名');
-        $reg_nameText->setExtra("class = '{$span}5'");
-        $form->addElement($reg_nameText, true);
-
-        //報名者年級
-        $grade = explode("、", $class_grade);
-        for ($i = 0; $i < count($grade); $i++) {
-            $options[$grade[$i]] = $grade[$i];
+        $class_arr = explode(';', $xoopsModuleConfig['school_class']);
+        foreach ($class_arr as $class_name) {
+            $school_class[]=trim($class_name);
         }
-        $reg_gradeSelect = new XoopsFormSelect(_MD_KWCLUB_REG_GRADE, "reg_grade", '$options[0]', false);
-        $reg_gradeSelect->addOptionArray($options);
-        $reg_gradeSelect->setExtra("class = '{$span}5'");
-        $form->addElement($reg_gradeSelect, true);
+        $xoopsTpl->assign('school_class', $school_class);
 
-        //報名者班級
-        $reg_classText = new XoopsFormText(_MD_KWCLUB_REG_CLASS, "reg_class", 25, 255, '請填班級');
-        $reg_classText->setExtra("class = '{$span}5'");
-        $form->addElement($reg_classText, true);
-
-        // 課程名稱 ID
-        $form->addElement(new XoopsFormHidden("class_id", $class_id));
-        // $form->addElement(new XoopsFormHidden("class_title", $class_title));
-        // $form->addElement(new XoopsFormHidden("class_money", $class_money));
-        // $form->addElement(new XoopsFormHidden("class_fee", $class_fee));
-        $form->addElement(new XoopsFormHidden("is_full", $is_full));
-        $form->addElement(new XoopsFormHidden("op", 'insert_reg'));
-        $form->addElement(new XoopsFormHiddenToken());
-
-        $SubmitTray = new XoopsFormElementTray('', '', '', true);
-        $SubmitTray->addElement(new XoopsFormButton('', '', '以上資料無誤確定報名', 'submit'));
-        $form->addElement($SubmitTray);
-        $xoopsform = $form->render();
-        $xoopsTpl->assign('xoopsform', $xoopsform);
-
-        // $xoopsTpl->assign('op', 'reg_form');
+        //安全性表單
+        include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
+        $token = new XoopsFormHiddenToken('XOOPS_TOKEN', 360);
+        $xoopsTpl->assign('reg_token', $token->render());
 
     }
 }
 
-//新增資料到reg中
+//新增報名資料到reg中
 function insert_reg()
 {
     global $xoopsDB, $xoopsUser, $today;
@@ -151,11 +102,24 @@ function insert_reg()
         $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
+    //是否報名額滿
+    $is_full = false;
+    if (($all['class_menber'] + $_SESSION['club_backup_num']) <= $all['class_regnum']) {
+        $is_full = true;
+    }
+
+    $myts = MyTextSanitizer::getInstance();
+
+    $class_id    = (int)$_POST['class_id'];
+    $class_year  = (int)$_SESSION['club_year'];
+    $class_num   = $myts->addSlashes($_POST['class_num']);
+    $class_title = $myts->addSlashes($_POST['class_title']);
+
 
     // $class_id = $_POST['class_id'];
     // $class_title = $_POST['class_title'];
     $class_id  = system_CleanVars($_REQUEST, 'class_id', '0', 'int');
-    $arr_class = alter_class($class_id);
+    $arr_class = get_club_class($class_id);
 
     //檢查是否設定期別
     if (isset($_SESSION['club_year'])) {
@@ -228,13 +192,13 @@ function check_class_date($reg_uid, $class_id)
 
     $arr_reg     = [];
     $check_class = 0;
-    $class_new   = alter_class($class_id);
+    $class_new   = get_club_class($class_id);
     $year        = $_SESSION['club_year'];
     $sql         = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` where `reg_uid`='{$reg_uid}' and `reg_year` = '{$year}'";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
     while ($arr = $xoopsDB->fetchArray($result)) {
-        $class_reg = alter_class($arr['class_id']);
+        $class_reg = get_club_class($arr['class_id']);
         //check the date repeat
 
         if (!(strtotime($class_reg['class_date_close']) < strtotime($class_new['class_date_open'])) &&
@@ -262,6 +226,7 @@ function check_class_date($reg_uid, $class_id)
     }
 }
 
+// 我的社團
 function myclass()
 {
     global $xoopsDB, $xoopsTpl;
@@ -295,7 +260,7 @@ function myclass()
         $un_money = 0;
         while ($arr = $xoopsDB->fetchArray($result)) {
 
-            $class = alter_class($arr['class_id']);
+            $class = get_club_class($arr['class_id']);
             array_push($arr, $class['class_num'],
                 $class['class_date_open'], $class['class_date_close'],
                 $class['class_time_start'], $class['class_time_end'],
@@ -537,7 +502,7 @@ function class_list($club_year = '')
         $myts   = MyTextSanitizer::getInstance();
         $sql    = "select * from `" . $xoopsDB->prefix("kw_club_class") . "` where `class_year`= '{$club_year}' order by class_num ";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $total=$xoopsDB->getRowsNum($result);
+        $total  = $xoopsDB->getRowsNum($result);
         $xoopsTpl->assign('total', $total);
 
         //取得分類所有資料陣列

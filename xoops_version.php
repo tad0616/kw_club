@@ -106,10 +106,6 @@ $modversion['templates'][$i]['file']        = 'kw_club_cate.tpl';
 $modversion['templates'][$i]['description'] = 'kw_club_cate.tpl';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'kw_club_statistics.tpl';
-$modversion['templates'][$i]['description'] = 'kw_club_statistics.tpl';
-
-$i++;
 $modversion['templates'][$i]['file']        = 'kw_club_adm_main.tpl';
 $modversion['templates'][$i]['description'] = 'kw_club_adm_main.tpl';
 
@@ -130,20 +126,29 @@ $modversion['search']['func'] = "kw_club_search";
 //---偏好設定---//
 $modversion['config'] = array();
 $i                    = 0;
-// $modversion['config'][$i]['name']        = 'kw_club_sn';
-// $modversion['config'][$i]['title']       = '設定社團期數';
-// $modversion['config'][$i]['description'] = '_MI_KW_CLUB_SHOW_NUM_DESC';
-// $modversion['config'][$i]['formtype']    = 'select';
-// $modversion['config'][$i]['valuetype']   = 'int';
-// $modversion['config'][$i]['options']     = get_semester();
-// $modversion['config'][$i]['default']     = '';
-// $i++;
 
-$modversion['config'][$i]['name']        = 'show_num';
-$modversion['config'][$i]['title']       = '_MI_KW_CLUB_SHOW_NUM';
-$modversion['config'][$i]['description'] = '_MI_KW_CLUB_SHOW_NUM_DESC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['options']     = array('10篇' => 10, '15篇' => 15, '20篇' => 20, '25篇' => 25, '30篇' => 30, '35篇' => 35, '40篇' => 40, '45篇' => 45, '50篇' => 50);
-$modversion['config'][$i]['default']     = 30;
+$modversion['config'][$i]['name']        = 'school_grade';
+$modversion['config'][$i]['title']       = '_MI_KWCLUB_SCHOOL_GRADE';
+$modversion['config'][$i]['description'] = '_MI_KWCLUB_SCHOOL_GRADE_DESC';
+$modversion['config'][$i]['formtype']    = 'select_multi';
+$modversion['config'][$i]['valuetype']   = 'array';
+$modversion['config'][$i]['default']     = array(_MI_KWCLUB_SCHOOL_GV0, _MI_KWCLUB_SCHOOL_GV1, _MI_KWCLUB_SCHOOL_GV2, _MI_KWCLUB_SCHOOL_GV3, _MI_KWCLUB_SCHOOL_GV4, _MI_KWCLUB_SCHOOL_GV5, _MI_KWCLUB_SCHOOL_GV6);
+$modversion['config'][$i]['options']     = array(
+    _MI_KWCLUB_SCHOOL_GK0 => _MI_KWCLUB_SCHOOL_GV0,
+    _MI_KWCLUB_SCHOOL_GK1 => _MI_KWCLUB_SCHOOL_GV1,
+    _MI_KWCLUB_SCHOOL_GK2 => _MI_KWCLUB_SCHOOL_GV2,
+    _MI_KWCLUB_SCHOOL_GK3 => _MI_KWCLUB_SCHOOL_GV3,
+    _MI_KWCLUB_SCHOOL_GK4 => _MI_KWCLUB_SCHOOL_GV4,
+    _MI_KWCLUB_SCHOOL_GK5 => _MI_KWCLUB_SCHOOL_GV5,
+    _MI_KWCLUB_SCHOOL_GK6 => _MI_KWCLUB_SCHOOL_GV6,
+    _MI_KWCLUB_SCHOOL_GK7 => _MI_KWCLUB_SCHOOL_GV7,
+    _MI_KWCLUB_SCHOOL_GK8 => _MI_KWCLUB_SCHOOL_GV8,
+    _MI_KWCLUB_SCHOOL_GK9 => _MI_KWCLUB_SCHOOL_GV9);
+
 $i++;
+$modversion['config'][$i]['name']        = 'school_class';
+$modversion['config'][$i]['title']       = '_MI_KWCLUB_SCHOOL_CLASS';
+$modversion['config'][$i]['description'] = '_MI_KWCLUB_SCHOOL_CLASS_DESC';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default']     = _MI_KWCLUB_SCHOOL_CLASS_DEFAULT;

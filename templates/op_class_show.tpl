@@ -136,13 +136,17 @@
 
 <div class="alert alert-info text-center">
     <{if $is_full}>
-        <a href="#" class="btn btn-danger disabled">報名額滿</a>
+        <a href="#" class="btn btn-danger disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
+            報名額滿</a>
     <{elseif $chk_time}>
-        <a href="index.php?op=reg_form&class_id=<{$class_id}>&class_grade=<{$class_grade}>" class="btn btn-success">我要報名</a>
+        <a href="index.php?op=reg_form&class_id=<{$class_id}>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i>
+            我要報名</a>
     <{elseif $class_regnum >= $class_menber}> 
-        <a href="index.php?op=reg_form&class_id=<{$class_id}>&class_grade=<{$class_grade}>&is_full=1" class="btn btn-warning">我要報名後補</a>
+        <a href="index.php?op=reg_form&class_id=<{$class_id}>&is_full=1" class="btn btn-warning"><i class="fa fa-user-plus" aria-hidden="true"></i>
+            我要報名後補</a>
     <{else}>
-        <a href="#" class="btn btn-danger disabled">非報名時間</a>
+        <a href="#" class="btn btn-danger disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
+            非報名時間</a>
     <{/if}>
 
     <{if $smarty.session.isclubAdmin || $smarty.session.isclubUser }>
@@ -158,10 +162,10 @@
                 <{$smarty.const._MD_KWCLUB_MODIFY_CLUB}>
             </a>
         <{/if}>
-        <a href="club.php" class="btn btn-primary">
+        <!-- <a href="club.php" class="btn btn-primary">
             <i class="fa fa-plus-square" aria-hidden="true"></i>
             <{$smarty.const._MD_KWCLUB_ADD_CLUB}>
-        </a>
+        </a> -->
     <{/if}>
 </div>
 
@@ -180,39 +184,31 @@
     <table class="table table-bordered table-hover table-striped">
         <thead>
             <tr class="info">
-                <th>
-                    <!--社團年度-->
-                    <{$smarty.const._MD_KWCLUB_REG_SN}>
-                </th>
 
+                <!--報名者姓名-->
                 <th>
-                    <!--報名者姓名-->
                     <{$smarty.const._MD_KWCLUB_REG_NAME}>
                 </th>
+                <!--報名者班級-->
                 <th>
-                    <!--報名者年級-->
-                    <{$smarty.const._MD_KWCLUB_REG_GRADE}>
-                </th>
-                <th>
-                    <!--報名者班級-->
                     <{$smarty.const._MD_KWCLUB_REG_CLASS}>
                 </th>
+                <!--報名時間-->
                 <th>
-                    <!--報名時間-->
                     <{$smarty.const._MD_KWCLUB_REG_DATETIME}>
                 </th>
 
                 <{if $smarty.session.isclubAdmin}>
+                    <!--是否後補-->
                     <th>
-                        <!--是否後補-->
                         <{$smarty.const._MD_KWCLUB_REG_ISREG}>
                     </th>
+                    <!--是否繳費-->
                     <th>
-                        <!--是否繳費-->
                         <{$smarty.const._MD_KWCLUB_REG_ISFEE}>
                     </th>
+                    <!--報名者ID-->
                     <th>
-                        <!--報名者ID-->
                         <{$smarty.const._MD_KWCLUB_REG_UID}>
                     </th>
                     <th>
@@ -225,16 +221,15 @@
             <{foreach from=$all_reg item=data}>
                 <tr id="tr_<{$data.class_id}>">
                     <td>
-                        <{$data.reg_sn}>
+                        <span data-toggle="tooltip" data-placement="bottom" title="<{$data.reg_sn}>"><{$data.reg_name}></span>
                     </td>
                     <td>
-                        <{$data.reg_name}>
-                    </td>
-                    <td>
-                        <{$data.reg_grade}>
-                    </td>
-                    <td>
-                        <{$data.reg_class}>
+                        <{if $data.reg_grade=='幼'}>                          
+                            <{$data.reg_grade}>兒園<{$data.reg_class}>
+                        <{else}>                        
+                            <{$data.reg_grade}>年<{$data.reg_class}>
+                        <{/if}>
+                        
                     </td>
                     <td>
                         <{$data.reg_datetime}>

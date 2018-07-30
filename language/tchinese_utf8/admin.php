@@ -43,7 +43,7 @@ define('_MA_KWCLUB_REG_NAME', '報名者姓名');
 define('_MA_KWCLUB_REG_GRADE', '報名者年級');
 define('_MA_KWCLUB_REG_CLASS', '報名者班級');
 define('_MA_KWCLUB_REG_SN', '報名編號');
-define('_MA_KWCLUB_REG_UID', '報名者編號');
+define('_MA_KWCLUB_REG_UID', '身分證字號');
 define('_MA_KWCLUB_REG_DATETIME', '報名日期');
 define('_MA_KWCLUB_REG_ISREG', '是否後補');
 define('_MA_KWCLUB_REG_ISFEE', '是否繳費');

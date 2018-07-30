@@ -12,8 +12,8 @@ $cate_id    = system_CleanVars($_REQUEST, 'cate_id', '', 'int');
 $class_id   = system_CleanVars($_REQUEST, 'class_id', '', 'int');
 $place_id   = system_CleanVars($_REQUEST, 'place_id', '', 'int');
 $teacher_id = system_CleanVars($_REQUEST, 'teacher_id', '', 'int');
-$reg_sn     = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
 $year       = system_CleanVars($_REQUEST, 'year', '', 'int');
+
 switch ($op) {
 
     //新增資料
@@ -55,7 +55,7 @@ include_once XOOPS_ROOT_PATH . '/footer.php';
 
 function class_form($class_id = '')
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser;
+    global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig, $grade_name_arr;
 
     //安全性表單
     include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
@@ -90,7 +90,7 @@ function class_form($class_id = '')
 
     //判斷修改or新增(取預設值)
     if (!empty($class_id)) {
-        $DBV = alter_class($class_id);
+        $DBV = get_club_class($class_id);
         //設定 class_id 欄位的預設值
 
         $class_num = $DBV['class_num'];
@@ -160,7 +160,8 @@ function class_form($class_id = '')
     $class_grade     = !isset($DBV['class_grade']) ? "" : $DBV['class_grade'];
     $class_grade_arr = explode("、", $class_grade);
     $xoopsTpl->assign('class_grade', $class_grade_arr);
-    $xoopsTpl->assign('c_grade', array('幼', '一', '二', '三', '四', '五', '六'));
+    $xoopsTpl->assign('c_grade', $xoopsModuleConfig['school_grade']);
+    $xoopsTpl->assign('grade_name_arr', $grade_name_arr);
 
     //設定 class_date_open 欄位的預設值
     $class_date_open = !isset($DBV['class_date_open']) ? date("Y-m-d") : $DBV['class_date_open'];
@@ -374,17 +375,18 @@ function update_class($class_id = '')
 
     $myts = MyTextSanitizer::getInstance();
 
-    $class_id    = $_POST['class_id'];
-    $class_year  = $_SESSION['club_year'];
+    $class_id    = (int) $_POST['class_id'];
+    $class_year  = (int) $_SESSION['club_year'];
     $class_num   = $myts->addSlashes($_POST['class_num']);
     $class_title = $myts->addSlashes($_POST['class_title']);
     $cate_id     = $_POST['cate_id'];
     $teacher_id  = $_POST['teacher_id'];
     $place_id    = $_POST['place_id'];
     // $class_week = $_POST['class_week'];
-    $class_week_arr  = $_POST['class_week'];
+    $class_week_arr = $_POST['class_week'];
+    $class_week     = implode("、", $class_week_arr);
+
     $class_grade_arr = $_POST['class_grade'];
-    $class_week      = implode("、", $class_week_arr);
     $class_grade     = implode("、", $class_grade_arr);
 
     $class_date_open  = $myts->addSlashes($_POST['class_date_open']);
@@ -399,32 +401,33 @@ function update_class($class_id = '')
     // $class_date_start = $myts->addSlashes($_POST['class_date_start']['date'] + $_POST['class_date_start']['time']);
     // $class_date_end = $myts->addSlashes($_POST['class_date_end']['date'] + $_POST['class_date_end']['time']);
 
-    $class_isopen = intval($_POST['class_isopen']);
+    $class_isopen = (int) $_POST['class_isopen'];
     $class_desc   = $myts->addSlashes($_POST['class_desc']);
     $today        = date("Y-m-d H:i:s");
     $ip           = get_ip();
-    $sql          = "update `" . $xoopsDB->prefix("kw_club_class") . "` set
-       `class_year` = '{$class_year}',
-       `class_num` = '{$class_num}',
-       `cate_id` = '{$cate_id}',
-       `class_title` = '{$class_title}',
-       `teacher_id` = '{$teacher_id}',
-       `class_week` = '{$class_week}',
-       `class_grade` = '{$class_grade}',
-       `class_date_open` = '{$class_date_open}',
-       `class_date_close` = '{$class_date_close}',
-       `class_time_start` = '{$class_time_start}',
-       `class_time_end` = '{$class_time_end}',
-       `place_id` = '{$place_id}',
-       `class_menber` = '{$class_menber}',
-       `class_money` = '{$class_money}',
-       `class_fee` = '{$class_fee}',
-       `class_note` = '{$class_note}',
-       `class_ischecked` = '{$class_ischecked}',
-       `class_isopen` = '{$class_isopen}',
-       `class_desc` = '{$class_desc}',
-       `class_datetime` = '{$today}',
-       `class_ip` = '{$ip}'
+
+    $sql = "update `" . $xoopsDB->prefix("kw_club_class") . "` set
+    `class_year` = '{$class_year}',
+    `class_num` = '{$class_num}',
+    `cate_id` = '{$cate_id}',
+    `class_title` = '{$class_title}',
+    `teacher_id` = '{$teacher_id}',
+    `class_week` = '{$class_week}',
+    `class_grade` = '{$class_grade}',
+    `class_date_open` = '{$class_date_open}',
+    `class_date_close` = '{$class_date_close}',
+    `class_time_start` = '{$class_time_start}',
+    `class_time_end` = '{$class_time_end}',
+    `place_id` = '{$place_id}',
+    `class_menber` = '{$class_menber}',
+    `class_money` = '{$class_money}',
+    `class_fee` = '{$class_fee}',
+    `class_note` = '{$class_note}',
+    `class_ischecked` = '{$class_ischecked}',
+    `class_isopen` = '{$class_isopen}',
+    `class_desc` = '{$class_desc}',
+    `class_datetime` = '{$today}',
+    `class_ip` = '{$ip}'
     where `class_id` = '$class_id'";
     $xoopsDB->queryF($sql) or web_error($sql);
 

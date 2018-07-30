@@ -40,18 +40,15 @@ if ($_SESSION['isclubUser']) {
 
 }
 
-//模組後台
 if ($_SESSION['isclubAdmin']) {
     $interface_menu[_MD_KWCLUB_REG] = "register.php";
     $interface_icon[_MD_KWCLUB_REG] = "fa-chevron-right";
-
-    $interface_menu[_MD_KWCLUB_STATISTICS] = "statistics.php";
-    $interface_icon[_MD_KWCLUB_STATISTICS] = "fa-chevron-right";
 
     $interface_menu[_MD_KWCLUB_SETUP] = "config.php";
     $interface_icon[_MD_KWCLUB_SETUP] = "fa-chevron-right";
 }
 
+//模組後台
 if ($_SESSION['is_kw_club_Admin']) {
     $interface_menu[_TAD_TO_ADMIN] = "admin/main.php";
     $interface_icon[_TAD_TO_ADMIN] = "fa-chevron-right";

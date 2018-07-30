@@ -34,7 +34,7 @@ define('_MD_KWCLUB_CLASS_UID', 'UID');
 define('_MD_KWCLUB_INDEX_MYCLASS', '我的社團');
 define('_MD_KWCLUB_INDEX_TEACHER', '教師簡介');
 define('_MD_KWCLUB_INDEX_FORM', '開設課程');
-define('_MD_KWCLUB_REG', '報名統計');
+define('_MD_KWCLUB_REG', '報名狀況');
 
 //教師列表
 define('_MD_KWCLUB_CATEID', '流水號');
@@ -44,11 +44,14 @@ define('_MD_KWCLUB_CATE_SORT', '排序');
 define('_MD_KWCLUB_CATE_ENABLE', '狀態');
 
 define('_MD_KWCLUB_REG_YEAR', '報名年度');
-define('_MD_KWCLUB_CLASS_ID', '課程編號');
-define('_MD_KWCLUB_REG_USERID', '身份字號');
-define('_MD_KWCLUB_REG_NAME', '姓名');
-define('_MD_KWCLUB_REG_GRADE', '年級');
-define('_MD_KWCLUB_REG_CLASS', '班級');
+define('_MD_KWCLUB_REG_NAME', '報名者姓名');
+define('_MD_KWCLUB_REG_GRADE', '報名者年級');
+define('_MD_KWCLUB_REG_CLASS', '報名者班級');
+define('_MD_KWCLUB_REG_SN', '報名編號');
+define('_MD_KWCLUB_REG_UID', '身分證字號');
+define('_MD_KWCLUB_REG_DATETIME', '報名日期');
+define('_MD_KWCLUB_REG_ISREG', '是否後補');
+define('_MD_KWCLUB_REG_ISFEE', '是否繳費');
 
 //kw_club_reg-edit
 define('_MD_KWCLUB_REG_SN', '報名編號');
