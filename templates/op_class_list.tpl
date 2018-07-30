@@ -105,8 +105,7 @@
 
 
                         <!--上課日-->
-                        <td nowrap>
-                            
+                        <td nowrap>                            
                             <span class="number_b">
                                 <{$data.class_date_open|date_format:"%Y/%m/%d"}>
                             </span>至

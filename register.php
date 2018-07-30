@@ -62,19 +62,18 @@ function reg_uid()
     }
     $xoopsTpl->assign('year', $year);
 
-    $arr_year = get_all_year();
-    $xoopsTpl->assign('arr_year', $arr_year);
+    //取得社團期別陣列
+    $xoopsTpl->assign('arr_year', get_all_year());
 
     $reg_uid_all = get_reg_uid_all($year);
     // $json        = json_encode($reg_uid_all, JSON_UNESCAPED_UNICODE);
     // die($json);
-    $money_all    = [];
-    $in_money_all = [];
-    $un_money_all = [];
-    $reg_name_all = [];
-    $arr_reg      = [];
+    $money_all = $in_money_all = $un_money_all = $reg_name_all = $arr_reg = array();
+
     foreach ($reg_uid_all as $value) {
-        $sql = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` where `reg_uid` = '{$value}'  and `reg_year`={$year}";
+        $sql = "select a.* from `" . $xoopsDB->prefix("kw_club_reg") . "`  as a
+        join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
+        where a.`reg_uid` = '{$value}'  and b.`club_year`={$year}";
 
         $result   = $xoopsDB->query($sql) or web_error($sql);
         $i        = 0;
@@ -137,7 +136,7 @@ function update_reg($reg_sn = '')
     $myts = MyTextSanitizer::getInstance();
 
     $reg_sn      = $_POST['reg_sn'];
-    $reg_year    = $_POST['reg_year'];
+    $club_year   = $_POST['club_year'];
     $class_id    = $_POST['class_id'];
     $class_title = $myts->addSlashes($_POST['class_title']);
     $reg_uid     = $myts->addSlashes($_POST['reg_uid']);
@@ -148,9 +147,7 @@ function update_reg($reg_sn = '')
     $reg_isfee   = $_POST['reg_isfee'];
 
     $sql = "update `" . $xoopsDB->prefix("kw_club_reg") . "` set
-       `reg_year` = '{$reg_year}',
        `class_id` = '{$class_id}',
-       `class_title` = '{$class_title}',
        `reg_uid` = '{$reg_uid}',
        `reg_name` = '{$reg_name}',
        `reg_grade` = '{$reg_grade}',
@@ -170,41 +167,36 @@ function reg_list($reg_sn = 0)
 
     $review = system_CleanVars($_REQUEST, 'review', '', 'string');
     $year   = system_CleanVars($_REQUEST, 'year', '0', 'int');
-    // $review = 'reg_sn';
 
-    //報名年度
-    if (empty($year) && isset($_SESSION['club_year'])) {
-        $reg_year = $_SESSION['club_year'];
-    } else {
-        $reg_year = $year;
-    }
     if (empty($review)) {$review = 'reg_sn';}
 
-    //取得社團期別
-    $arr_year = get_all_year();
-    $xoopsTpl->assign('arr_year', $arr_year);
+    //報名年度
+    $club_year = (empty($year) && isset($_SESSION['club_year'])) ? $_SESSION['club_year'] : $year;
+
+    //取得社團期別陣列
+    $xoopsTpl->assign('arr_year', get_all_year());
 
     $xoopsTpl->assign('review', $review);
-    $xoopsTpl->assign('year', $reg_year);
+    $xoopsTpl->assign('year', $club_year);
 
     if (!empty($reg_sn)) {
         $arr_class = get_class_all();
         $xoopsTpl->assign('arr_class', $arr_class);
     }
 
-    $myts = MyTextSanitizer::getInstance();
-    if ($review == 'grade') {
-        $sql = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` where `reg_year`={$reg_year} ORDER BY `reg_grade`, `reg_class`";
-    } else {
-        $sql = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` where `reg_year`={$reg_year} ORDER BY {$review} DESC";
-    }
+    $myts  = MyTextSanitizer::getInstance();
+    $order = ($review == 'grade') ? 'ORDER BY a.`reg_grade`, a.`reg_class`' : 'ORDER BY a.`reg_grade` DESC';
+
+    $sql = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` as a
+    join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
+    where b.`club_year`={$club_year} {$order}";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     //取得社團所有資料陣列
     $class_arr = get_class_all();
 
-    $all_content = [];
+    $all_content = array();
     $i           = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
 

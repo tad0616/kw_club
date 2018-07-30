@@ -55,7 +55,7 @@ $objActSheet->getColumnDimension('J')->setWidth(20);
 
 $i++;
 $tbl    = $xoopsDB->prefix('kw_club_reg');
-$sql    = "SELECT `reg_sn`,`reg_year`,`class_title`,`class_money`,`class_fee`,`reg_uid`,`reg_name`,`reg_grade`,`reg_class`,`reg_datetime` FROM `$tbl` WHERE `reg_year`={$year} ORDER BY `reg_grade`, `reg_class` DESC";
+$sql    = "SELECT `reg_sn`,`club_year`,`class_title`,`class_money`,`class_fee`,`reg_uid`,`reg_name`,`reg_grade`,`reg_class`,`reg_datetime` FROM `$tbl` WHERE `club_year`={$year} ORDER BY `reg_grade`, `reg_class` DESC";
 $result = $xoopsDB->query($sql) or web_error($sql);
 while ($club_reg = $xoopsDB->fetchRow($result)) {
 

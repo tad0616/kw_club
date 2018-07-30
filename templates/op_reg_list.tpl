@@ -58,7 +58,7 @@
 
 <div id="kw_club_class_save_msg"></div>
 
-<table class="table table-bordered table-hover table-striped">
+<table class="table table-bordered table-hover table-condensed">
   <thead>
     <tr class="">
         <{if $smarty.session.isclubAdmin}>
@@ -69,7 +69,7 @@
         <{/if}>
         <th>
           <!--社團年度-->
-          <{$smarty.const._MD_KWCLUB_REG_YEAR}>
+          <{$smarty.const._MD_KWCLUB_CLASS_YEAR}>
         </th>
         <th>
           <!--社團名稱-->
@@ -126,7 +126,7 @@
        
         <form class="form-horizontal" name="regform" id="regform" action="<{$action}>" method="post" onsubmit="return xoopsFormValidate_regform();" enctype = "multipart/form-data">
         <td>
-            <input type='text' name='reg_year' value="<{$data.reg_year}>" >
+            <input type='text' name='club_year' value="<{$data.club_year}>" >
         </td>
         <td>
             <select class="form-control" size="1" class = 'form-control col-sm-6' name="class_title" id="class_title" title="社團名稱">
@@ -190,7 +190,7 @@
        
           <td>
              <!--社團年度-->
-            <{$data.reg_year}>
+            <{$data.club_year}>
           </td>
           <td>
             <!--社團名稱-->

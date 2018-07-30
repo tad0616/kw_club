@@ -34,7 +34,7 @@ PRIMARY KEY  (`place_id`)
 
 CREATE TABLE `kw_club_class` (
   `class_id` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水號',
-  `class_year` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '社團年度',
+  `club_year` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '社團年度',
   `class_num` smallint(10) unsigned NOT NULL DEFAULT '0' COMMENT '社團編號',
   `cate_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '社團類型',
   `class_title` varchar(255) NOT NULL DEFAULT '' COMMENT '社團名稱',
@@ -58,18 +58,15 @@ CREATE TABLE `kw_club_class` (
   `class_datetime` datetime NOT NULL COMMENT '發佈時間',
   `class_ip` varchar(255) NOT NULL COMMENT '發佈ip',
   PRIMARY KEY (`class_id`),
-  UNIQUE KEY `class_year_class_num` (`class_year`,`class_num`)
+  UNIQUE KEY `club_year_class_num` (`club_year`,`class_num`)
 ) ENGINE=MyISAM;
+
 
 
 CREATE TABLE `kw_club_reg` (
   `reg_sn` smallint(6) unsigned NOT NULL auto_increment COMMENT '報名編號',
-  `reg_year` smallint(6) unsigned NOT NULL COMMENT '報名年度',
   `reg_uid` varchar(255) NOT NULL COMMENT '報名者編號',
   `class_id` smallint(6) unsigned NOT NULL  COMMENT '課程編號',
-  `class_title` varchar(255) NOT NULL COMMENT '課程名稱',
-  `class_money` smallint(6) unsigned NOT NULL COMMENT '課程學費',
-  `class_fee` smallint(6) unsigned NOT NULL COMMENT '課程額外費用',
   `reg_name` varchar(255) NOT NULL  COMMENT '報名者姓名',
   `reg_grade` varchar(255) NOT NULL COMMENT '報名者年級',
   `reg_class` varchar(255) NOT NULL COMMENT '報名者班級',

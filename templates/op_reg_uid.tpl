@@ -26,7 +26,7 @@
 
 <{foreach from=$reg_uid_all key=sn item=uid}>
 <span style="color:blue"><{$reg_name_all[$uid]}> </span>的報名結果 <{$uid}>
-<table class="table table-bordered table-hover table-striped">
+<table class="table table-bordered table-hover table-condensed">
   <thead>
     <tr class="">
     <th>社團年度</th>
@@ -43,7 +43,7 @@
     <tr id="tr_<{$data.class_id}>">         
     <td>
     <!--社團年度-->
-            <{$data.reg_year}>
+        <{$data.club_year}>
     </td>
     <td><a href="index.php?class_id=<{$data.class_id}>"> <{$data.class_title}></a>
     </td>

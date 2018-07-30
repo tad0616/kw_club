@@ -105,17 +105,10 @@ function class_form($class_id = '')
     }
     $xoopsTpl->assign('class_id', $class_id);
     $xoopsTpl->assign('class_num', $class_num);
-    //設定 class_year 欄位的預設值
-    // $year = date('y');
-    // $class_year = !isset($DBV['class_year']) ? $year : $DBV['class_year'];
-    // $xoopsTpl->assign('class_year', $class_year);
-    //設定 class_num 欄位的預設值
-    // $class_num = !isset($DBV['class_num']) ? "" : $DBV['class_num'];
-    // $xoopsTpl->assign('class_num', $class_num);
 
     //挑選課程
-    $js_class   = [];
-    $class_json = [];
+    $js_class   = array();
+    $class_json = array();
     $class_dir  = XOOPS_ROOT_PATH . "/uploads/kw_club/class/";
     $dh         = opendir($class_dir);
     if (is_dir($class_dir) && $dh = opendir($class_dir)) {
@@ -265,7 +258,7 @@ function insert_class()
     $myts = MyTextSanitizer::getInstance();
 
     $class_id        = $_POST['class_id'];
-    $class_year      = $_SESSION['club_year'];
+    $club_year       = $_SESSION['club_year'];
     $class_num       = $_POST['class_num'];
     $class_title     = $myts->addSlashes($_POST['class_title']);
     $cate_id         = $_POST['cate_id'];
@@ -299,7 +292,7 @@ function insert_class()
     $today        = date("Y-m-d H:i:s");
     $ip           = get_ip();
     $sql          = "insert into `" . $xoopsDB->prefix("kw_club_class") . "` (
-        `class_year`,
+        `club_year`,
         `class_num`,
         `cate_id`,
         `class_title`,
@@ -321,7 +314,7 @@ function insert_class()
         `class_datetime`,
         `class_ip`
     ) values(
-        '{$class_year}',
+        '{$club_year}',
         '{$class_num}',
         '{$cate_id}',
         '{$class_title}',
@@ -376,7 +369,7 @@ function update_class($class_id = '')
     $myts = MyTextSanitizer::getInstance();
 
     $class_id    = (int) $_POST['class_id'];
-    $class_year  = (int) $_SESSION['club_year'];
+    $club_year   = (int) $_SESSION['club_year'];
     $class_num   = $myts->addSlashes($_POST['class_num']);
     $class_title = $myts->addSlashes($_POST['class_title']);
     $cate_id     = $_POST['cate_id'];
@@ -407,7 +400,7 @@ function update_class($class_id = '')
     $ip           = get_ip();
 
     $sql = "update `" . $xoopsDB->prefix("kw_club_class") . "` set
-    `class_year` = '{$class_year}',
+    `club_year` = '{$club_year}',
     `class_num` = '{$class_num}',
     `cate_id` = '{$cate_id}',
     `class_title` = '{$class_title}',

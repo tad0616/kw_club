@@ -244,7 +244,7 @@ function kw_club_info_form($club_id = '')
     $cal = new My97DatePicker();
     $cal->render();
 
-    $arr_num = [];
+    $arr_num = array();
     for ($i = 0; $i <= 10; $i++) {
         $arr_num[$i] = $i;
     }

@@ -7,7 +7,7 @@ if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php")) {
 include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 
 $semester_name_arr = array('00' => '暑假', '01' => '第一學期', '11' => '寒假', '02' => '第二學期');
-$grade_name_arr = array('幼','一','二','三','四','五','六','七','八','九');
+$grade_name_arr    = array('幼', '一', '二', '三', '四', '五', '六', '七', '八', '九');
 
 //其他自訂的共同的函數
 
@@ -51,16 +51,18 @@ function get_cate($cate_id, $type)
 }
 
 //取得所有報名者的uid
-function get_reg_uid_all($reg_year)
+function get_reg_uid_all($club_year)
 {
     global $xoopsDB;
-    if (empty($reg_year)) {
+    if (empty($club_year)) {
         return false;
     } else {
         // $year = $_SESSION['club_year'];
-        $sql = "select `reg_uid` from `" . $xoopsDB->prefix("kw_club_reg") . "`  where `reg_year` = '{$reg_year}' ORDER BY `reg_grade`, `reg_class`";
+        $sql = "select a.`reg_uid` from `" . $xoopsDB->prefix("kw_club_reg") . "` as a
+        join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
+        where b.`club_year` = '{$club_year}' ORDER BY a.`reg_grade`, a.`reg_class`";
         // echo $sql;
-        $reg_uid = [];
+        $reg_uid = array();
         $result  = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchRow($result)) {
             $uid = strtolower($data[0]);
@@ -81,7 +83,7 @@ function get_class_num()
         return false;
     } else {
         $year = $_SESSION['club_year'];
-        $sql  = "select `class_num` from `" . $xoopsDB->prefix("kw_club_class") . "`  where `class_year` = '{$year}'";
+        $sql  = "select `class_num` from `" . $xoopsDB->prefix("kw_club_class") . "`  where `club_year` = '{$year}'";
         // echo $sql;
         $result = $xoopsDB->query($sql) or web_error($sql);
         while (list($class_num) = $xoopsDB->fetchRow($result)) {
@@ -193,7 +195,7 @@ function get_class_all()
     if (isset($_SESSION['club_year'])) {
         $year = $_SESSION['club_year'];
 
-        $sql      = "select * from `" . $xoopsDB->prefix("kw_club_class") . "` where `class_year`= {$year}";
+        $sql      = "select * from `" . $xoopsDB->prefix("kw_club_class") . "` where `club_year`= {$year}";
         $result   = $xoopsDB->query($sql) or web_error($sql);
         $data_arr = array();
         while ($data = $xoopsDB->fetchArray($result)) {

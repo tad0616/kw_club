@@ -20,7 +20,7 @@ foreach ($reg_uid_all as $value) {
     $myts = MyTextSanitizer::getInstance();
 
     $tbl    = $xoopsDB->prefix('kw_club_reg');
-    $sql    = "SELECT * FROM `$tbl` WHERE `reg_uid`='{$value}' and `reg_year`={$year}  ORDER BY `reg_uid` DESC";
+    $sql    = "SELECT * FROM `$tbl` WHERE `reg_uid`='{$value}' and `club_year`={$year}  ORDER BY `reg_uid` DESC";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
 // $pdf->Cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = 0, $link = nil, $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M')
