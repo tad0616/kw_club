@@ -1,6 +1,5 @@
 <h2 class="text-center">   
 
-
     <span class="label label-info"><{$cate_id_title}></span>    
     <{$class_title}>
     <!--是否開班-->
@@ -237,7 +236,11 @@
 
                     <{if $smarty.session.isclubAdmin}>
                         <td>
-                            <{$data.reg_isreg}>
+                            <{ if $data.reg_isreg=='正取'}>
+                                <span style='color: rgb(6, 2, 238)'><{$data.reg_isreg}></span>
+                            <{else}>
+                                <span style='color: rgb(35, 97, 35)'><{$data.reg_isreg}></span>
+                            <{/if}>
                         </td>
                         <td>
                             <{$data.reg_isfee}>

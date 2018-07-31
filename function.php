@@ -12,13 +12,17 @@ $grade_name_arr    = array('幼', '一', '二', '三', '四', '五', '六', '七
 //其他自訂的共同的函數
 
 //從json中取得社團期別資料（會在header.php中讀取）
-function get_club_info()
+function get_club_info($club_year = "")
 {
     global $xoopsDB, $xoopsTpl;
 
-    if (!isset($_SESSION['club_start_date_ts']) or empty($_SESSION['club_start_date_ts'])) {
-        // $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_start_date`< now() and `club_end_date` > now()";
-        $sql       = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' order by club_start_date desc limit 0,1";
+    if (!isset($_SESSION['club_start_date_ts']) or empty($_SESSION['club_start_date_ts']) or $club_year != $_SESSION['club_year']) {
+        if ($club_year) {
+            $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_year`='{$club_year}'";
+        } else {
+            $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' order by club_start_date desc limit 0,1";
+        }
+        // die($sql);
         $result    = $xoopsDB->query($sql) or web_error($sql);
         $club_info = $xoopsDB->fetchArray($result);
 
@@ -29,6 +33,7 @@ function get_club_info()
         $_SESSION['club_end_date_ts']   = strtotime($club_info['club_end_date']);
         $_SESSION['club_isfree']        = $club_info['club_isfree'];
         $_SESSION['club_backup_num']    = $club_info['club_backup_num'];
+        return $club_info;
     }
 }
 
@@ -173,6 +178,7 @@ function get_place_all()
 function get_teacher_all()
 {
     global $xoopsDB;
+    $member_handler = xoops_gethandler('member');
     //開課教師
     $groupid = group_id_from_name(_MD_KWCLUB_TEACHER_GROUP);
     $sql     = "select b.* from `" . $xoopsDB->prefix("groups_users_link") . "` as a
@@ -181,7 +187,11 @@ function get_teacher_all()
     $result      = $xoopsDB->query($sql) or web_error($sql);
     $arr_teacher = array();
     while ($teacher = $xoopsDB->fetchArray($result)) {
-        $uid               = $teacher['uid'];
+        $uid            = $teacher['uid'];
+        $user           = $member_handler->getUser($uid);
+        $user_avatar    = $user->user_avatar();
+        $teacher['pic'] = ($user_avatar != 'blank.gif') ? XOOPS_URL . "/uploads/" . $user_avatar : XOOPS_URL . "/uploads/avatars/blank.gif";
+
         $arr_teacher[$uid] = $teacher;
     }
     return $arr_teacher;
@@ -298,64 +308,6 @@ function get_ip()
         $ip = "noip";
     }
     return $ip;
-}
-
-function check_Angent()
-{
-    //Detect special conditions devices
-    $iPod   = stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
-    $iPhone = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
-    $iPad   = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
-
-    if (stripos($_SERVER['HTTP_USER_AGENT'], "Android") && stripos($_SERVER['HTTP_USER_AGENT'], "mobile")) {
-        $Android = true;
-    } else if (stripos($_SERVER['HTTP_USER_AGENT'], "Android")) {
-        $Android       = false;
-        $AndroidTablet = true;
-    } else {
-        $Android       = false;
-        $AndroidTablet = false;
-    }
-    $webOS      = stripos($_SERVER['HTTP_USER_AGENT'], "webOS");
-    $BlackBerry = stripos($_SERVER['HTTP_USER_AGENT'], "BlackBerry");
-    $RimTablet  = stripos($_SERVER['HTTP_USER_AGENT'], "RIM Tablet");
-
-    //do something with this information
-    if ($iPod || $iPhone) {
-        //were an iPhone/iPod touch -- do something here
-        //header("Location: show2.php"); //手機版
-        $Angent = "iPhone";
-    } else if ($iPad) {
-        //were an iPad -- do something here
-        // header("Location: show2.php"); //手機版
-        $Angent = "iPad";
-    } else if ($Android) {
-        //we're an Android Phone -- do something here
-        // header("Location: show2.php"); //手機版
-        $Angent = "Android";
-    } else if ($AndroidTablet) {
-        //we're an Android Phone -- do something here
-        // header("Location: show2.php"); //手機版
-        $Angent = "AndroidTablet";
-    } else if ($webOS) {
-        //we're a webOS device -- do something here
-        // header("Location: show2.php"); //手機版
-        $Angent = "webOS";
-    } else if ($BlackBerry) {
-        //we're a BlackBerry phone -- do something here
-        //header("Location: show2.php"); //手機版
-        $Angent = "BlackBerry";
-    } else if ($RimTablet) {
-        //we're a RIM/BlackBerry Tablet -- do something here
-        // header("Location: show2.php"); //手機版
-        $Angent = "RimTablet";
-    } else {
-        //we're not a mobile device.
-        // header("Location: show1.php");  //電腦版
-        $Angent = "pc";
-    }
-
-    return $Angent;
 }
 
 function mk_json($class_id)
@@ -513,14 +465,17 @@ function isclub($group_name = '')
 }
 
 //檢查是否為報名時間
-function chk_time($mode = '')
+function chk_time($mode = '', $club_start_date = '', $club_end_date = '')
 {
-    $today = time();
-    if ($_SESSION['club_start_date_ts'] > $today || $_SESSION['club_end_date_ts'] < $today) {
+    $today              = time();
+    $club_start_date_ts = empty($club_start_date) ? $_SESSION['club_start_date_ts'] : strtotime($club_start_date);
+    $club_end_date_ts   = empty($club_end_date) ? $_SESSION['club_end_date_ts'] : strtotime($club_end_date);
+
+    if ($club_start_date_ts > $today || $club_end_date_ts < $today) {
         if ($mode == 'return') {
             return false;
         } else {
-            redirect_header("index.php", 5, "目前不是報名時間喔！<p>報名期間為 {$_SESSION['club_start_date']} ~ {$_SESSION['club_end_date']}</p>");
+            redirect_header("index.php", 5, "目前不是報名時間喔！<p>報名期間為 {$club_start_date} ~ {$club_end_date}</p>");
         }
     }
     return true;

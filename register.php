@@ -135,29 +135,28 @@ function update_reg($reg_sn = '')
 
     $myts = MyTextSanitizer::getInstance();
 
-    $reg_sn      = $_POST['reg_sn'];
-    $club_year   = $_POST['club_year'];
-    $class_id    = $_POST['class_id'];
+    $reg_sn      = (int) $_POST['reg_sn'];
+    $club_year   = (int) $_POST['club_year'];
+    $class_id    = (int) $_POST['class_id'];
     $class_title = $myts->addSlashes($_POST['class_title']);
     $reg_uid     = $myts->addSlashes($_POST['reg_uid']);
     $reg_name    = $myts->addSlashes($_POST['reg_name']);
     $reg_grade   = $myts->addSlashes($_POST['reg_grade']);
     $reg_class   = $myts->addSlashes($_POST['reg_class']);
-    $reg_isreg   = $_POST['reg_isreg'];
-    $reg_isfee   = $_POST['reg_isfee'];
+    $reg_isreg   = $myts->addSlashes($_POST['reg_isreg']);
+    $reg_isfee   = (int) $_POST['reg_isfee'];
 
     $sql = "update `" . $xoopsDB->prefix("kw_club_reg") . "` set
-       `class_id` = '{$class_id}',
-       `reg_uid` = '{$reg_uid}',
-       `reg_name` = '{$reg_name}',
-       `reg_grade` = '{$reg_grade}',
-       `reg_class` = '{$reg_class}',
-       `reg_isreg` = '{$reg_isreg}',
-       `reg_isfee` = '{$reg_isfee}'
+    `class_id` = '{$class_id}',
+    `reg_uid` = '{$reg_uid}',
+    `reg_name` = '{$reg_name}',
+    `reg_grade` = '{$reg_grade}',
+    `reg_class` = '{$reg_class}',
+    `reg_isreg` = '{$reg_isreg}',
+    `reg_isfee` = '{$reg_isfee}'
     where `reg_sn` = '$reg_sn'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
-    // return $reg_sn;
 }
 
 //列出所有kw_club_reg資料

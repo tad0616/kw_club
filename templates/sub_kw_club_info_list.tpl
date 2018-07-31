@@ -8,8 +8,7 @@
 
     <table class="table table-striped table-hover">
         <thead>
-            <tr class="info">
-                
+            <tr class="success">                
                 <!--社團年度-->
                 <th>
                     <{$smarty.const._MD_KWCLUB_YEAR}>

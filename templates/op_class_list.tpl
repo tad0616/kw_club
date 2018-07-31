@@ -3,10 +3,10 @@
 <!-- 社團期別下拉選單 -->
 <{if $arr_year}>
     <div class="alert alert-info" style="margin: 10px auto;"><{$smarty.const._MD_KWCLUB_SELECT_YEAR}>
-        <select name="select_year" onChange="location.href='index.php?year='+this.value">
+        <select name="select_year" onChange="location.href='index.php?club_year='+this.value">
             <option value=""></option>
-            <{foreach from=$arr_year item=arr_year}>
-                <option value="<{$arr_year}>" <{if $arr_year==$year}>selected<{/if}>><{$arr_year}></option>
+            <{foreach from=$arr_year item=year}>
+                <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year}></option>
             <{/foreach}>
         </select>
     </div>
@@ -17,15 +17,16 @@
 <{/if}>
 
 
-<{if $year}>
+<{if $club_year}>
     <div class="row">
         <div class="col-sm-10">
             <h2>
-                <span style="color:blue;"><{$smarty.session.club_year}></span><{$smarty.const._MD_KWCLUB_LIST}>
+                <span style="color:blue;"><{$club_info.club_year}></span><{$smarty.const._MD_KWCLUB_LIST}>
                 <small>（共 <{$total}> 筆活動）</small> 
             </h2>
             <h4>
-                <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:rgb(190, 63, 4);"><{$smarty.session.club_start_date|date_format:"%Y/%m/%d %H:%M"}> ~ <{$smarty.session.club_end_date|date_format:"%Y/%m/%d %H:%M"}></span>
+                <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}>
+                <span style="color:rgb(190, 63, 4);"><{$club_info.club_start_date|date_format:"%Y/%m/%d %H:%M"}> ~ <{$club_info.club_end_date|date_format:"%Y/%m/%d %H:%M"}></span>
             </h4>
         </div>
         <div class="col-sm-2" style="padding-top: 40px;">
@@ -178,8 +179,20 @@
                                         <a href="javascript:delete_class_func(<{$data.class_id}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                                     </div>
                                 <{/if}>                        
-                            <{else}>                         
-                                <a href="index.php?class_id=<{$data.class_id}>" class="btn btn-xs btn-info">詳情</a>
+                            <{else}>
+                                <{if $data.is_full}>
+                                    <a href="#" class="btn btn-danger btn-xs disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        報名額滿</a>
+                                <{elseif $chk_time}>
+                                    <a href="index.php?op=reg_form&class_id=<{$data.class_id}>" class="btn btn-primary btn-xs"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        我要報名</a>
+                                <{elseif $data.class_regnum >= $data.class_menber}> 
+                                    <a href="index.php?op=reg_form&class_id=<{$data.class_id}>&is_full=1" class="btn btn-warning btn-xs"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        我要報名後補</a>
+                                <{else}>
+                                    <a href="#" class="btn btn-danger btn-xs disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        非報名時間</a>
+                                <{/if}>
                             <{/if}>
                         </td>
                     </tr>
@@ -210,8 +223,3 @@
 
 <{/if}>
 
-<script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>

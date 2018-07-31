@@ -3,7 +3,7 @@
 <form action="index.php" method="post" id="myForm" class="myForm form-horizontal" role="form" style="margin: 20px auto 50px;">
     <div class="input-group">
         <span class="input-group-addon" id="basic-addon3">請選擇期別</span>
-        <select name="year" class="form-control">
+        <select name="club_year" class="form-control">
             <{if $arr_year}>
                 <{foreach from=$arr_year item=year}>
                     <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year}></option>
@@ -31,13 +31,12 @@
         <table class="table table-bordered table-hover table-condensed">
             <thead>
                 <tr class="success">
-                    <th>社團名稱</th>
-                    <th>上課時間</th>
-                    <th>社團學費</th>
-                    <th>報名日期</th>
-                    <th>是否後補</th>
-                    <th>是否繳費</th>
-                    <th>取消報名</th>
+                    <th class="text-center">社團名稱</th>
+                    <th class="text-center">上課時間</th>
+                    <th class="text-center">社團學費</th>
+                    <th class="text-center">報名日期</th>
+                    <th class="text-center">是否後補</th>
+                    <th class="text-center">功能</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,40 +71,36 @@
                         </td>
 
                         <!-- 學費 -->
-                        <td>
+                        <td nowrap class="text-center">
                             <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #2679d3;"  title="<{$data.class_money}>元（學費） + <{$data.class_fee}>元（教材費）"<{/if}>>
-                                <{$data.class_pay}>
+                                <{$data.class_pay}>元
                             </span>
+                            （<{ if $data.reg_isfee==1}><span style='color: green'>已繳費</span> <{else}><span style='color: red'>未繳費</span><{/if}>）
                         </td>
 
                         <!--報名時間-->
-                        <td>
+                        <td class="text-center">
                             <{$data.reg_datetime}>
                         </td>
-                        <td>
-                            <{ if $data.reg_isreg==0}>
-                                正取
+                        
+                        <!-- 是否後補 -->
+                        <td class="text-center">
+                            <{ if $data.reg_isreg=='正取'}>
+                                <span style='color: rgb(6, 2, 238)'><{$data.reg_isreg}></span>
                             <{else}>
-                                備取
+                                <span style='color: rgb(35, 97, 35)'><{$data.reg_isreg}></span>
                             <{/if}>
                         </td>
-                        <td>
-                            <{ if $data.reg_isfee==1}>
-                                <span style='color: green'>已繳費</span>    
-                            <{else}>
-                                <span style='color: red'>未繳費</span>
-                            <{/if}>    
-                        </td>
-                        <td>
+                        <td class="text-center">
                             <{if $today < $data.end_date }>
-                                <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-danger" >取消報名</a>
+                                <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-danger btn-xs" >取消報名</a>
                             <{/if}>
                         </td>
                     </tr>
                 <{/foreach}>
                 <tr>
                     <td colspan="2" align='center'>總繳費金額</td>
-                    <td  colspan="6" align='right'>總共<{$money}>元，已繳<span style='color: green'><{$in_money}></span>元，未繳<span style='color: red'><{$un_money}></span>元</td>
+                    <td  colspan="6" align='right'>總共 <{$money}> 元，已繳 <span style='color: green'><{$in_money}></span> 元，未繳 <span style='color: red'><{$un_money}></span> 元</td>
                 </tr>
             </tbody>
         </table>

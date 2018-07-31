@@ -54,4 +54,4 @@ if ($_SESSION['is_kw_club_Admin']) {
     $interface_icon[_TAD_TO_ADMIN] = "fa-chevron-right";
 }
 
-get_club_info();
+// get_club_info();

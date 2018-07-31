@@ -6,3 +6,8 @@
         <{$error}>
     </div>
 <{/if}>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
