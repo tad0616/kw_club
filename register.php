@@ -9,9 +9,11 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op       = system_CleanVars($_REQUEST, 'op', '', 'string');
-$class_id = system_CleanVars($_REQUEST, 'class_id', '', 'int');
-$reg_sn   = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
+$op        = system_CleanVars($_REQUEST, 'op', '', 'string');
+$class_id  = system_CleanVars($_REQUEST, 'class_id', '', 'int');
+$reg_sn    = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
+$review    = system_CleanVars($_REQUEST, 'review', 'reg_sn', 'string');
+$club_year = system_CleanVars($_REQUEST, 'club_year', $_SESSION['club_year'], 'int');
 
 switch ($op) {
 
@@ -27,11 +29,11 @@ switch ($op) {
         exit;
 
     case "reg_uid":
-        reg_uid();
+        reg_uid($club_year);
         break;
 
     default:
-        reg_list($reg_sn);
+        reg_list($club_year, $review, $reg_sn);
         $op = 'reg_list';
         break;
 
@@ -45,22 +47,85 @@ $xoTheme->addStylesheet(XOOPS_URL . '/modules/kw_club/css/module.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------功能函數區--------------*/
+//列出所有kw_club_reg資料
+function reg_list($club_year = '', $review = 'reg_sn', $reg_sn = 0)
+{
+    global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
+
+    //檢查是否設定期別
+    if (empty($club_year)) {
+        redirect_header($_SERVER['PHP_SELF'], 3, '錯誤！未指定社團期數');
+    }
+
+    $xoopsTpl->assign('club_year', $club_year);
+
+    //取得社團期別陣列
+    $xoopsTpl->assign('arr_year', get_all_year());
+
+    $xoopsTpl->assign('review', $review);
+
+    if (!empty($reg_sn)) {
+        $arr_class = get_class_all();
+        $xoopsTpl->assign('arr_class', $arr_class);
+    }
+
+    $myts  = MyTextSanitizer::getInstance();
+    $order = ($review == 'grade') ? 'ORDER BY a.`reg_grade`, a.`reg_class`' : 'ORDER BY a.`reg_grade` DESC';
+
+    $sql = "select a.*,b.* from `" . $xoopsDB->prefix("kw_club_reg") . "` as a
+    join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
+    where b.`club_year`={$club_year} {$order}";
+    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+    $PageBar = getPageBar($sql, 20, 10);
+    $bar     = $PageBar['bar'];
+    $sql     = $PageBar['sql'];
+    $total   = $PageBar['total'];
+    $result  = $xoopsDB->query($sql) or web_error($sql);
+
+    //取得社團所有資料陣列
+    $class_arr = get_class_all();
+
+    $all_reg = array();
+    while ($all = $xoopsDB->fetchArray($result)) {
+
+        //將是/否選項轉換為圖示
+        $all['reg_isfee_pic'] = $all['reg_isfee'] == 1 ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
+        $all['class_pay']     = $all['class_money'] + $all['class_fee'];
+
+        $all_reg[] = $all;
+    }
+
+    //刪除確認的JS
+    {
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+        }
+    }
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+    $sweet_alert_obj         = new sweet_alert();
+    $delete_kw_club_reg_func = $sweet_alert_obj->render('delete_reg_func',
+        "{$_SERVER['PHP_SELF']}?op=delete_reg&reg_sn=", "reg_sn");
+    $xoopsTpl->assign('delete_kw_club_reg_func', $delete_kw_club_reg_func);
+
+    $xoopsTpl->assign('bar', $bar);
+    $xoopsTpl->assign('total', $total);
+    $xoopsTpl->assign('reg_sn', $reg_sn);
+    $xoopsTpl->assign('all_reg', $all_reg);
+    $xoopsTpl->assign('today', date("Y-m-d"));
+}
+
 //列出繳費模式
-function reg_uid()
+function reg_uid($club_year = "")
 {
     global $xoopsDB, $xoopsTpl;
 
-    if (!$_SESSION['isclubAdmin']) {
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
+    //檢查是否設定期別
+    if (empty($club_year)) {
+        redirect_header($_SERVER['PHP_SELF'], 3, '錯誤！未指定社團期數');
     }
 
-    $year = system_CleanVars($_REQUEST, 'year', '0', 'int');
-    if (empty($year) && isset($_SESSION['isclubAdmin'])) {
-        $year = $_SESSION['club_year'];
-    } else {
-        $year = $year;
-    }
-    $xoopsTpl->assign('year', $year);
+    $xoopsTpl->assign('club_year', $club_year);
 
     //取得社團期別陣列
     $xoopsTpl->assign('arr_year', get_all_year());
@@ -82,11 +147,6 @@ function reg_uid()
         $un_money = 0;
         while ($arr = $xoopsDB->fetchArray($result)) {
 
-            // $class = get_club_class($arr['class_id']);
-            // array_push($arr, $class['class_num'],
-            //     $class['class_date_open'], $class['class_date_close'],
-            //     $class['class_time_start'], $class['class_time_end'],
-            //     $class['class_week'], $class['class_money'], $class['class_fee']);
             $arr_reg[$value][$i] = $arr;
 
             if ($arr['reg_isfee'] == '1') {
@@ -123,9 +183,6 @@ function reg_uid()
 function update_reg($reg_sn = '')
 {
     global $xoopsDB, $xoopsUser;
-    if (!$_SESSION['isclubAdmin']) {
-        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    }
 
     //XOOPS表單安全檢查
     // if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -157,74 +214,4 @@ function update_reg($reg_sn = '')
     where `reg_sn` = '$reg_sn'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
-}
-
-//列出所有kw_club_reg資料
-function reg_list($reg_sn = 0)
-{
-    global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
-
-    $review = system_CleanVars($_REQUEST, 'review', '', 'string');
-    $year   = system_CleanVars($_REQUEST, 'year', '0', 'int');
-
-    if (empty($review)) {$review = 'reg_sn';}
-
-    //報名年度
-    $club_year = (empty($year) && isset($_SESSION['club_year'])) ? $_SESSION['club_year'] : $year;
-
-    //取得社團期別陣列
-    $xoopsTpl->assign('arr_year', get_all_year());
-
-    $xoopsTpl->assign('review', $review);
-    $xoopsTpl->assign('year', $club_year);
-
-    if (!empty($reg_sn)) {
-        $arr_class = get_class_all();
-        $xoopsTpl->assign('arr_class', $arr_class);
-    }
-
-    $myts  = MyTextSanitizer::getInstance();
-    $order = ($review == 'grade') ? 'ORDER BY a.`reg_grade`, a.`reg_class`' : 'ORDER BY a.`reg_grade` DESC';
-
-    $sql = "select * from `" . $xoopsDB->prefix("kw_club_reg") . "` as a
-    join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
-    where b.`club_year`={$club_year} {$order}";
-
-    $result = $xoopsDB->query($sql) or web_error($sql);
-
-    //取得社團所有資料陣列
-    $class_arr = get_class_all();
-
-    $all_content = array();
-    $i           = 0;
-    while ($all = $xoopsDB->fetchArray($result)) {
-
-        $all_content[$i] = $all;
-        $i++;
-    }
-    //判斷報名時間
-    chk_time();
-
-    //刪除確認的JS
-    {
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-        }
-    }
-
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj         = new sweet_alert();
-    $delete_kw_club_reg_func = $sweet_alert_obj->render('delete_reg_func',
-        "{$_SERVER['PHP_SELF']}?op=delete_reg&reg_sn=", "reg_sn");
-    $xoopsTpl->assign('delete_kw_club_reg_func', $delete_kw_club_reg_func);
-
-    $xoopsTpl->assign('bar', $bar);
-    $xoopsTpl->assign('total', $total);
-    $xoopsTpl->assign('reg_sn', $reg_sn);
-    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('all_content', $all_content);
-    // $xoopsTpl->assign('op', 'reg_list');
-    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('today', $today);
-    $xoopsTpl->assign('title', $title);
 }

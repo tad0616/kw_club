@@ -1,7 +1,7 @@
 <{if $smarty.session.isclubAdmin}>
 
 <center>
-<select name="select_year" onChange="location.href=this.options[this.selectedIndex].value;">
+<select name="club_year" onChange="location.href=this.options[this.selectedIndex].value;">
         <{if $arr_year}>
          <{foreach from=$arr_year item=arr_year}>
          <{if $arr_year==$year}>
@@ -50,10 +50,10 @@
     <td><{$data.class_money}>(額外費用<{$data.class_fee}>)</td><!--學費-->
     <td><{$data.reg_datetime}></td><!--報名時間-->
     <td>
-        <{ if $data.reg_isreg==0}>
-            正取
+        <{ if $data.reg_isreg=='正取'}>
+            <span style='color: rgb(6, 2, 238)'><{$data.reg_isreg}></span>
         <{else}>
-            備取
+            <span style='color: rgb(35, 97, 35)'><{$data.reg_isreg}></span>
         <{/if}>
     </td>
     <td>

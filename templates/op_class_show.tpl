@@ -178,85 +178,8 @@
         <small>（共 <{$class_regnum}> 筆報名資料）</small>
     </h3>
 
-    <div id="kw_club_class_save_msg"></div>
+    <{includeq file="$xoops_rootpath/modules/kw_club/templates/sub_kw_club_reg_list_table.tpl"}>
 
-    <table class="table table-bordered table-hover table-striped">
-        <thead>
-            <tr class="info">
-
-                <!--報名者姓名-->
-                <th>
-                    <{$smarty.const._MD_KWCLUB_REG_NAME}>
-                </th>
-                <!--報名者班級-->
-                <th>
-                    <{$smarty.const._MD_KWCLUB_REG_CLASS}>
-                </th>
-                <!--報名時間-->
-                <th>
-                    <{$smarty.const._MD_KWCLUB_REG_DATETIME}>
-                </th>
-
-                <{if $smarty.session.isclubAdmin}>
-                    <!--是否後補-->
-                    <th>
-                        <{$smarty.const._MD_KWCLUB_REG_ISREG}>
-                    </th>
-                    <!--是否繳費-->
-                    <th>
-                        <{$smarty.const._MD_KWCLUB_REG_ISFEE}>
-                    </th>
-                    <!--報名者ID-->
-                    <th>
-                        <{$smarty.const._MD_KWCLUB_REG_UID}>
-                    </th>
-                    <th>
-                        <{$smarty.const._TAD_FUNCTION}>
-                    </th>
-                <{/if}>
-            </tr>
-        </thead>
-        <tbody>
-            <{foreach from=$all_reg item=data}>
-                <tr id="tr_<{$data.class_id}>">
-                    <td>
-                        <span data-toggle="tooltip" data-placement="bottom" title="<{$data.reg_sn}>"><{$data.reg_name}></span>
-                    </td>
-                    <td>
-                        <{if $data.reg_grade=='幼'}>                          
-                            <{$data.reg_grade}>兒園<{$data.reg_class}>
-                        <{else}>                        
-                            <{$data.reg_grade}>年<{$data.reg_class}>
-                        <{/if}>
-                        
-                    </td>
-                    <td>
-                        <{$data.reg_datetime}>
-                    </td>
-
-                    <{if $smarty.session.isclubAdmin}>
-                        <td>
-                            <{ if $data.reg_isreg=='正取'}>
-                                <span style='color: rgb(6, 2, 238)'><{$data.reg_isreg}></span>
-                            <{else}>
-                                <span style='color: rgb(35, 97, 35)'><{$data.reg_isreg}></span>
-                            <{/if}>
-                        </td>
-                        <td>
-                            <{$data.reg_isfee}>
-                        </td>
-                        <td>
-                            <a href="index.php?op=myclass&uid=<{$data.reg_uid}>"><{$data.reg_uid}></a>
-                        </td>
-                        <td>
-                            <a href="<{$action}>?reg_sn=<{$data.reg_sn}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
-                            <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-                        </td>
-                    <{/if}>
-                </tr>
-            <{/foreach}>
-        </tbody>
-    </table>
 <{/if}>
 
 

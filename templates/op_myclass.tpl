@@ -72,7 +72,7 @@
 
                         <!-- 學費 -->
                         <td nowrap class="text-center">
-                            <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #2679d3;"  title="<{$data.class_money}>元（學費） + <{$data.class_fee}>元（教材費）"<{/if}>>
+                            <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{$data.class_money}>元（學費） + <{$data.class_fee}>元（教材費）"<{/if}>>
                                 <{$data.class_pay}>元
                             </span>
                             （<{ if $data.reg_isfee==1}><span style='color: green'>已繳費</span> <{else}><span style='color: red'>未繳費</span><{/if}>）

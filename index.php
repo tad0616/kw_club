@@ -129,7 +129,7 @@ function insert_reg()
     $reg_name  = $myts->addSlashes($_POST['reg_name']);
     $reg_grade = $myts->addSlashes($_POST['reg_grade']);
     $reg_class = $myts->addSlashes($_POST['reg_class']);
-    $reg_isreg = $class['class_menber']<= $class['class_regnum']?'正取':'備取';
+    $reg_isreg = $class['class_menber'] <= $class['class_regnum'] ? '正取' : '備取';
     $reg_ip    = get_ip();
 
     $sql = "INSERT INTO `" . $xoopsDB->prefix("kw_club_reg") . "` (
@@ -412,16 +412,17 @@ function class_show($class_id = '')
 
     //已有人報名 報名列表
     if ($class_regnum > 0) {
-        $sql = "select a.* from `" . $xoopsDB->prefix("kw_club_reg") . "`  as a
+        $sql = "select a.*,b.* from `" . $xoopsDB->prefix("kw_club_reg") . "`  as a
         join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
         where b.`club_year`='{$club_year}' and a.`class_id`='{$class_id}' ";
         $result  = $xoopsDB->query($sql) or web_error($sql);
         $all_reg = array();
-        $i       = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
 
-            $all_reg[$i] = $all;
-            $i++;
+            $all['reg_isfee_pic'] = $all['reg_isfee'] == 1 ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
+            $all['class_pay']     = $all['class_money'] + $all['class_fee'];
+            
+            $all_reg[]            = $all;
         }
 
         $xoopsTpl->assign('all_reg', $all_reg);

@@ -3,7 +3,7 @@
 <!-- 社團期別下拉選單 -->
 <{if $arr_year}>
     <div class="alert alert-info" style="margin: 10px auto;"><{$smarty.const._MD_KWCLUB_SELECT_YEAR}>
-        <select name="select_year" onChange="location.href='index.php?club_year='+this.value">
+        <select name="club_year" onChange="location.href='index.php?club_year='+this.value">
             <option value=""></option>
             <{foreach from=$arr_year item=year}>
                 <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year}></option>
@@ -152,7 +152,7 @@
 
                         <!--社團學費-->
                         <td class="text-center">
-                            <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #2679d3;"  title="<{$data.class_money}>元（學費） + <{$data.class_fee}>元（教材費）"<{/if}>>
+                            <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{$data.class_money}>元（學費） + <{$data.class_fee}>元（教材費）"<{/if}>>
                                 <{$data.class_pay}>
                             </span>
                         </td>
