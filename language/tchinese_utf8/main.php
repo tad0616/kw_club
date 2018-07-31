@@ -50,14 +50,7 @@ define('_MD_KWCLUB_REG_CLASS', '報名者班級');
 define('_MD_KWCLUB_REG_SN', '報名編號');
 define('_MD_KWCLUB_REG_UID', '身分證字號');
 define('_MD_KWCLUB_REG_DATETIME', '報名日期');
-define('_MD_KWCLUB_REG_ISREG', '是否後補');
-define('_MD_KWCLUB_REG_ISFEE', '是否繳費');
-
-//kw_club_reg-edit
-define('_MD_KWCLUB_REG_SN', '報名編號');
-define('_MD_KWCLUB_REG_UID', '報名者編號');
-define('_MD_KWCLUB_REG_DATETIME', '報名日期');
-define('_MD_KWCLUB_REG_ISREG', '是否後補');
+define('_MD_KWCLUB_REG_ISREG', '結果');
 define('_MD_KWCLUB_REG_ISFEE', '是否繳費');
 define('_MD_KWCLUB_REG_IP', 'IP');
 

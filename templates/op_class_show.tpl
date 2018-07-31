@@ -103,7 +103,7 @@
                 <{$smarty.const._MD_KWCLUB_CLASS_MENBER}>
             </label>
             <div class="col-sm-9">
-                <{$class_menber}> 人
+                <{$class_member}> 人
             </div>
         </div>
 
@@ -137,18 +137,21 @@
     <{if $is_full}>
         <a href="#" class="btn btn-danger disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
             報名額滿</a>
+    <{elseif $class_regnum >= $class_member}> 
+        <a href="index.php?op=reg_form&class_id=<{$class_id}>&is_full=1" class="btn btn-warning"><i class="fa fa-user-plus" aria-hidden="true"></i>
+            我要報名後補</a>
     <{elseif $chk_time}>
         <a href="index.php?op=reg_form&class_id=<{$class_id}>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i>
             我要報名</a>
-    <{elseif $class_regnum >= $class_menber}> 
-        <a href="index.php?op=reg_form&class_id=<{$class_id}>&is_full=1" class="btn btn-warning"><i class="fa fa-user-plus" aria-hidden="true"></i>
-            我要報名後補</a>
     <{else}>
         <a href="#" class="btn btn-danger disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
             非報名時間</a>
     <{/if}>
+</div>
 
-    <{if $smarty.session.isclubAdmin || $smarty.session.isclubUser }>
+
+<{if $smarty.session.isclubAdmin || $smarty.session.isclubUser }>
+    <div class="alert alert-success text-center">
         <{if $smarty.session.isclubAdmin || $uid == $class_uid }>
             <{if $class_regnum == 0}>
                 <a href="javascript:delete_class_func(<{$class_id}>);" class="btn btn-danger">
@@ -161,14 +164,13 @@
                 <{$smarty.const._MD_KWCLUB_MODIFY_CLUB}>
             </a>
         <{/if}>
-        <!-- <a href="club.php" class="btn btn-primary">
+        <a href="club.php" class="btn btn-primary">
             <i class="fa fa-plus-square" aria-hidden="true"></i>
             <{$smarty.const._MD_KWCLUB_ADD_CLUB}>
-        </a> -->
-    <{/if}>
-</div>
-
-
+        </a>
+    </div>
+<{/if}>
+    
 <br>
 
 <{if $smarty.session.isclubAdmin || $uid == $class_uid }>

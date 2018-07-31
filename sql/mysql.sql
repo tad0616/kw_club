@@ -46,7 +46,7 @@ CREATE TABLE `kw_club_class` (
   `class_time_end` time NOT NULL DEFAULT '00:00:00' COMMENT '終止時間',
   `place_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '上課地點',
   `class_grade` varchar(255) NOT NULL DEFAULT '' COMMENT '招收對象',
-  `class_menber` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '招收人數',
+  `class_member` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '招收人數',
   `class_money` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '社團學費',
   `class_fee` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '額外費用',
   `class_regnum` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '報名人數',

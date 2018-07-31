@@ -33,7 +33,7 @@ switch ($op) {
         break;
 
     default:
-        reg_list($club_year, $review, $reg_sn);
+        reg_list($club_year, $review);
         $op = 'reg_list';
         break;
 
@@ -48,7 +48,7 @@ include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------功能函數區--------------*/
 //列出所有kw_club_reg資料
-function reg_list($club_year = '', $review = 'reg_sn', $reg_sn = 0)
+function reg_list($club_year = '', $review = 'reg_sn')
 {
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
@@ -58,16 +58,12 @@ function reg_list($club_year = '', $review = 'reg_sn', $reg_sn = 0)
     }
 
     $xoopsTpl->assign('club_year', $club_year);
+    $xoopsTpl->assign('club_year_text', club_year_to_text($club_year));
 
     //取得社團期別陣列
     $xoopsTpl->assign('arr_year', get_all_year());
 
     $xoopsTpl->assign('review', $review);
-
-    if (!empty($reg_sn)) {
-        $arr_class = get_class_all();
-        $xoopsTpl->assign('arr_class', $arr_class);
-    }
 
     $myts  = MyTextSanitizer::getInstance();
     $order = ($review == 'grade') ? 'ORDER BY a.`reg_grade`, a.`reg_class`' : 'ORDER BY a.`reg_grade` DESC';
@@ -103,14 +99,12 @@ function reg_list($club_year = '', $review = 'reg_sn', $reg_sn = 0)
     }
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj         = new sweet_alert();
-    $delete_kw_club_reg_func = $sweet_alert_obj->render('delete_reg_func',
+    $sweet_alert_obj = new sweet_alert();
+    $sweet_alert_obj->render('delete_reg_func',
         "{$_SERVER['PHP_SELF']}?op=delete_reg&reg_sn=", "reg_sn");
-    $xoopsTpl->assign('delete_kw_club_reg_func', $delete_kw_club_reg_func);
 
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('total', $total);
-    $xoopsTpl->assign('reg_sn', $reg_sn);
     $xoopsTpl->assign('all_reg', $all_reg);
     $xoopsTpl->assign('today', date("Y-m-d"));
 }
@@ -126,11 +120,12 @@ function reg_uid($club_year = "")
     }
 
     $xoopsTpl->assign('club_year', $club_year);
+    $xoopsTpl->assign('club_year_text', club_year_to_text($club_year));
 
     //取得社團期別陣列
     $xoopsTpl->assign('arr_year', get_all_year());
 
-    $reg_uid_all = get_reg_uid_all($year);
+    $reg_uid_all = get_reg_uid_all($club_year);
     // $json        = json_encode($reg_uid_all, JSON_UNESCAPED_UNICODE);
     // die($json);
     $money_all = $in_money_all = $un_money_all = $reg_name_all = $arr_reg = array();
@@ -138,7 +133,7 @@ function reg_uid($club_year = "")
     foreach ($reg_uid_all as $value) {
         $sql = "select a.* from `" . $xoopsDB->prefix("kw_club_reg") . "`  as a
         join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
-        where a.`reg_uid` = '{$value}'  and b.`club_year`={$year}";
+        where a.`reg_uid` = '{$value}'  and b.`club_year`={$club_year}";
 
         $result   = $xoopsDB->query($sql) or web_error($sql);
         $i        = 0;
@@ -175,7 +170,6 @@ function reg_uid($club_year = "")
     $xoopsTpl->assign('arr_reg', $arr_reg);
 
     $xoopsTpl->assign('reg_uid_all', $reg_uid_all);
-    // $xoopsTpl->assign('op', 'reg_uid');
 
 }
 

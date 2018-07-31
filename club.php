@@ -171,9 +171,9 @@ function class_form($class_id = '')
     //設定 place_id 欄位的預設值
     $place_id = !isset($DBV['place_id']) ? "" : $DBV['place_id'];
     $xoopsTpl->assign('place_id', $place_id);
-    //設定 class_menber 欄位的預設值
-    $class_menber = !isset($DBV['class_menber']) ? "" : $DBV['class_menber'];
-    $xoopsTpl->assign('class_menber', $class_menber);
+    //設定 class_member 欄位的預設值
+    $class_member = !isset($DBV['class_member']) ? "" : $DBV['class_member'];
+    $xoopsTpl->assign('class_member', $class_member);
     //設定 class_money 欄位的預設值
     $class_money = !isset($DBV['class_money']) ? "" : $DBV['class_money'];
     $xoopsTpl->assign('class_money', $class_money);
@@ -279,7 +279,7 @@ function insert_class()
     $class_time_start = $myts->addSlashes($_POST['class_time_start']);
     $class_time_end   = $myts->addSlashes($_POST['class_time_end']);
 
-    $class_menber = $myts->addSlashes($_POST['class_menber']);
+    $class_member = $myts->addSlashes($_POST['class_member']);
     $class_money  = $myts->addSlashes($_POST['class_money']);
 
     $class_fee  = $myts->addSlashes($_POST['class_fee']);
@@ -304,7 +304,7 @@ function insert_class()
         `class_time_start`,
         `class_time_end`,
         `place_id`,
-        `class_menber`,
+        `class_member`,
         `class_money`,
         `class_fee`,
         `class_note`,
@@ -326,7 +326,7 @@ function insert_class()
         '{$class_time_start}',
         '{$class_time_end}',
         '{$place_id}',
-        '{$class_menber}',
+        '{$class_member}',
         '{$class_money}',
         '{$class_fee}',
         '{$class_note}',
@@ -387,7 +387,7 @@ function update_class($class_id = '')
     $class_time_start = $myts->addSlashes($_POST['class_time_start']);
     $class_time_end   = $myts->addSlashes($_POST['class_time_end']);
 
-    $class_menber = $myts->addSlashes($_POST['class_menber']);
+    $class_member = $myts->addSlashes($_POST['class_member']);
     $class_money  = $myts->addSlashes($_POST['class_money']);
     $class_fee    = $myts->addSlashes($_POST['class_fee']);
     $class_note   = $myts->addSlashes($_POST['class_note']);
@@ -412,7 +412,7 @@ function update_class($class_id = '')
     `class_time_start` = '{$class_time_start}',
     `class_time_end` = '{$class_time_end}',
     `place_id` = '{$place_id}',
-    `class_menber` = '{$class_menber}',
+    `class_member` = '{$class_member}',
     `class_money` = '{$class_money}',
     `class_fee` = '{$class_fee}',
     `class_note` = '{$class_note}',

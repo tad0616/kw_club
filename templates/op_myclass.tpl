@@ -5,8 +5,8 @@
         <span class="input-group-addon" id="basic-addon3">請選擇期別</span>
         <select name="club_year" class="form-control">
             <{if $arr_year}>
-                <{foreach from=$arr_year item=year}>
-                    <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year}></option>
+                <{foreach from=$arr_year key=year item=year_txt}>
+                    <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year_txt}></option>
                 <{/foreach}>
             <{else}>
                 <option value="">目前沒有任何社團期別</option>
@@ -23,10 +23,10 @@
 
 <{if $reg_uid}>
     <{if $reg_name}>
-        <h2>
-            <span style="color: rgb(124, 58, 58);"><{$reg_name}></span>的社團列表
+        <h3>
+            <span style="color: rgb(124, 58, 58);"><{$reg_name}></span><span style="color: rgb(53, 65, 173);"><{$club_year_text}></span>的報名社團列表
             <small>（共 <{$total}> 筆）</small>
-        </h2>
+        </h3>
 
         <table class="table table-bordered table-hover table-condensed">
             <thead>
@@ -35,7 +35,7 @@
                     <th class="text-center">上課時間</th>
                     <th class="text-center">社團學費</th>
                     <th class="text-center">報名日期</th>
-                    <th class="text-center">是否後補</th>
+                    <th class="text-center"><{$smarty.const._MD_KWCLUB_REG_ISREG}></th>
                     <th class="text-center">功能</th>
                 </tr>
             </thead>

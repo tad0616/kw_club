@@ -192,10 +192,9 @@ function kw_club_info_form($club_id = '')
     //設定 club_year 欄位的預設值
     $club_year = !isset($DBV['club_year']) ? '' : $DBV['club_year'];
     $xoopsTpl->assign('club_year', $club_year);
+    $xoopsTpl->assign('club_year_text', club_year_to_text($club_year));
     if ($club_year) {
-        $year = substr($club_year, 0, 3);
-        $st   = substr($club_year, -2);
-        $xoopsTpl->assign('club_year_txt', $year . " " . $semester_name_arr[$st]);
+        $xoopsTpl->assign('club_year_txt', $club_year_text);
     }
     //設定 club_start_date 欄位的預設值
     $club_start_date = !isset($DBV['club_start_date']) ? date("Y-m-d 08:00") : $DBV['club_start_date'];

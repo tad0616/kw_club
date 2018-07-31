@@ -15,8 +15,7 @@ $grade_name_arr    = array('幼', '一', '二', '三', '四', '五', '六', '七
 function get_club_info($club_year = "")
 {
     global $xoopsDB, $xoopsTpl;
-
-    if (!isset($_SESSION['club_start_date_ts']) or empty($_SESSION['club_start_date_ts']) or $club_year != $_SESSION['club_year']) {
+    if ($club_year != $_SESSION['club_year']) {
         if ($club_year) {
             $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_year`='{$club_year}'";
         } else {
@@ -33,8 +32,14 @@ function get_club_info($club_year = "")
         $_SESSION['club_end_date_ts']   = strtotime($club_info['club_end_date']);
         $_SESSION['club_isfree']        = $club_info['club_isfree'];
         $_SESSION['club_backup_num']    = $club_info['club_backup_num'];
-        return $club_info;
+    } else {
+        $club_info['club_year']       = $_SESSION['club_year'];
+        $club_info['club_start_date'] = $_SESSION['club_start_date'];
+        $club_info['club_end_date']   = $_SESSION['club_end_date'];
+        $club_info['club_isfree']     = $_SESSION['club_isfree'];
+        $club_info['club_backup_num'] = $_SESSION['club_backup_num'];
     }
+    return $club_info;
 }
 
 //以流水號取得某筆資料
@@ -227,7 +232,8 @@ function get_all_year()
     $result   = $xoopsDB->query($sql) or web_error($sql);
     $arr_year = array();
     while (list($club_year) = $xoopsDB->fetchRow($result)) {
-        $arr_year[] = (int) $club_year;
+        $club_year_text       = club_year_to_text($club_year);
+        $arr_year[$club_year] = $club_year_text;
     }
     return $arr_year;
 }
@@ -412,9 +418,9 @@ function cate_list($type)
 function delete_reg()
 {
     global $xoopsDB;
-    // if (!$_SESSION['isclubAdmin']) {
-    //     redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
-    // }
+    if (!$_SESSION['isclubAdmin'] and !$_SESSION['isclubUser']) {
+        redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
+    }
     $reg_sn   = system_CleanVars($_REQUEST, 'reg_sn', '0', 'int');
     $class_id = system_CleanVars($_REQUEST, 'class_id', '0', 'int');
     $uid      = system_CleanVars($_REQUEST, 'uid', '0', 'string');
@@ -424,7 +430,6 @@ function delete_reg()
     } else {
         $arr      = get_reg($reg_sn);
         $class_id = $arr['class_id'];
-
     }
 
     $sql = "update `" . $xoopsDB->prefix("kw_club_class") . "`
@@ -433,7 +438,7 @@ function delete_reg()
 
     $sql = "delete from `" . $xoopsDB->prefix("kw_club_reg") . "`  where `reg_sn` = '{$reg_sn}'";
     $xoopsDB->queryF($sql) or web_error($sql);
-
+    return $class_id;
 }
 
 //根據名稱找群組編號
@@ -479,4 +484,14 @@ function chk_time($mode = '', $club_start_date = '', $club_end_date = '')
         }
     }
     return true;
+}
+
+//將期別編號轉為文字
+function club_year_to_text($club_year = '')
+{
+    global $semester_name_arr;
+    $year          = substr($club_year, 0, 3);
+    $st            = substr($club_year, -2);
+    $club_year_txt = "第" . $year . "學年度" . $semester_name_arr[$st];
+    return $club_year_txt;
 }

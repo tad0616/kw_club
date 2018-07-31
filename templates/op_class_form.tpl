@@ -118,8 +118,8 @@
 
     <!-- 招收人數 -->
     <div class="form-group">
-        <label for="class_menber" class="col-sm-2 control-label">招收人數<span class="caption-required">*</span></label>
-        <div class="col-sm-10"><input class='form-control validate[required]' type='text' name='class_menber' title='招收人數' id='class_menber' size='30' maxlength='255' value='<{$class_menber}>'>
+        <label for="class_member" class="col-sm-2 control-label">招收人數<span class="caption-required">*</span></label>
+        <div class="col-sm-10"><input class='form-control validate[required]' type='text' name='class_member' title='招收人數' id='class_member' size='30' maxlength='255' value='<{$class_member}>'>
         </div>
     </div>
 

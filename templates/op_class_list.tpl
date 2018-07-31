@@ -4,9 +4,9 @@
 <{if $arr_year}>
     <div class="alert alert-info" style="margin: 10px auto;"><{$smarty.const._MD_KWCLUB_SELECT_YEAR}>
         <select name="club_year" onChange="location.href='index.php?club_year='+this.value">
-            <option value=""></option>
-            <{foreach from=$arr_year item=year}>
-                <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year}></option>
+            <!-- <option value=""><{$smarty.const._MD_KWCLUB_SELECT_YEAR}></option> -->
+            <{foreach from=$arr_year key=year item=year_txt}>
+                <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year_txt}></option>
             <{/foreach}>
         </select>
     </div>
@@ -83,7 +83,7 @@
             <tbody id="kw_club_class_sort">
                 <{foreach from=$all_class_content item=data}>
                     <tr id="tr_<{$data.class_id}>">                    
-                        <td title="<{$data.class_id}>" class="text-center" <{if $data.class_note or $data.class_regnum >= $data.class_menber}>rowspan="2"<{/if}>>
+                        <td title="<{$data.class_id}>" class="text-center" <{if $data.class_note or $data.class_regnum >= $data.class_member}>rowspan="2"<{/if}>>
                             <!--社團編號-->
                             <{$data.class_num}>
                             <div>
@@ -159,12 +159,12 @@
 
                         <!--招收人數-->
                         <td class="text-center">
-                            <{$data.class_menber}>
+                            <{$data.class_member}>
                         </td>
 
                         <!--已報名人數-->
                         <td class="text-center">                            
-                            <{if $data.class_regnum >= $data.class_menber}>
+                            <{if $data.class_regnum >= $data.class_member}>
                                 <span class="circle" data-toggle="tooltip" data-placement="bottom" title="已報名人數 <{$data.class_regnum}> 人">滿</span> 
                             <{else}>
                                 <{$data.class_regnum}>
@@ -181,14 +181,14 @@
                                 <{/if}>                        
                             <{else}>
                                 <{if $data.is_full}>
-                                    <a href="#" class="btn btn-danger btn-xs disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    <a href="#" class="btn btn-danger btn-xs disabled" data-toggle="tooltip" data-placement="bottom" title="已報名人數 <{$data.class_regnum}> 人"><i class="fa fa-user-plus" aria-hidden="true"></i>
                                         報名額滿</a>
+                                <{elseif $data.class_regnum >= $data.class_member}> 
+                                    <a href="index.php?op=reg_form&class_id=<{$data.class_id}>&is_full=1" class="btn btn-warning btn-xs"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        我要報名後補</a>
                                 <{elseif $chk_time}>
                                     <a href="index.php?op=reg_form&class_id=<{$data.class_id}>" class="btn btn-primary btn-xs"><i class="fa fa-user-plus" aria-hidden="true"></i>
                                         我要報名</a>
-                                <{elseif $data.class_regnum >= $data.class_menber}> 
-                                    <a href="index.php?op=reg_form&class_id=<{$data.class_id}>&is_full=1" class="btn btn-warning btn-xs"><i class="fa fa-user-plus" aria-hidden="true"></i>
-                                        我要報名後補</a>
                                 <{else}>
                                     <a href="#" class="btn btn-danger btn-xs disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
                                         非報名時間</a>
@@ -197,13 +197,13 @@
                         </td>
                     </tr>
                     <!--社團備註-->
-                    <{if $data.class_note or $data.class_regnum >= $data.class_menber}>
+                    <{if $data.class_note or $data.class_regnum >= $data.class_member}>
                         <tr>
                             <td colspan=11 style="font-size: 0.9em; color: rgb(151, 3, 107)">
                                 <i class="fa fa-commenting" aria-hidden="true"></i>
                                 <{$data.class_note}>
-                                <{if $data.class_regnum >= $data.class_menber}>
-                                    <span style="color:red;">（後補報名中...）</span> 
+                                <{if $data.class_regnum >= $data.class_member}>
+                                    <span style="color:red;">後補報名中...</span> 
                                 <{/if}>
                             </td>
                         </tr>
