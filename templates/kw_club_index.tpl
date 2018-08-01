@@ -12,7 +12,3 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-
-<{foreach from=$smarty.session key=k item=v}>
-    <div>$_SESSION[<{$k}>] = "<{$v}>";</div>
-<{/foreach}>
