@@ -14,6 +14,7 @@ $class_id  = system_CleanVars($_REQUEST, 'class_id', '', 'int');
 $reg_sn    = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
 $review    = system_CleanVars($_REQUEST, 'review', 'reg_sn', 'string');
 $club_year = system_CleanVars($_REQUEST, 'club_year', $_SESSION['club_year'], 'int');
+$reg_isfee = system_CleanVars($_REQUEST, 'reg_isfee', '', 'int');
 
 switch ($op) {
 
@@ -31,6 +32,11 @@ switch ($op) {
     case "reg_uid":
         reg_uid($club_year);
         break;
+
+    case "update_reg_isfee":
+        update_reg_isfee($reg_sn, $reg_isfee);
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
 
     default:
         reg_list($club_year, $review);
@@ -132,4 +138,15 @@ function update_reg($reg_sn = '')
     where `reg_sn` = '$reg_sn'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+}
+
+//改變繳費狀態
+function update_reg_isfee($reg_sn, $reg_isfee)
+{
+    global $xoopsDB;
+
+    $sql = "update `" . $xoopsDB->prefix("kw_club_reg") . "` set
+    `reg_isfee` = '{$reg_isfee}'
+    where `reg_sn` = '$reg_sn'";
+    $xoopsDB->queryF($sql) or web_error($sql);
 }

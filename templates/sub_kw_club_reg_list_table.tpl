@@ -68,7 +68,7 @@
                     </td>
                     <td class="text-center">
 
-                        <a href="register.php?op=update_reg_isfee&reg_isfee=<{if $data.reg_isfee==1}>0<{else}>1<{/if}>&reg_sn=<{$data.reg_sn}>" data-toggle="tooltip" data-placement="top"" title="點此改為<{if $data.reg_isfee==1}>「未繳費」<{else}>「已繳費」<{/if}>"><{$data.reg_isfee_pic}></a>
+                        <a href="register.php?op=update_reg_isfee&amp;reg_isfee=<{if $data.reg_isfee==1}>0<{else}>1<{/if}>&amp;reg_sn=<{$data.reg_sn}>" data-toggle="tooltip" data-placement="top" title="點此改為<{if $data.reg_isfee==1}>「未繳費」<{else}>「已繳費」<{/if}>"><{$data.reg_isfee_pic}></a>
 
                         <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{ if $data.reg_isfee==1}>已繳<{else}>未繳<{/if}>（學費）<{$data.class_money}>元 + （教材費）<{$data.class_fee}>元"<{/if}>><{$data.class_pay}> 元</span>
                     </td>
