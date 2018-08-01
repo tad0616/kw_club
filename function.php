@@ -98,12 +98,22 @@ function get_reg_uid_all($club_year)
             }
             $arr_reg[$reg_uid]['name'] = $data['reg_name'];
 
+            if ($data['reg_grade'] == '幼') {
+                $grade = '幼兒園';
+            } else {
+                $grade = $data['reg_grade'] . '年';
+            }
+        
+            $arr_reg[$reg_uid]['class'] = $grade.$data['reg_class'];
+
             $arr_reg[$reg_uid]['data'][$class_id] = $data;
         }
 
         return $arr_reg;
     }
 }
+
+
 //取得期別的所有社團編號
 function get_class_num()
 {

@@ -20,7 +20,7 @@
     <div align="right">
         <a href="register.php" class="btn btn-primary"><i class="fa fa-table" aria-hidden="true"></i>
             報名列表模式</a>
-        <a href="pdf.php?year=<{$smarty.session.club_year}>" class="btn btn-success"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        <a href="pdf.php?club_year=<{$smarty.session.club_year}>" class="btn btn-success"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
             匯出繳費pdf</a>
     </div>
 
