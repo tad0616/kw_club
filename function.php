@@ -15,7 +15,7 @@ $grade_name_arr    = array('幼', '一', '二', '三', '四', '五', '六', '七
 function get_club_info($club_year = "")
 {
     global $xoopsDB, $xoopsTpl;
-    if ($club_year != $_SESSION['club_year']) {
+    if (empty($_SESSION['club_year']) or $club_year != $_SESSION['club_year']) {
         if ($club_year) {
             $sql = "select * from `" . $xoopsDB->prefix("kw_club_info") . "` where `club_enable`='1' and `club_year`='{$club_year}'";
         } else {
@@ -65,23 +65,43 @@ function get_reg_uid_all($club_year)
 {
     global $xoopsDB;
     if (empty($club_year)) {
-        return false;
+        redirect_header($_SERVER['PHP_SELF'], 3, '錯誤！未指定社團期數');
     } else {
-        // $year = $_SESSION['club_year'];
-        $sql = "select a.`reg_uid` from `" . $xoopsDB->prefix("kw_club_reg") . "` as a
+
+        // $data['money'] = $data['in_money'] = $data['un_money'] = 0;
+
+        $myts = MyTextSanitizer::getInstance();
+        $sql  = "select a.*, b.*, c.`club_end_date` from `" . $xoopsDB->prefix("kw_club_reg") . "` as a
         join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
-        where b.`club_year` = '{$club_year}' ORDER BY a.`reg_grade`, a.`reg_class`";
-        // echo $sql;
-        $reg_uid = array();
-        $result  = $xoopsDB->query($sql) or web_error($sql);
-        while ($data = $xoopsDB->fetchRow($result)) {
-            $uid = strtolower($data[0]);
-            if (!in_array($uid, $reg_uid)) {
-                array_push($reg_uid, $uid);
+        join `" . $xoopsDB->prefix("kw_club_info") . "` as c on b.`club_year` = c.`club_year`
+        where b.`club_year`={$club_year}";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        while ($data = $xoopsDB->fetchArray($result)) {
+            $reg_uid  = $data['reg_uid']  = strtoupper($data['reg_uid']);
+            $class_id = $data['class_id'];
+
+            if (!isset($arr_reg[$reg_uid]['money'])) {
+                $arr_reg[$reg_uid]['in_money'] = $arr_reg[$reg_uid]['un_money'] = $arr_reg[$reg_uid]['money'] = 0;
             }
 
+            $data['end_date'] = strtotime($data['club_end_date']);
+
+            $class_pay         = $data['class_money'] + $data['class_fee'];
+            $data['class_pay'] = $class_pay;
+            $arr_reg[$reg_uid]['money'] += $class_pay;
+
+            if ($data['reg_isfee'] == '1') {
+                $arr_reg[$reg_uid]['in_money'] += $class_pay;
+            } else {
+                $arr_reg[$reg_uid]['un_money'] += $class_pay;
+            }
+            $arr_reg[$reg_uid]['name'] = $data['reg_name'];
+
+            $arr_reg[$reg_uid]['data'][$class_id] = $data;
         }
-        return $reg_uid;
+
+        return $arr_reg;
     }
 }
 //取得期別的所有社團編號
@@ -225,12 +245,13 @@ function get_class_all()
 }
 
 //取得社團開課所有期別
-function get_all_year()
+function get_all_year($only_enable = true)
 {
     global $xoopsDB;
-    $sql      = "select club_year from `" . $xoopsDB->prefix("kw_club_info") . "` order by `club_year` desc";
-    $result   = $xoopsDB->query($sql) or web_error($sql);
-    $arr_year = array();
+    $and_enable = $only_enable ? "and club_enable='1'" : '';
+    $sql        = "select club_year from `" . $xoopsDB->prefix("kw_club_info") . "` where 1 $and_enable order by `club_year` desc";
+    $result     = $xoopsDB->query($sql) or web_error($sql);
+    $arr_year   = array();
     while (list($club_year) = $xoopsDB->fetchRow($result)) {
         $club_year_text       = club_year_to_text($club_year);
         $arr_year[$club_year] = $club_year_text;
@@ -494,4 +515,89 @@ function club_year_to_text($club_year = '')
     $st            = substr($club_year, -2);
     $club_year_txt = "第" . $year . "學年度" . $semester_name_arr[$st];
     return $club_year_txt;
+}
+
+//取得報名資料
+function get_class_reg($club_year, $class_id = '', $order = '', $show_PageBar = false)
+{
+    global $xoopsDB, $xoopsTpl;
+
+    $myts = MyTextSanitizer::getInstance();
+
+    $and_class_id = $class_id ? " and a.`class_id`='{$class_id}'" : '';
+
+    $sql = "select a.*,b.* from `" . $xoopsDB->prefix("kw_club_reg") . "` as a
+    join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
+    where b.`club_year`={$club_year} {$and_class_id} {$order}";
+
+    if ($show_PageBar) {
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar = getPageBar($sql, 20, 10);
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
+
+        if ($xoopsTpl) {
+            $xoopsTpl->assign('bar', $bar);
+            $xoopsTpl->assign('total', $total);
+        }
+    }
+    $result = $xoopsDB->query($sql) or web_error($sql);
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/jeditable.php";
+    $file      = "save.php";
+    $jeditable = new jeditable();
+    //此處加入欲直接點擊編輯的欄位設定
+    $file = "ajax.php";
+
+    //製作年級選單
+    foreach ($xoopsModuleConfig['school_grade'] as $grade) {
+        if ($grade == '幼') {
+            $grade_name = '幼兒園';
+        } else {
+            $grade_name = $grade . '年級';
+        }
+        $g_arr[$grade] = $grade_name;
+    }
+    $grade_opt = json_encode($g_arr, 256);
+    $grade_opt = substr(str_replace('"', "'", $grade_opt), 1, -1);
+
+    //製作班級選單
+    $reg_class_arr = explode(';', $xoopsModuleConfig['school_class']);
+    foreach ($reg_class_arr as $class_name) {
+        $class_name         = trim($class_name);
+        $c_arr[$class_name] = $class_name;
+    }
+    $class_opt = json_encode($c_arr, 256);
+    $class_opt = substr(str_replace('"', "'", $class_opt), 1, -1);
+
+    $all_reg = array();
+    while ($all = $xoopsDB->fetchArray($result)) {
+
+        //將是/否選項轉換為圖示
+        $all['reg_isfee_pic'] = $all['reg_isfee'] == 1 ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
+        $all['class_pay']     = $all['class_money'] + $all['class_fee'];
+
+        $all_reg[] = $all;
+
+        $jeditable->setTextCol("#reg_name_{$all['reg_sn']}", $file, '80px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", '點擊編輯');
+        $jeditable->setSelectCol("#reg_isreg_{$all['reg_sn']}", $file, "{'正取':'正取' , '備取':'備取' , 'selected':'正取'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
+        $jeditable->setSelectCol("#reg_grade_{$all['reg_sn']}", $file, "{ $grade_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
+        $jeditable->setSelectCol("#reg_class_{$all['reg_sn']}", $file, "{ $class_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
+        $jeditable->setTextCol("#reg_uid_{$all['reg_sn']}", $file, '100px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", '點擊編輯');
+    }
+    $jeditable->render();
+
+    //刪除確認的JS
+    {
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+        }
+    }
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+    $sweet_alert_obj = new sweet_alert();
+    $sweet_alert_obj->render('delete_reg_func', "{$_SERVER['PHP_SELF']}?op=delete_reg&reg_sn=", "reg_sn");
+
+    return $all_reg;
 }

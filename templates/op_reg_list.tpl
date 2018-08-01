@@ -10,9 +10,9 @@
         </select>
         <select name="review" id="review" onChange="location.href='register.php?club_year=' + $('#club_year').val() + '&review=' + $('#review').val() ;">
             <option value="reg_sn" <{if $review=='reg_sn'}>selected<{/if}>>依報名排序</option>
-            <option value="class_id" <{if $review=='class_id'}>selected<{/if}>>依社團排序</option>        
+            <option value="class_id" <{if $review=='class_id'}>selected<{/if}>>依社團排序</option>
             <option value="grade" <{if $review=='grade'}>selected<{/if}>>依年級排序</option>
-            <option value="reg_uid" <{if $review=='reg_uid'}>selected<{/if}>>依報名者排序</option>        
+            <option value="reg_uid" <{if $review=='reg_uid'}>selected<{/if}>>依報名者排序</option>
         </select>
     </div>
 <{else}>
@@ -23,19 +23,18 @@
 
 
 <div align="right">
-    <a href="register.php?op=reg_uid&club_year=<{$club_year}>" class="btn btn-info">繳費統計模式</a>
-    <a href="excel.php?club_year=<{$club_year}>&review=<{$review}>" class="btn btn-info">所有報名列表匯出excel</a>
-</div>  
+    <a href="register.php?op=reg_uid&club_year=<{$club_year}>" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i>
+        繳費統計模式</a>
+    <a href="excel.php?club_year=<{$club_year}>&review=<{$review}>" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        匯出excel</a>
+</div>
 
 
 <h3>
-    <{if $club_year_text}><span style="color: rgb(53, 65, 173);"><{$club_year_text}></span><{/if}>社團報名列表
+    <{if $club_year_text}><span class="club_year_text"><{$club_year_text}></span><{/if}>社團報名列表
     <small>（共 <{$total}> 筆報名資料）</small>
 </h3>
 
 <{includeq file="$xoops_rootpath/modules/kw_club/templates/sub_kw_club_reg_list_table.tpl"}>
 
-
 <{$bar}>
-
-

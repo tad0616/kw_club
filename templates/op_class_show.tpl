@@ -1,6 +1,6 @@
-<h2 class="text-center">   
+<h2 class="text-center">
 
-    <span class="label label-info"><{$cate_id_title}></span>    
+    <span class="label label-info"><{$cate_id_title}></span>
     <{$class_title}>
     <!--是否開班-->
     <{if $smarty.session.isclubAdmin}>
@@ -13,10 +13,10 @@
                 尚未報名完成
             <{/if}>
         </span>
-    <{/if}> 
+    <{/if}>
 
-    <p class="text-center" style="font-size: 0.7em; margin: 30px auto 5px; padding:20px; border-top: 1px dashed #5f8aca;">
-        <span style="color:blue;"><{$smarty.session.club_year}></span> 期 
+    <p class="text-center" style="font-size: 0.6em; margin: 30px auto 5px; padding:20px; border-top: 1px dashed #5f8aca;">
+        <span class="club_year_text"><{$club_year_text}></span>
         <{$smarty.const._MD_KWCLUB_APPLY_DATE}><{$smarty.const._TAD_FOR}><span style="color:rgb(190, 63, 4);"><{$smarty.session.club_start_date|date_format:"%Y/%m/%d %H:%M"}> ~ <{$smarty.session.club_end_date|date_format:"%Y/%m/%d %H:%M"}></span>
     </p>
 </h2>
@@ -65,14 +65,14 @@
             <label class="col-sm-3 text-right">
                 <{$smarty.const._MD_KWCLUB_CLASS_DATE}>
             </label>
-            <div class="col-sm-9">   
+            <div class="col-sm-9">
                 <span class="number_b">
                     <{$class_date_open|date_format:"%Y/%m/%d"}>
                 </span>至
                 <span class="number_b">
                     <{$class_date_close|date_format:"%Y/%m/%d"}>
-                </span>   
-                <div>            
+                </span>
+                <div>
                     <!--上課星期-->
                     每星期<span class="text_g"><{$class_week}></span>的
                     <span class="number_o">
@@ -82,7 +82,7 @@
                     <span class="number_o">
                         <{$class_time_end|date_format:"%H:%M"}>
                     </span>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -115,7 +115,7 @@
             <div class="col-sm-9">
                 <{$class_regnum}> 人
             </div>
-        </div>        
+        </div>
 
         <!--社團備註-->
         <{if $class_note}>
@@ -126,9 +126,9 @@
                 <div class="col-sm-9">
                     <{$class_note}>
                 </div>
-            </div>    
+            </div>
         <{/if}>
-    
+
     </div>
 </div>
 
@@ -137,7 +137,7 @@
     <{if $is_full}>
         <a href="#" class="btn btn-danger disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
             報名額滿</a>
-    <{elseif $class_regnum >= $class_member}> 
+    <{elseif $class_regnum >= $class_member}>
         <a href="index.php?op=reg_form&class_id=<{$class_id}>&is_full=1" class="btn btn-warning"><i class="fa fa-user-plus" aria-hidden="true"></i>
             我要報名後補</a>
     <{elseif $chk_time}>
@@ -170,19 +170,17 @@
         </a>
     </div>
 <{/if}>
-    
+
 <br>
 
 <{if $smarty.session.isclubAdmin || $uid == $class_uid }>
     <h3>
+        <span class="club_year_text"><{$club_year_text}></span>
         <span style="color:green"><{$class_title}></span>
-        社團報名列表
+        已報名名單
         <small>（共 <{$class_regnum}> 筆報名資料）</small>
     </h3>
 
     <{includeq file="$xoops_rootpath/modules/kw_club/templates/sub_kw_club_reg_list_table.tpl"}>
 
 <{/if}>
-
-
-

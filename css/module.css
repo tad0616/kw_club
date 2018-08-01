@@ -28,3 +28,10 @@ span.circle{
     margin-top: 2px;
 }
 
+span.club_year_text{
+    color: rgb(0, 111, 214);
+}
+
+.editable{
+    border-bottom: 1px dashed rgb(0, 111, 214);
+}

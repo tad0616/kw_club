@@ -77,7 +77,8 @@ function class_form($class_id = '')
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 
-    if (!isset($_SESSION['club_year'])) {
+    $club_info = get_club_info();
+    if (!isset($club_info['club_year'])) {
         redirect_header("index.php", 3, '尚未設定社團期別，請管理員先設定社團資料!');
     }
 
@@ -136,6 +137,12 @@ function class_form($class_id = '')
     //設定 cate_id 欄位的預設值
     $cate_id = !isset($DBV['cate_id']) ? "" : $DBV['cate_id'];
     $xoopsTpl->assign('cate_id', $cate_id);
+
+    //設定 club_year 欄位的預設值
+    $club_year = !isset($DBV['club_year']) ? $club_info['club_year'] : $DBV['club_year'];
+    $xoopsTpl->assign('club_year', $club_year);
+    $xoopsTpl->assign('club_year_text', club_year_to_text($club_year));
+
     //設定 class_title 欄位的預設值
     $class_title = !isset($DBV['class_title']) ? "" : $DBV['class_title'];
     $xoopsTpl->assign('class_title', $class_title);
@@ -251,47 +258,38 @@ function insert_class()
     }
 
     //檢查期別
-    if (!isset($_SESSION['club_year'])) {
+    if (!isset($_POST['club_year'])) {
         redirect_header("config.php", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
     $myts = MyTextSanitizer::getInstance();
 
-    $class_id        = $_POST['class_id'];
-    $club_year       = $_SESSION['club_year'];
-    $class_num       = $_POST['class_num'];
-    $class_title     = $myts->addSlashes($_POST['class_title']);
-    $cate_id         = $_POST['cate_id'];
-    $teacher_id      = $_POST['teacher_id'];
-    $place_id        = $_POST['place_id'];
-    $class_week_arr  = $_POST['class_week'];
-    $class_grade_arr = $_POST['class_grade'];
-    // die($class_week_arr);
-    // for ($i=0; $i<count($class_week );$i++)
-    //     $class_week_arr[]=$class_week[$i];
-    $class_week  = implode("、", $class_week_arr);
-    $class_grade = implode("、", $class_grade_arr);
-
-    // die($class_week_arr);
-
+    $class_id         = (int) $_POST['class_id'];
+    $club_year        = (int) $_POST['club_year'];
+    $class_num        = (int) $_POST['class_num'];
+    $class_title      = $myts->addSlashes($_POST['class_title']);
+    $cate_id          = (int) $_POST['cate_id'];
+    $teacher_id       = (int) $_POST['teacher_id'];
+    $place_id         = (int) $_POST['place_id'];
+    $class_week_arr   = $_POST['class_week'];
+    $class_grade_arr  = $_POST['class_grade'];
+    $class_week       = implode("、", $class_week_arr);
+    $class_grade      = implode("、", $class_grade_arr);
     $class_date_open  = $myts->addSlashes($_POST['class_date_open']);
     $class_date_close = $myts->addSlashes($_POST['class_date_close']);
     $class_time_start = $myts->addSlashes($_POST['class_time_start']);
     $class_time_end   = $myts->addSlashes($_POST['class_time_end']);
+    $class_member     = (int) $_POST['class_member'];
+    $class_money      = (int) $_POST['class_money'];
+    $class_fee        = (int) $_POST['class_fee'];
+    $class_note       = $myts->addSlashes($_POST['class_note']);
+    $class_isopen     = (int) $_POST['class_isopen'];
+    $class_desc       = $myts->addSlashes($_POST['class_desc']);
+    $uid              = $xoopsUser->uid();
+    $today            = date("Y-m-d H:i:s");
+    $ip               = get_ip();
 
-    $class_member = $myts->addSlashes($_POST['class_member']);
-    $class_money  = $myts->addSlashes($_POST['class_money']);
-
-    $class_fee  = $myts->addSlashes($_POST['class_fee']);
-    $class_note = $myts->addSlashes($_POST['class_note']);
-    // $class_date_start = $myts->addSlashes($class_date_start);
-    // $class_date_end = $myts->addSlashes($class_date_end);
-    $class_isopen = intval($_POST['class_isopen']);
-    $class_desc   = $myts->addSlashes($_POST['class_desc']);
-    $uid          = $xoopsUser->uid();
-    $today        = date("Y-m-d H:i:s");
-    $ip           = get_ip();
-    $sql          = "insert into `" . $xoopsDB->prefix("kw_club_class") . "` (
+    $sql = "insert into `" . $xoopsDB->prefix("kw_club_class") . "` (
         `club_year`,
         `class_num`,
         `cate_id`,
@@ -362,42 +360,36 @@ function update_class($class_id = '')
     }
 
     //檢查期別
-    if (!isset($_SESSION['club_year'])) {
+    if (!isset($_POST['club_year'])) {
         redirect_header("config.php", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
     $myts = MyTextSanitizer::getInstance();
 
-    $class_id    = (int) $_POST['class_id'];
-    $club_year   = (int) $_SESSION['club_year'];
-    $class_num   = $myts->addSlashes($_POST['class_num']);
-    $class_title = $myts->addSlashes($_POST['class_title']);
-    $cate_id     = $_POST['cate_id'];
-    $teacher_id  = $_POST['teacher_id'];
-    $place_id    = $_POST['place_id'];
-    // $class_week = $_POST['class_week'];
-    $class_week_arr = $_POST['class_week'];
-    $class_week     = implode("、", $class_week_arr);
-
-    $class_grade_arr = $_POST['class_grade'];
-    $class_grade     = implode("、", $class_grade_arr);
-
+    $class_id         = (int) $_POST['class_id'];
+    $club_year        = (int) $_POST['club_year'];
+    $class_num        = (int) $_POST['class_num'];
+    $class_title      = $myts->addSlashes($_POST['class_title']);
+    $cate_id          = (int) $_POST['cate_id'];
+    $teacher_id       = (int) $_POST['teacher_id'];
+    $place_id         = (int) $_POST['place_id'];
+    $class_week_arr   = $_POST['class_week'];
+    $class_week       = implode("、", $class_week_arr);
+    $class_grade_arr  = $_POST['class_grade'];
+    $class_grade      = implode("、", $class_grade_arr);
     $class_date_open  = $myts->addSlashes($_POST['class_date_open']);
     $class_date_close = $myts->addSlashes($_POST['class_date_close']);
     $class_time_start = $myts->addSlashes($_POST['class_time_start']);
     $class_time_end   = $myts->addSlashes($_POST['class_time_end']);
-
-    $class_member = $myts->addSlashes($_POST['class_member']);
-    $class_money  = $myts->addSlashes($_POST['class_money']);
-    $class_fee    = $myts->addSlashes($_POST['class_fee']);
-    $class_note   = $myts->addSlashes($_POST['class_note']);
-    // $class_date_start = $myts->addSlashes($_POST['class_date_start']['date'] + $_POST['class_date_start']['time']);
-    // $class_date_end = $myts->addSlashes($_POST['class_date_end']['date'] + $_POST['class_date_end']['time']);
-
-    $class_isopen = (int) $_POST['class_isopen'];
-    $class_desc   = $myts->addSlashes($_POST['class_desc']);
-    $today        = date("Y-m-d H:i:s");
-    $ip           = get_ip();
+    $class_member     = (int) $_POST['class_member'];
+    $class_money      = (int) $_POST['class_money'];
+    $class_fee        = (int) $_POST['class_fee'];
+    $class_note       = $myts->addSlashes($_POST['class_note']);
+    $class_isopen     = (int) $_POST['class_isopen'];
+    $class_desc       = $myts->addSlashes($_POST['class_desc']);
+    $uid              = $xoopsUser->uid();
+    $today            = date("Y-m-d H:i:s");
+    $ip               = get_ip();
 
     $sql = "update `" . $xoopsDB->prefix("kw_club_class") . "` set
     `club_year` = '{$club_year}',

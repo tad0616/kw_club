@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-sm-10">
             <h2>
-                <span style="color:blue;"><{$club_info.club_year}></span><{$smarty.const._MD_KWCLUB_LIST}>
+                <span class="club_year_text"><{$club_year_text}></span><{$smarty.const._MD_KWCLUB_LIST}>
                 <small>（共 <{$total}> 筆活動）</small> 
             </h2>
             <h4>

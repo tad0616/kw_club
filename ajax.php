@@ -5,12 +5,54 @@ include_once "header.php";
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $keyman = system_CleanVars($_REQUEST, 'keyman', '', 'string');
+$reg_sn = system_CleanVars($_REQUEST, 'reg_sn', '', 'int');
+$reg_sn = system_CleanVars($_POST, 'reg_sn', '', 'int');
+$id     = system_CleanVars($_POST, 'id', '', 'string');
+$value  = system_CleanVars($_POST, 'value', '', 'string');
 
 switch ($op) {
+    //更新註冊資訊
+    case "update_reg":
+        die(update_reg($id, $value, $reg_sn));
+
     //篩選使用者
     case "keyman":
         die(keyman($keyman));
-        exit;
+}
+
+function update_reg($id, $value, $reg_sn)
+{
+    global $xoopsDB;
+    if (!$_SESSION['isclubAdmin']) {
+        return '無修改權限';
+    }
+    if (strpos($id, 'reg_name') !== false) {
+        $col = 'reg_name';
+    } elseif (strpos($id, 'reg_isreg') !== false) {
+        $col = 'reg_isreg';
+    } elseif (strpos($id, 'reg_grade') !== false) {
+        $col = 'reg_grade';
+    } elseif (strpos($id, 'reg_class') !== false) {
+        $col = 'reg_class';
+    } elseif (strpos($id, 'reg_uid') !== false) {
+        $col = 'reg_uid';
+    } else {
+        return;
+    }
+
+    $myts = MyTextSanitizer::getInstance();
+    $val  = $myts->htmlSpecialChars($value);
+    $sql  = "update " . $xoopsDB->prefix("kw_club_reg") . " set `{$col}`='{$val}' where `reg_sn`='{$reg_sn}'";
+    $xoopsDB->queryF($sql);
+
+    if ($col == "reg_grade") {
+        if ($val == '幼') {
+            $value = '幼兒園';
+        } else {
+            $value = $val . '年';
+        }
+    }
+    return $value;
 }
 
 function keyman($keyman)

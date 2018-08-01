@@ -238,13 +238,11 @@ function myclass($reg_uid = "", $club_year = "")
             $arr_reg[] = $data;
 
             if ($data['reg_isfee'] == '1') {
-                // $in_money += $data['class_money'];
                 $in_money += $class_pay;
             } else {
-                // $un_money += $data['class_money'];
                 $un_money += $class_pay;
             }
-            $money += class_pay;
+            $money += $class_pay;
 
             if (!isset($reg_name)) {
                 $reg_name = $data['reg_name'];
@@ -417,19 +415,8 @@ function class_show($class_id = '')
 
     //已有人報名 報名列表
     if ($class_regnum > 0) {
-        $sql = "select a.*,b.* from `" . $xoopsDB->prefix("kw_club_reg") . "`  as a
-        join `" . $xoopsDB->prefix("kw_club_class") . "` as b on a.`class_id` = b.`class_id`
-        where b.`club_year`='{$club_year}' and a.`class_id`='{$class_id}' ";
-        $result  = $xoopsDB->query($sql) or web_error($sql);
-        $all_reg = array();
-        while ($all = $xoopsDB->fetchArray($result)) {
-
-            $all['reg_isfee_pic'] = $all['reg_isfee'] == 1 ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
-            $all['class_pay']     = $all['class_money'] + $all['class_fee'];
-
-            $all_reg[] = $all;
-        }
-
+        //取得報名資料
+        $all_reg = get_class_reg($club_year, $class_id);
         $xoopsTpl->assign('all_reg', $all_reg);
     }
 

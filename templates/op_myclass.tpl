@@ -24,7 +24,7 @@
 <{if $reg_uid}>
     <{if $reg_name}>
         <h3>
-            <span style="color: rgb(124, 58, 58);"><{$reg_name}></span><span style="color: rgb(53, 65, 173);"><{$club_year_text}></span>的報名社團列表
+            <span style="color: rgb(124, 58, 58);"><{$reg_name}></span><span class="club_year_text"><{$club_year_text}></span>的報名社團列表
             <small>（共 <{$total}> 筆）</small>
         </h3>
 
@@ -45,7 +45,7 @@
                         <td>
                             <a href="index.php?class_id=<{$data.class_id}>"><{$data.class_title}></a>
                         </td>
-                        <td>                      
+                        <td>
                             <span class="number_b">
                                 <{$data.class_date_open|date_format:"%Y/%m/%d"}>
                             </span>至
@@ -53,7 +53,7 @@
                                 <{$data.class_date_close|date_format:"%Y/%m/%d"}>
                             </span>
                             <!--起始時間-->
-                            <div>                            
+                            <div>
                                 <!--上課星期-->
                                 <{if $data.class_week=="一、二、三、四、五"}>
                                     每星期<span class="text_g">一到五</span>的
@@ -82,7 +82,7 @@
                         <td class="text-center">
                             <{$data.reg_datetime}>
                         </td>
-                        
+
                         <!-- 是否後補 -->
                         <td class="text-center">
                             <{ if $data.reg_isreg=='正取'}>
@@ -104,9 +104,7 @@
                 </tr>
             </tbody>
         </table>
-    <{else}>    
-        <div class="alert alert-danger"><{$club_year}>期中，查無任何 <{$reg_uid}> 的報名資料</div>
+    <{else}>
+        <div class="alert alert-danger"><span class="club_year_text"><{$club_year_text}></span>中，查無任何 <{$reg_uid}> 的報名資料</div>
     <{/if}>
 <{/if}>
-
-
