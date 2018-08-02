@@ -103,7 +103,7 @@ function get_reg_uid_all($club_year)
             } else {
                 $grade = $data['reg_grade'] . '年';
             }
-        
+
             $arr_reg[$reg_uid]['class'] = $grade.$data['reg_class'];
 
             $arr_reg[$reg_uid]['data'][$class_id] = $data;
@@ -591,7 +591,7 @@ function get_class_reg($club_year, $class_id = '', $order = '', $show_PageBar = 
         $all_reg[] = $all;
 
         $jeditable->setTextCol("#reg_name_{$all['reg_sn']}", $file, '80px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", '點擊編輯');
-        $jeditable->setSelectCol("#reg_isreg_{$all['reg_sn']}", $file, "{'正取':'正取' , '備取':'備取' , 'selected':'正取'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
+        $jeditable->setSelectCol("#reg_isreg_{$all['reg_sn']}", $file, "{'"._MD_KWCLUB_OFFICIALLY_ENROLL."':'"._MD_KWCLUB_OFFICIALLY_ENROLL."' , '"._MD_KWCLUB_CANDIDATE."':'"._MD_KWCLUB_CANDIDATE."' , 'selected':'"._MD_KWCLUB_OFFICIALLY_ENROLL."'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
         $jeditable->setSelectCol("#reg_grade_{$all['reg_sn']}", $file, "{ $grade_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
         $jeditable->setSelectCol("#reg_class_{$all['reg_sn']}", $file, "{ $class_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
         $jeditable->setTextCol("#reg_uid_{$all['reg_sn']}", $file, '100px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", '點擊編輯');

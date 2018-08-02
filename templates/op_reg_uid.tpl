@@ -56,7 +56,7 @@
                         <td><{$data.class_money}>(<{$smarty.const._MD_KWCLUB_CLASS_FEE}><{$data.class_fee}>)</td><!--學費-->
                         <td><{$data.reg_datetime}></td><!--報名時間-->
                         <td>
-                            <{ if $data.reg_isreg=='正取'}>
+                            <{ if $data.reg_isreg==$smarty.const._MD_KWCLUB_OFFICIALLY_ENROLL}>
                                 <span style='color: rgb(6, 2, 238)'><{$data.reg_isreg}></span>
                             <{else}>
                                 <span style='color: rgb(35, 97, 35)'><{$data.reg_isreg}></span>

@@ -68,7 +68,7 @@ function reg_form($class_id = "")
     global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig;
 
     if (empty($class_id)) {
-        redirect_header($_SERVER['PHP_SELF'], 3, '沒有指定的社團課程編號');
+        redirect_header($_SERVER['PHP_SELF'], 3, _MD_KWCLUB_NEED_CLASS_ID);
     } elseif ($_SESSION['club_isfree'] == '0') {
         $class = get_club_class($class_id);
         $xoopsTpl->assign('class', $class);
@@ -109,7 +109,7 @@ function insert_reg()
 
     //檢查是否設定期別
     if (empty($club_year)) {
-        redirect_header("index.php?class_id={$class_id}", 3, '錯誤！社團期數未設定，無法報名！請連絡管理員。');
+        redirect_header("index.php?class_id={$class_id}", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
     $club_info = get_club_info($club_year);
@@ -121,19 +121,19 @@ function insert_reg()
     $is_full = false;
     if (($class['class_member'] + $club_info['club_backup_num']) <= $class['class_regnum']) {
         $is_full = true;
-        redirect_header("index.php?class_id={$class_id}", 3, '報名人數已滿！');
+        redirect_header("index.php?class_id={$class_id}", 3, _MD_KWCLUB_CLASS_REGNUM_FULL);
     }
 
     //檢查是否衝堂
     if (check_class_date($reg_uid, $class_id)) {
-        redirect_header("index.php?class_id={$class_id}", 3, '錯誤！社團課程衝堂，請再確認！');
+        redirect_header("index.php?class_id={$class_id}", 3, _MD_KWCLUB_CLASS_SAME_TIME);
     }
 
     $reg_uid   = $myts->addSlashes($_POST['reg_uid']);
     $reg_name  = $myts->addSlashes($_POST['reg_name']);
     $reg_grade = $myts->addSlashes($_POST['reg_grade']);
     $reg_class = $myts->addSlashes($_POST['reg_class']);
-    $reg_isreg = $class['class_member'] < $class['class_regnum'] ? '正取' : '備取';
+    $reg_isreg = $class['class_member'] < $class['class_regnum'] ? _MD_KWCLUB_OFFICIALLY_ENROLL : _MD_KWCLUB_CANDIDATE;
     $reg_ip    = get_ip();
 
     $sql = "INSERT INTO `" . $xoopsDB->prefix("kw_club_reg") . "` (
@@ -153,10 +153,10 @@ function insert_reg()
         $update_sql = "update `" . $xoopsDB->prefix("kw_club_class") . "` set `class_regnum`=`class_regnum`+1 where `class_id`={$class_id}";
         $xoopsDB->query($update_sql);
 
-        redirect_header("index.php?op=myclass&reg_uid={$reg_uid}&club_year={$club_year}", 3, '報名成功！');
+        redirect_header("index.php?op=myclass&reg_uid={$reg_uid}&club_year={$club_year}", 3, _MD_KWCLUB_APPLY_SUCCESS);
 
     } else {
-        redirect_header("index.php?op=myclass&reg_uid={$reg_uid}&club_year={$club_year}", 3, '錯誤！重複報名！');
+        redirect_header("index.php?op=myclass&reg_uid={$reg_uid}&club_year={$club_year}", 3, _MD_KWCLUB_REPEAT_APPLY);
     }
 
 }
@@ -195,7 +195,7 @@ function check_class_date($reg_uid, $class_id)
             }
         }
     }
-    echo $check_class;
+
     if ($check_class > 0) {
         return ture;
     } else {

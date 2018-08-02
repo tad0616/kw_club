@@ -22,6 +22,7 @@ define('_MD_KWCLUB_CLASS_MONEY', '社團學費');
 define('_MD_KWCLUB_CLASS_FEE', '額外費用');
 define('_MD_KWCLUB_CLASS_NOTE', '社團備註');
 define('_MD_KWCLUB_CLASS_REGNUM', '報名人數');
+define('_MD_KWCLUB_CLASS_REGNUM_FULL', '報名人數已滿！');
 define('_MD_KWCLUB_CLASS_REG', '報名');
 define('_MD_KWCLUB_CLASS_DATE_START', '報名起始');
 define('_MD_KWCLUB_CLASS_DATE_END', '報名終止');
@@ -58,7 +59,7 @@ define('_MD_KWCLUB_REG_IP', 'IP');
 if ($_SESSION['isclubAdmin']) {
     define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，<a href="config.php?op=kw_club_info_form">請先進行社團報名期別設定</a>後，再新增課程！');
 } else {
-    define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，請通知管理員，進行社團報名期別設定，以便新增課程！');
+    define('_MD_KWCLUB_NEED_CONFIG', '目前沒有可報名的社團期別，請通知管理員，進行社團報名期別設定！');
 }
 define('_MD_KWCLUB_SELECT_YEAR', '請選擇社團期別：');
 define('_MD_KWCLUB_EMPTY_YEAR', '目前沒有期別');
@@ -118,3 +119,11 @@ define('_MD_KWCLUB_PAY_PDF', '社團報名繳費單');
 define('_MD_KWCLUB_TOTAL_PAY', '總學費金額：');
 define('_MD_KWCLUB_OTHER_PAY', '額外加收：');
 define('_MD_KWCLUB_SIGN', '簽名：');
+
+define('_MD_KWCLUB_NEED_CLASS_ID', '沒有指定的社團課程編號');
+define('_MD_KWCLUB_CLASS_SAME_TIME', '錯誤！社團課程衝堂，請再確認！');
+
+define('_MD_KWCLUB_OFFICIALLY_ENROLL', '正取');
+define('_MD_KWCLUB_CANDIDATE', '備取');
+define('_MD_KWCLUB_APPLY_SUCCESS', '報名成功！');
+define('_MD_KWCLUB_REPEAT_APPLY', '錯誤！重複報名！');

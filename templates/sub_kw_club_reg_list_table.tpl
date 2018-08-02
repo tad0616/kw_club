@@ -60,7 +60,7 @@
 
                 <{if $smarty.session.isclubAdmin}>
                     <td class="text-center">
-                        <{ if $data.reg_isreg=='正取'}>
+                        <{ if $data.reg_isreg==$smarty.const._MD_KWCLUB_OFFICIALLY_ENROLL}>
                             <span class="editable" id="reg_isreg_<{$data.reg_sn}>" style='color: rgb(6, 2, 238)'><{$data.reg_isreg}></span>
                         <{else}>
                             <span class="editable" id="reg_isreg_<{$data.reg_sn}>" style='color: rgb(35, 97, 35)'><{$data.reg_isreg}></span>
