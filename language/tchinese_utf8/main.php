@@ -18,7 +18,7 @@ define('_MD_KWCLUB_CLASS_TIME_START', '起始時間');
 define('_MD_KWCLUB_CLASS_TIME_END', '終止時間');
 define('_MD_KWCLUB_PLACE_ID', '地點');
 define('_MD_KWCLUB_CLASS_MENBER', '招收人數');
-define('_MD_KWCLUB_CLASS_MONEY', '學費');
+define('_MD_KWCLUB_CLASS_MONEY', '社團學費');
 define('_MD_KWCLUB_CLASS_FEE', '額外費用');
 define('_MD_KWCLUB_CLASS_NOTE', '社團備註');
 define('_MD_KWCLUB_CLASS_REGNUM', '報名人數');
@@ -76,6 +76,7 @@ define('_MD_KWCLUB_BACKUP_NUM', '候補人數');
 define('_MD_KWCLUB_STATISTICS', '報名統計');
 define('_MD_KWCLUB_ADD_CLUB', '新增社團');
 define('_MD_KWCLUB_ADD_CLUB_INFO', '新增社團期別');
+define('_MD_KWCLUB_NEED_CLUB_YEAR', '錯誤！未指定社團期數');
 
 define('_MD_KWCLUB_START_DATE', '報名起始日');
 define('_MD_KWCLUB_END_DATE', '報名終止日');
@@ -104,3 +105,16 @@ define('_MD_KWCLUB_TEACHER_GROUP', '社團老師');
 define('_MD_KWCLUB_GROUP_NOTE', '：為社團報名模組用，勿刪，勿修改');
 
 define('_MD_KWCLUB_SETUP_TEACHER', '社團老師設定');
+
+define('_MD_KWCLUB_SORTBY_REG_NAME', '依報名者姓名排序');
+define('_MD_KWCLUB_SORTBY_REG_DATETIME', '依報名時間排序');
+define('_MD_KWCLUB_SORTBY_CLASS_TITLE', '依社團名稱排序');
+define('_MD_KWCLUB_SORTBY_REG_GRADE', '依報名者年級排序');
+
+define('_MD_KWCLUB_TODAY', '今天');
+define('_MD_KWCLUB_IS_BACKUP', '是否候補');
+
+define('_MD_KWCLUB_PAY_PDF', '社團報名繳費單');
+define('_MD_KWCLUB_TOTAL_PAY', '總學費金額：');
+define('_MD_KWCLUB_OTHER_PAY', '額外加收：');
+define('_MD_KWCLUB_SIGN', '簽名：');

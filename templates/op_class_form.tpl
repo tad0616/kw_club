@@ -125,16 +125,16 @@
 
     <!-- 社團學費 -->
     <div class="form-group">
-        <label for="class_money" class="col-sm-2 control-label">社團學費<span class="caption-required">*</span></label>
+        <label for="class_money" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_CLASS_MONEY}><span class="caption-required">*</span></label>
         <div class="col-sm-10">
-            <input class='form-control validate[required]' type='text' name='class_money' title='社團學費' id='class_money' size='30' maxlength='255' value='<{$class_money}>'>
+            <input class='form-control validate[required]' type='text' name='class_money' title='<{$smarty.const._MD_KWCLUB_CLASS_MONEY}>' id='class_money' size='30' maxlength='255' value='<{$class_money}>'>
         </div>
     </div>
 
     <!-- 額外費用 -->
     <div class="form-group">
-        <label for="class_fee" class="col-sm-2 control-label">額外費用<span class="caption-required"></span></label>
-        <div class="col-sm-10"><input class='form-control' type='text' name='class_fee' title='額外費用' id='class_fee' size='30' maxlength='255' value='<{$class_fee}>'>
+        <label for="class_fee" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_CLASS_FEE}><span class="caption-required"></span></label>
+        <div class="col-sm-10"><input class='form-control' type='text' name='class_fee' title='<{$smarty.const._MD_KWCLUB_CLASS_FEE}>' id='class_fee' size='30' maxlength='255' value='<{$class_fee}>'>
         </div>
     </div>
 

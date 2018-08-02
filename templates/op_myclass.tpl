@@ -31,10 +31,10 @@
         <table class="table table-bordered table-hover table-condensed">
             <thead>
                 <tr class="success">
-                    <th class="text-center">社團名稱</th>
+                    <th class="text-center"><{$smarty.const._MD_KWCLUB_CLASS_TITLE}></th>
                     <th class="text-center">上課時間</th>
-                    <th class="text-center">社團學費</th>
-                    <th class="text-center">報名日期</th>
+                    <th class="text-center"><{$smarty.const._MD_KWCLUB_CLASS_MONEY}></th>
+                    <th class="text-center"><{$smarty.const._MD_KWCLUB_REG_DATETIME}></th>
                     <th class="text-center"><{$smarty.const._MD_KWCLUB_REG_ISREG}></th>
                     <th class="text-center">功能</th>
                 </tr>

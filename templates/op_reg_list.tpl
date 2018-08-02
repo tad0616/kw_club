@@ -1,4 +1,4 @@
-今天：<{$today}> <{$title}>
+<{$smarty.const._MD_KWCLUB_TODAY}><{$smarty.const._TAD_FOR}><{$today}> <{$title}>
 
 <{if $arr_year}>
     <div class="alert alert-info" style="margin: 10px auto;"><{$smarty.const._MD_KWCLUB_SELECT_YEAR}>
@@ -9,10 +9,10 @@
             <{/foreach}>
         </select>
         <select name="review" id="review" onChange="location.href='register.php?club_year=' + $('#club_year').val() + '&review=' + $('#review').val() ;">
-            <option value="reg_sn" <{if $review=='reg_sn'}>selected<{/if}>>依報名排序</option>
-            <option value="class_id" <{if $review=='class_id'}>selected<{/if}>>依社團排序</option>
-            <option value="grade" <{if $review=='grade'}>selected<{/if}>>依年級排序</option>
-            <option value="reg_uid" <{if $review=='reg_uid'}>selected<{/if}>>依報名者排序</option>
+            <option value="reg_sn" <{if $review=='reg_sn'}>selected<{/if}>><{$smarty.const._MD_KWCLUB_SORTBY_REG_DATETIME}></option>
+            <option value="class_id" <{if $review=='class_id'}>selected<{/if}>><{$smarty.const._MD_KWCLUB_SORTBY_CLASS_TITLE}></option>
+            <option value="grade" <{if $review=='grade'}>selected<{/if}>><{$smarty.const._MD_KWCLUB_SORTBY_REG_GRADE}></option>
+            <option value="reg_uid" <{if $review=='reg_uid'}>selected<{/if}>><{$smarty.const._MD_KWCLUB_SORTBY_REG_NAME}></option>
         </select>
     </div>
 <{else}>

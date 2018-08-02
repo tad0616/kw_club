@@ -17,13 +17,6 @@ $club_year = system_CleanVars($_REQUEST, 'club_year', $_SESSION['club_year'], 'i
 $reg_isfee = system_CleanVars($_REQUEST, 'reg_isfee', '', 'int');
 
 switch ($op) {
-
-    //更新資料
-    case "update_reg":
-        update_reg($reg_sn);
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-
     case "delete_reg":
         delete_reg();
         header("location: {$_SERVER['PHP_SELF']}");
@@ -60,7 +53,7 @@ function reg_list($club_year = '', $review = 'reg_sn')
 
     //檢查是否設定期別
     if (empty($club_year)) {
-        redirect_header('index.php', 3, '錯誤！未指定社團期數');
+        redirect_header('index.php', 3, _MD_KWCLUB_NEED_CLUB_YEAR);
     }
     $xoopsTpl->assign('club_year', $club_year);
     $xoopsTpl->assign('club_year_text', club_year_to_text($club_year));
@@ -87,7 +80,7 @@ function reg_uid($club_year = "")
 
     //檢查是否設定期別
     if (empty($club_year)) {
-        redirect_header($_SERVER['PHP_SELF'], 3, '錯誤！未指定社團期數');
+        redirect_header($_SERVER['PHP_SELF'], 3, _MD_KWCLUB_NEED_CLUB_YEAR);
     }
 
     $xoopsTpl->assign('club_year', $club_year);
@@ -101,52 +94,4 @@ function reg_uid($club_year = "")
     $xoopsTpl->assign('reg_all', $reg_all);
     $xoopsTpl->assign('total', sizeof($reg_all));
 
-}
-
-//更新kw_club_reg某一筆資料
-function update_reg($reg_sn = '')
-{
-    global $xoopsDB, $xoopsUser;
-
-    //XOOPS表單安全檢查
-    // if (!$GLOBALS['xoopsSecurity']->check()) {
-    //     $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
-    //     redirect_header($_SERVER['PHP_SELF'], 3, $error);
-    // }
-
-    $myts = MyTextSanitizer::getInstance();
-
-    $reg_sn      = (int) $_POST['reg_sn'];
-    $club_year   = (int) $_POST['club_year'];
-    $class_id    = (int) $_POST['class_id'];
-    $class_title = $myts->addSlashes($_POST['class_title']);
-    $reg_uid     = $myts->addSlashes($_POST['reg_uid']);
-    $reg_name    = $myts->addSlashes($_POST['reg_name']);
-    $reg_grade   = $myts->addSlashes($_POST['reg_grade']);
-    $reg_class   = $myts->addSlashes($_POST['reg_class']);
-    $reg_isreg   = $myts->addSlashes($_POST['reg_isreg']);
-    $reg_isfee   = (int) $_POST['reg_isfee'];
-
-    $sql = "update `" . $xoopsDB->prefix("kw_club_reg") . "` set
-    `class_id` = '{$class_id}',
-    `reg_uid` = '{$reg_uid}',
-    `reg_name` = '{$reg_name}',
-    `reg_grade` = '{$reg_grade}',
-    `reg_class` = '{$reg_class}',
-    `reg_isreg` = '{$reg_isreg}',
-    `reg_isfee` = '{$reg_isfee}'
-    where `reg_sn` = '$reg_sn'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-}
-
-//改變繳費狀態
-function update_reg_isfee($reg_sn, $reg_isfee)
-{
-    global $xoopsDB;
-
-    $sql = "update `" . $xoopsDB->prefix("kw_club_reg") . "` set
-    `reg_isfee` = '{$reg_isfee}'
-    where `reg_sn` = '$reg_sn'";
-    $xoopsDB->queryF($sql) or web_error($sql);
 }

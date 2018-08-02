@@ -65,7 +65,7 @@ function get_reg_uid_all($club_year)
 {
     global $xoopsDB;
     if (empty($club_year)) {
-        redirect_header($_SERVER['PHP_SELF'], 3, '錯誤！未指定社團期數');
+        redirect_header($_SERVER['PHP_SELF'], 3, _MD_KWCLUB_NEED_CLUB_YEAR);
     } else {
 
         // $data['money'] = $data['in_money'] = $data['un_money'] = 0;

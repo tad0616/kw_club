@@ -31,9 +31,9 @@ $objActSheet->getStyle('C')->getAlignment()
 $i++;
 $objActSheet->setCellValue("A{$i}", '報名編號');
 $objActSheet->setCellValue("B{$i}", '社團年度 ');
-$objActSheet->setCellValue("C{$i}", '社團名稱');
-$objActSheet->setCellValue("D{$i}", '社團學費');
-$objActSheet->setCellValue("E{$i}", '額外費用');
+$objActSheet->setCellValue("C{$i}", _MD_KWCLUB_CLASS_TITLE);
+$objActSheet->setCellValue("D{$i}", _MD_KWCLUB_CLASS_MONEY);
+$objActSheet->setCellValue("E{$i}", '_MD_KWCLUB_CLASS_FEE');
 $objActSheet->setCellValue("F{$i}", '身分證字號');
 $objActSheet->setCellValue("G{$i}", '姓名');
 $objActSheet->setCellValue("H{$i}", '年級');

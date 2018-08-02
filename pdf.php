@@ -21,18 +21,18 @@ foreach ($reg_all as $reg_uid => $reg) {
     }
 
     $pdf->SetFont('droidsansfallback', '', 20, '', true); //設定字型
-    $pdf->Cell(180, 12, "{$reg['class']} {$reg['name']} 社團報名繳費單", 0, 1, 'C', 0);
+    $pdf->Cell(180, 12, "{$reg['class']} {$reg['name']} " . _MD_KWCLUB_PAY_PDF, 0, 1, 'C', 0);
     $pdf->SetFont('droidsansfallback', '', 10, '', true); //設定字型
 
     $height = 10;
     //標題
-    $pdf->MultiCell(40, $height, "社團名稱", 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-    $pdf->MultiCell(20, $height, "報名者", 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-    $pdf->MultiCell(20, $height, "社團學費", 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-    $pdf->MultiCell(20, $height, "額外費用", 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-    $pdf->MultiCell(20, $height, "是否候補", 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-    $pdf->MultiCell(20, $height, "是否繳費", 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-    $pdf->MultiCell(40, $height, "報名日期", 1, 'C', false, 1, '', '', false, 0, false, false, $height, 'M', true);
+    $pdf->MultiCell(40, $height, _MD_KWCLUB_CLASS_TITLE, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+    $pdf->MultiCell(20, $height, _MD_KWCLUB_REG_NAME, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+    $pdf->MultiCell(20, $height, _MD_KWCLUB_CLASS_MONEY, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+    $pdf->MultiCell(20, $height, _MD_KWCLUB_CLASS_FEE, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+    $pdf->MultiCell(20, $height, _MD_KWCLUB_IS_BACKUP, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+    $pdf->MultiCell(20, $height, _MD_KWCLUB_REG_ISFEE, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+    $pdf->MultiCell(40, $height, _MD_KWCLUB_REG_DATETIME, 1, 'C', false, 1, '', '', false, 0, false, false, $height, 'M', true);
 
     $money = $fee = 0;
 
@@ -59,14 +59,14 @@ foreach ($reg_all as $reg_uid => $reg) {
         // $pdf->Cell(50, $height, $username, 1, 0,'C',0,'',1);
         // $pdf->Cell(36, $height, $snews['update_time'], 1, 1,'C',0,'',1);
     }
-    $pdf->Cell(25, 10, '總學費金額：', 0, 0);
+    $pdf->Cell(25, 10, _MD_KWCLUB_TOTAL_PAY, 0, 0);
     $pdf->Cell(30, 10, $money, 'B', 0, 0);
-    $pdf->Cell(20, 10, '額外加收：', 0, 0);
+    $pdf->Cell(20, 10, _MD_KWCLUB_OTHER_PAY, 0, 0);
     $pdf->Cell(30, 10, $fee, 'B', 0, 0);
     // $pdf->Image('images/aa.png', 180, 250, 20, 20, 'png');
 
     $pdf->SetFont('droidsansfallback', '', 16, '', true); //設定字型
-    $pdf->Cell(20, 10, '簽名：', 0, 0);
+    $pdf->Cell(20, 10, _MD_KWCLUB_SIGN, 0, 0);
     $pdf->Cell(50, 10, '', 'B', 0, 0);
 
     $pdf->SetXY(15, 148);
@@ -78,6 +78,6 @@ foreach ($reg_all as $reg_uid => $reg) {
 }
 
 $club_year_text = club_year_to_text($club_year);
-$title          = iconv('utf-8', 'big5', $club_year_text . '社團報名繳費單');
+$title          = iconv('utf-8', 'big5', $club_year_text . _MD_KWCLUB_PAY_PDF);
 //PDF內容設定
 $pdf->Output($title . '.pdf', 'D');

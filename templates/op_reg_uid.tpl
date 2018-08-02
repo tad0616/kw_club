@@ -29,11 +29,11 @@
         <thead>
             <tr class="success">
                 <th>社團年度</th>
-                <th>社團名稱</th>
+                <th><{$smarty.const._MD_KWCLUB_CLASS_TITLE}></th>
                 <th>社團學費</th>
-                <th>報名日期</th>
+                <th><{$smarty.const._MD_KWCLUB_REG_DATETIME}></th>
                 <th><{$smarty.const._MD_KWCLUB_REG_ISREG}></th>
-                <th>是否繳費</th>
+                <th><{$smarty.const._MD_KWCLUB_REG_ISFEE}></th>
                 <th>取消報名</th>
             </tr>
         </thead>
@@ -53,7 +53,7 @@
                         </td>
                         <td><a href="index.php?class_id=<{$data.class_id}>"> <{$data.class_title}></a>
                         </td>
-                        <td><{$data.class_money}>(額外費用<{$data.class_fee}>)</td><!--學費-->
+                        <td><{$data.class_money}>(<{$smarty.const._MD_KWCLUB_CLASS_FEE}><{$data.class_fee}>)</td><!--學費-->
                         <td><{$data.reg_datetime}></td><!--報名時間-->
                         <td>
                             <{ if $data.reg_isreg=='正取'}>
