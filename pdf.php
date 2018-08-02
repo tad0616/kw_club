@@ -20,9 +20,9 @@ foreach ($reg_all as $reg_uid => $reg) {
         $pdf->AddPage(); //新增頁面，一定要有，否則內容出不來
     }
 
-    $pdf->SetFont('droidsansfallback', '', 20, '', true); //設定字型
+    $pdf->SetFont('msungstdlight', '', 20, '', true); //設定字型
     $pdf->Cell(180, 12, "{$reg['class']} {$reg['name']} " . _MD_KWCLUB_PAY_PDF, 0, 1, 'C', 0);
-    $pdf->SetFont('droidsansfallback', '', 10, '', true); //設定字型
+    $pdf->SetFont('msungstdlight', '', 10, '', true); //設定字型
 
     $height = 10;
     //標題
@@ -50,8 +50,8 @@ foreach ($reg_all as $reg_uid => $reg) {
         $pdf->MultiCell(20, $height, $reg_name, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
         $pdf->MultiCell(20, $height, $class_money, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
         $pdf->MultiCell(20, $height, $class_fee, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-        $pdf->MultiCell(20, $height, $class_isreg ? '是' : '否', 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
-        $pdf->MultiCell(20, $height, $class_isfee ? '是' : '否', 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+        $pdf->MultiCell(20, $height, $class_isreg ? _YES : _NO, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
+        $pdf->MultiCell(20, $height, $class_isfee ? _YES : _NO, 1, 'C', false, 0, '', '', false, 0, false, false, $height, 'M', true);
         $pdf->MultiCell(40, $height, $reg_datetime, 1, 'C', false, 1, '', '', false, 0, false, false, $height, 'M', true);
 
         $money += $class_money;
@@ -65,7 +65,7 @@ foreach ($reg_all as $reg_uid => $reg) {
     $pdf->Cell(30, 10, $fee, 'B', 0, 0);
     // $pdf->Image('images/aa.png', 180, 250, 20, 20, 'png');
 
-    $pdf->SetFont('droidsansfallback', '', 16, '', true); //設定字型
+    $pdf->SetFont('msungstdlight', '', 16, '', true); //設定字型
     $pdf->Cell(20, 10, _MD_KWCLUB_SIGN, 0, 0);
     $pdf->Cell(50, 10, '', 'B', 0, 0);
 
