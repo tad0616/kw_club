@@ -252,6 +252,7 @@ function class_form($class_id = '')
     $formValidator = new formValidator("#classform", true);
     $formValidator->render();
 
+    $xoopsTpl->assign('uid', $xoopsUser->uid());
 }
 
 //新增資料到kw_club_class中

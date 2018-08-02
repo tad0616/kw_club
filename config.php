@@ -135,11 +135,9 @@ function kw_club_info_list()
         $club_end_date   = $myts->htmlSpecialChars($club_end_date);
         $club_backup_num = $myts->htmlSpecialChars($club_backup_num);
 
-        $all_kw_club_info[$i]['club_id']          = $club_id;
         $all_kw_club_info[$i]['club_year']        = $club_year;
         $all_kw_club_info[$i]['club_start_date']  = $club_start_date;
         $all_kw_club_info[$i]['club_end_date']    = $club_end_date;
-        $all_kw_club_info[$i]['club_isfree']      = $club_isfree;
         $all_kw_club_info[$i]['club_isfree_text'] = $club_isfree_text;
         $all_kw_club_info[$i]['club_backup_num']  = $club_backup_num;
         $all_kw_club_info[$i]['club_uid']         = $club_uid;
@@ -552,7 +550,7 @@ function get_club_teacher()
         $user_arr       = $member_handler->getUsersByGroup($groupid);
     }
 
-    $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
+    $sql    = "select uid, uname, name from " . $xoopsDB->prefix("users") . " order by uname";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts    = MyTextSanitizer::getInstance();

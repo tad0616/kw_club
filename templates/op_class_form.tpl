@@ -41,8 +41,8 @@
         <label for="teacher_id" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_TEACHER_NAME}><span class="caption-required">*</span></label>
         <div class="col-sm-5">
             <select class="form-control validate[required]" size="1" name="teacher_id" id="teacher_id" title="<{$smarty.const._MD_KWCLUB_TEACHER_NAME}>">
-                <{foreach from=$arr_teacher key="uid" item="teacher" }>
-                    <option value="<{$uid}>" <{if $teacher_id==$uid}>selected<{/if}>><{$teacher.name}> (<{$teacher.email}>)</option>
+                <{foreach from=$arr_teacher key="teacher_id" item="teacher" }>
+                    <option value="<{$teacher_id}>" <{if $teacher_id==$uid}>selected<{/if}>><{$teacher.name}> (<{$teacher.email}>)</option>
                 <{/foreach}>
             </select>
         </div>
