@@ -28,7 +28,7 @@ switch ($op) {
 
     case "update_reg_isfee":
         update_reg_isfee($reg_sn, $reg_isfee);
-        header("location: {$_SERVER['PHP_SELF']}");
+        header("location: {$_SERVER['HTTP_REFERER']}");
         exit;
 
     default:

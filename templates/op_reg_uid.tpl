@@ -88,7 +88,8 @@
 
                         <td>
                             <{if !($today > $end_day) }>
-                                <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-xs btn-danger"><{$smarty.const._MD_KWCLUB_DELETE_APPLY}></a>
+                                <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-xs btn-danger"><i class="fa fa-times-circle" aria-hidden="true"></i>
+                                    <{$smarty.const._MD_KWCLUB_DELETE_APPLY}></a>
                             <{/if}>
                         </td>
                     </tr>

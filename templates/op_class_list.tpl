@@ -62,7 +62,7 @@
 
                     <!--社團學費-->
                     <th nowrap class="text-center">
-
+                        <{$smarty.const._MD_KWCLUB_CLASS_MONEY}>
                     </th>
 
                     <!--招收人數-->
@@ -142,6 +142,7 @@
                             <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{$smarty.const._MD_KWCLUB_CLASS_MONEY}> <{$data.class_money}> <{$smarty.const._MD_KWCLUB_DOLLAR}> + <{$smarty.const._MD_KWCLUB_CLASS_FEE}> <{$data.class_fee}> <{$smarty.const._MD_KWCLUB_DOLLAR}>"<{/if}>>
                                 <{$data.class_pay}>
                             </span>
+                            <{$smarty.const._MD_KWCLUB_DOLLAR}>
                         </td>
 
                         <!--招收人數-->

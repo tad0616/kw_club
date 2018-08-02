@@ -421,7 +421,6 @@ function update_class($class_id = '')
     `class_money` = '{$class_money}',
     `class_fee` = '{$class_fee}',
     `class_note` = '{$class_note}',
-    `class_ischecked` = '{$class_ischecked}',
     `class_isopen` = '{$class_isopen}',
     `class_desc` = '{$class_desc}',
     `class_datetime` = '{$today}',

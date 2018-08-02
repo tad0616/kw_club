@@ -47,7 +47,7 @@
                 <{/if}>
 
                 <td class="text-center">
-                    <span class="editable" id="reg_name_<{$data.reg_sn}>" data-toggle="tooltip" data-placement="bottom" title="at  <{$data.reg_datetime}>, from <{$data.reg_ip}>, <{$smarty.const._MD_KWCLUB_REG_SN}><{$smarty.const._TAD_FOR}><{$data.reg_sn}>"><{$data.reg_name}></span>
+                    <span class="editable" id="reg_name_<{$data.reg_sn}>"><{$data.reg_name}></span>
                 </td>
 
                 <td class="text-center">
@@ -78,7 +78,7 @@
                     </td>
 
                     <td class="text-center">
-                        <a href="index.php?reg_uid=<{$data.reg_uid}>&op=myclass" class="btn btn-xs btn-info"><{$smarty.const._MD_KWCLUB_DETIAL}></a>
+                        <a href="index.php?reg_uid=<{$data.reg_uid}>&op=myclass" class="btn btn-xs btn-info"  data-toggle="tooltip" data-placement="bottom" title="<{$smarty.const._MD_KWCLUB_SIGNUP_STATUS|sprintf:$data.reg_datetime:$data.reg_ip:$data.reg_sn}>"><{$smarty.const._MD_KWCLUB_DETIAL}></a>
                         <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                     </td>
                 <{/if}>

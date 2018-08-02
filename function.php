@@ -498,7 +498,7 @@ function club_year_to_text($club_year = '')
 //取得報名資料
 function get_class_reg($club_year, $class_id = '', $order = '', $show_PageBar = false)
 {
-    global $xoopsDB, $xoopsTpl;
+    global $xoopsDB, $xoopsTpl,$xoopsModuleConfig;
 
     $myts = MyTextSanitizer::getInstance();
 
@@ -536,6 +536,7 @@ function get_class_reg($club_year, $class_id = '', $order = '', $show_PageBar = 
             $grade_name = $grade . _MD_KWCLUB_GRADE;
         }
         $g_arr[$grade] = $grade_name;
+
     }
     $grade_opt = json_encode($g_arr, 256);
     $grade_opt = substr(str_replace('"', "'", $grade_opt), 1, -1);
