@@ -6,8 +6,8 @@ if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php")) {
 }
 include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 
-$semester_name_arr = array('00' => '暑假', '01' => '第一學期', '11' => '寒假', '02' => '第二學期');
-$grade_name_arr    = array('幼', '一', '二', '三', '四', '五', '六', '七', '八', '九');
+$semester_name_arr = array('00' => _MD_KWCLUB_YEAR_TEXT_00, '01' => _MD_KWCLUB_YEAR_TEXT_01, '11' => _MD_KWCLUB_YEAR_TEXT_11, '02' => _MD_KWCLUB_YEAR_TEXT_02);
+$grade_name_arr    = array(_MD_KWCLUB_GRADE0, _MD_KWCLUB_GRADE1, _MD_KWCLUB_GRADE2, _MD_KWCLUB_GRADE3, _MD_KWCLUB_GRADE4, _MD_KWCLUB_GRADE5, _MD_KWCLUB_GRADE6, _MD_KWCLUB_GRADE7, _MD_KWCLUB_GRADE8, _MD_KWCLUB_GRADE9);
 
 //其他自訂的共同的函數
 
@@ -98,8 +98,8 @@ function get_reg_uid_all($club_year)
             }
             $arr_reg[$reg_uid]['name'] = $data['reg_name'];
 
-            if ($data['reg_grade'] == '幼') {
-                $grade = '幼兒園';
+            if ($data['reg_grade'] == _MD_KWCLUB_KG) {
+                $grade = _MD_KWCLUB_KINDERGARTEN;
             } else {
                 $grade = $data['reg_grade'] . '年';
             }
@@ -249,8 +249,7 @@ function get_class_all()
         }
         return $data_arr;
     } else {
-        $class_error = "目前尚未設定社團期別";
-        return $class_error;
+        return _MD_KWCLUB_NEED_CLUB_YEAR;
     }
 }
 
@@ -382,37 +381,6 @@ function js_class($class_num)
 
 }
 
-//以流水號秀出某筆kw_club_cate資料內容
-function cate_show($type, $cate_id = '')
-{
-    global $xoopsDB, $xoopsTpl;
-
-    if (empty($cate_id) || empty($type)) {
-        return;
-    } else {
-        $cate_id = intval($cate_id);
-    }
-
-    $myts = MyTextSanitizer::getInstance();
-
-    $sql = "select * from `" . $xoopsDB->prefix('kw_club_' . $type) . "`
-    where `" . $type . "_id` = '{$cate_id}' ";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    // $all    = $xoopsDB->fetchArray($result);
-    $arr = $result->fetch_row();
-
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
-    }
-
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj = new sweet_alert();
-    $sweet_alert_obj->render("delete_{$type}_func", "{$_SERVER['PHP_SELF']}?type={$type}&op=delete_{$type}&{$type}_id=", "{$type}_id");
-    $xoopsTpl->assign('arr', $arr);
-    $xoopsTpl->assign('action', "{$_SERVER['PHP_SELF']}?type=$type&op=cate_form");
-    // $xoopsTpl->assign('op', 'cate_show'); //template name
-
-}
 
 //列出所有kw_club_cate資料
 function cate_list($type)
@@ -457,7 +425,7 @@ function delete_reg()
     $uid      = system_CleanVars($_REQUEST, 'uid', '0', 'string');
 
     if (empty($reg_sn)) {
-        redirect_header("{$_SERVER['PHP_SELF']}?op=myclass&uid={$uid}", 3, '錯誤!');
+        redirect_header("{$_SERVER['PHP_SELF']}?op=myclass&uid={$uid}", 3, _MD_KWCLUB_NEED_REG_SN);
     } else {
         $arr      = get_reg($reg_sn);
         $class_id = $arr['class_id'];
@@ -511,7 +479,7 @@ function chk_time($mode = '', $club_start_date = '', $club_end_date = '')
         if ($mode == 'return') {
             return false;
         } else {
-            redirect_header("index.php", 5, "目前不是報名時間喔！<p>報名期間為 {$club_start_date} ~ {$club_end_date}</p>");
+            redirect_header("index.php", 5, _MD_KWCLUB_NOT_REG_TIME." {$club_start_date} ~ {$club_end_date}");
         }
     }
     return true;
@@ -523,7 +491,7 @@ function club_year_to_text($club_year = '')
     global $semester_name_arr;
     $year          = substr($club_year, 0, 3);
     $st            = substr($club_year, -2);
-    $club_year_txt = "第" . $year . "學年度" . $semester_name_arr[$st];
+    $club_year_txt = $year . _MD_KWCLUB_SCHOOL_YEAR . $semester_name_arr[$st];
     return $club_year_txt;
 }
 
@@ -562,10 +530,10 @@ function get_class_reg($club_year, $class_id = '', $order = '', $show_PageBar = 
 
     //製作年級選單
     foreach ($xoopsModuleConfig['school_grade'] as $grade) {
-        if ($grade == '幼') {
-            $grade_name = '幼兒園';
+        if ($grade == _MD_KWCLUB_KG) {
+            $grade_name = _MD_KWCLUB_KINDERGARTEN;
         } else {
-            $grade_name = $grade . '年級';
+            $grade_name = $grade . _MD_KWCLUB_GRADE;
         }
         $g_arr[$grade] = $grade_name;
     }
@@ -590,11 +558,11 @@ function get_class_reg($club_year, $class_id = '', $order = '', $show_PageBar = 
 
         $all_reg[] = $all;
 
-        $jeditable->setTextCol("#reg_name_{$all['reg_sn']}", $file, '80px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", '點擊編輯');
-        $jeditable->setSelectCol("#reg_isreg_{$all['reg_sn']}", $file, "{'"._MD_KWCLUB_OFFICIALLY_ENROLL."':'"._MD_KWCLUB_OFFICIALLY_ENROLL."' , '"._MD_KWCLUB_CANDIDATE."':'"._MD_KWCLUB_CANDIDATE."' , 'selected':'"._MD_KWCLUB_OFFICIALLY_ENROLL."'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
-        $jeditable->setSelectCol("#reg_grade_{$all['reg_sn']}", $file, "{ $grade_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
-        $jeditable->setSelectCol("#reg_class_{$all['reg_sn']}", $file, "{ $class_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", "點擊編輯");
-        $jeditable->setTextCol("#reg_uid_{$all['reg_sn']}", $file, '100px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", '點擊編輯');
+        $jeditable->setTextCol("#reg_name_{$all['reg_sn']}", $file, '80px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", _MD_KWCLUB_CLICK_TO_EDIT);
+        $jeditable->setSelectCol("#reg_isreg_{$all['reg_sn']}", $file, "{'"._MD_KWCLUB_OFFICIALLY_ENROLL."':'"._MD_KWCLUB_OFFICIALLY_ENROLL."' , '"._MD_KWCLUB_CANDIDATE."':'"._MD_KWCLUB_CANDIDATE."' , 'selected':'"._MD_KWCLUB_OFFICIALLY_ENROLL."'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", _MD_KWCLUB_CLICK_TO_EDIT);
+        $jeditable->setSelectCol("#reg_grade_{$all['reg_sn']}", $file, "{ $grade_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", _MD_KWCLUB_CLICK_TO_EDIT);
+        $jeditable->setSelectCol("#reg_class_{$all['reg_sn']}", $file, "{ $class_opt , 'selected':'{$all['reg_grade']}'}", "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", _MD_KWCLUB_CLICK_TO_EDIT);
+        $jeditable->setTextCol("#reg_uid_{$all['reg_sn']}", $file, '100px', '1em', "{reg_sn: {$all['reg_sn']} ,op : 'update_reg'}", _MD_KWCLUB_CLICK_TO_EDIT);
     }
     $jeditable->render();
 

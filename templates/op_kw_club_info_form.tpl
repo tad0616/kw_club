@@ -1,29 +1,29 @@
 <form action="config.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
-             
+
     <div class="form-group">
         <!--社團期別-->
         <label for="club_year" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_YEAR}></label>
         <div class="col-sm-4">
             <{if $club_year}>
-                <div class="form-control-static">                
+                <div class="form-control-static">
                     <{$club_year_txt}>
                     <input type="hidden" name="club_year" id="club_year" value="<{$club_year}>">
                 </div>
-            <{else}>   
+            <{else}>
                 <select class="form-control validate[required]" name="club_year" id="club_year" title="<{$smarty.const._MD_KWCLUB_YEAR}>">
                     <{foreach from=$arr_semester key=semester item=semester_opt}>
                         <option value="<{$semester}>" <{if $semester==$club_year}>selected<{/if}> <{if $semester_opt.disabled}>disabled<{/if}>><{$semester_opt.opt}></option>
-                    <{/foreach}>	
+                    <{/foreach}>
                 </select>
             <{/if}>
         </div>
 
-        
+
         <!--是否啟用-->
         <label class="col-sm-2 control-label">
             <{$smarty.const._MD_KWCLUB_ENABLE}>
         </label>
-        <div class="col-sm-4">            
+        <div class="col-sm-4">
             <label class="radio-inline">
                 <input type="radio" name="club_enable" id="club_enable_1" value="1" <{if $club_enable == "1"}>checked="checked"<{/if}>><{$smarty.const._YES}>
             </label>
@@ -45,27 +45,27 @@
         </div>
     </div>
 
-    <!--    
+    <!--
     <div class="form-group">
-        <label for="class_isopen" class="col-sm-2 control-label">報名方式</label>
+        <label for="class_isopen" class="col-sm-2 control-label"><{$smarty.const._MD_KWCLUB_ISFREE}></label>
         <div class="col-sm-10">
             <label class="radio-inline">
-                <input type='radio' name='club_isfree' id='class_isopen1' title='自由報名' value='0' <{if $club_isfree!=1}>checked<{/if}>>
-                自由報名（不登入可報名）
+                <input type='radio' name='club_isfree' id='class_isopen1' title='<{$smarty.const._MD_KWCLUB_FREE_APPLY}>' value='0' <{if $club_isfree!=1}>checked<{/if}>>
+                <{$smarty.const._MD_KWCLUB_FREE_APPLY}><{$smarty.const._MD_KWCLUB_FREE_APPLY_DESC}>
             </label>
             <label class="radio-inline">
-                <input type='radio' name='club_isfree' id='class_isopen2' title='登入報名' value='1' <{if $club_isfree==1}>checked<{/if}>>
-                登入報名（須安裝單位名冊模組，上傳報名者相關資料）
+                <input type='radio' name='club_isfree' id='class_isopen2' title='<{$smarty.const._MD_KWCLUB_LOGIN_APPLY}>' value='1' <{if $club_isfree==1}>checked<{/if}>>
+                <{$smarty.const._MD_KWCLUB_LOGIN_APPLY}><{$smarty.const._MD_KWCLUB_LOGIN_APPLY_DESC}>
             </label>
         </div>
-    </div> 
+    </div>
     -->
     <!-- 報名方式：暫定為自由報名 -->
     <input type='hidden' name='club_isfree' value='0'>
 
 
     <div class="form-group">
-        
+
         <!--候補人數-->
         <label for="club_backup_num" class="col-sm-2 control-label">
             <{$smarty.const._MD_KWCLUB_BACKUP_NUM}>
@@ -73,7 +73,8 @@
         <div class="col-sm-4">
             <select class="form-control validate[required]" size="1" class = 'form-control col-sm-6' name="club_backup_num" id="club_backup_num" title="<{$smarty.const._MD_KWCLUB_BACKUP_NUM}>">
                 <{foreach from=$arr_num item=num}>
-                    <option value="<{$num}>" <{if $club_backup_num==$num}>selected<{/if}>><{$num}>人</option>
+                    <option value="<{$num}>" <{if $club_backup_num==$num}>selected<{/if}>><{$num}>
+                        <{$smarty.const._MD_KWCLUB_PEOPLE}></option>
                 <{/foreach}>
             </select>
         </div>
@@ -91,4 +92,3 @@
     </div>
 
 </form>
-

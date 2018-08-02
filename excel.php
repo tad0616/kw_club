@@ -11,12 +11,12 @@ $objPHPExcel = new PHPExcel(); //實體化Excel
 //----------內容-----------//
 $objPHPExcel->setActiveSheetIndex(0); //設定預設顯示的工作表
 $objActSheet = $objPHPExcel->getActiveSheet(); //指定預設工作表為 $objActSheet
-$objActSheet->setTitle("社團報名統計表"); //設定標題
+$objActSheet->setTitle($club_year_text); //設定標題
 $objPHPExcel->createSheet(); //建立新的工作表，上面那三行再來一次，編號要改
-$objPHPExcel->getDefaultStyle()->getFont()->setName('微軟正黑體')->setSize(14);
+$objPHPExcel->getDefaultStyle()->getFont()->setName('Microsoft JhengHei')->setSize(12);
 
 $i = 1;
-$objActSheet->mergeCells("A{$i}:J{$i}")->setCellValue("A1", $club_year_text . '社團報名統計表');
+$objActSheet->mergeCells("A{$i}:J{$i}")->setCellValue("A1", $club_year_text . _MD_KWCLUB_APPLY_EXCEL);
 
 $objActSheet->getStyle('A:J')->getAlignment()
     ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER) //垂直置中
@@ -29,16 +29,16 @@ $objActSheet->getStyle('C')->getAlignment()
     ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT); //水平靠左
 
 $i++;
-$objActSheet->setCellValue("A{$i}", '報名編號');
-$objActSheet->setCellValue("B{$i}", '社團年度 ');
+$objActSheet->setCellValue("A{$i}", _MD_KWCLUB_REG_SN);
+$objActSheet->setCellValue("B{$i}", _MD_KWCLUB_CLASS_YEAR);
 $objActSheet->setCellValue("C{$i}", _MD_KWCLUB_CLASS_TITLE);
 $objActSheet->setCellValue("D{$i}", _MD_KWCLUB_CLASS_MONEY);
-$objActSheet->setCellValue("E{$i}", '_MD_KWCLUB_CLASS_FEE');
-$objActSheet->setCellValue("F{$i}", '身分證字號');
-$objActSheet->setCellValue("G{$i}", '姓名');
-$objActSheet->setCellValue("H{$i}", '年級');
-$objActSheet->setCellValue("I{$i}", '班級');
-$objActSheet->setCellValue("J{$i}", '報名日期');
+$objActSheet->setCellValue("E{$i}", _MD_KWCLUB_CLASS_FEE);
+$objActSheet->setCellValue("F{$i}", _MD_KWCLUB_REG_UID);
+$objActSheet->setCellValue("G{$i}", _MD_KWCLUB_REG_NAME);
+$objActSheet->setCellValue("H{$i}", _MD_KWCLUB_GRADE);
+$objActSheet->setCellValue("I{$i}", _MD_KWCLUB_REG_CLASS);
+$objActSheet->setCellValue("J{$i}", _MD_KWCLUB_REG_DATETIME);
 
 $objActSheet->getStyle('A1:J1')->getFont()->setBold(true)->getColor()->setARGB('00FFFFFF');
 $objActSheet->getStyle('A1:J1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('00474747');
@@ -64,10 +64,10 @@ where b.`club_year`={$club_year} ORDER BY a.`reg_grade` DESC , a.`reg_class` ";
 $result = $xoopsDB->query($sql) or die($sql);
 while ($club_reg = $xoopsDB->fetchRow($result)) {
     $club_reg[1] = $club_year_text;
-    if ($club_reg[7] == '幼') {
-        $club_reg[7] = '幼兒園';
+    if ($club_reg[7] == _MD_KWCLUB_KG) {
+        $club_reg[7] = _MD_KWCLUB_KINDERGARTEN;
     } else {
-        $club_reg[7] = $club_reg[7] . '年';
+        $club_reg[7] = $club_reg[7] . _MD_KWCLUB_G;
     }
     foreach ($club_reg as $key => $val) {
         // if ($key == 'club_year') {
@@ -80,9 +80,9 @@ while ($club_reg = $xoopsDB->fetchRow($result)) {
     $i++;
 }
 $n = $i - 1;
-$objActSheet->setCellValue("A{$i}", '共');
+$objActSheet->setCellValue("A{$i}", _MD_KWCLUB_TOTAL);
 $objActSheet->setCellValue("B{$i}", "=count(A3:A{$n})");
-$objActSheet->setCellValue("C{$i}", '報名資料');
+$objActSheet->setCellValue("C{$i}", _MD_KWCLUB_REGISTER_DATA);
 
 $objActSheet->getStyle("A1:J{$n}")->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN)->getColor()->setRGB('000000');
 
@@ -92,7 +92,7 @@ $objActSheet->getProtection()->setInsertRows(true);
 $objActSheet->getProtection()->setFormatCells(true);
 $objActSheet->getProtection()->setPassword('1234');
 
-$title = iconv('UTF-8', 'Big5', $club_year_text . '社團報名統計表');
+$title = iconv('UTF-8', 'Big5', $club_year_text . _MD_KWCLUB_APPLY_EXCEL);
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename=' . $title . '.xls');
 header('Cache-Control: max-age=0');

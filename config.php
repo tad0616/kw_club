@@ -127,7 +127,7 @@ function kw_club_info_list()
         $club_enable_pic = $club_enable == 1 ? '<img src="' . XOOPS_URL . '/modules/kw_club/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/kw_club/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
 
         //將是/否選項轉換為圖示
-        $club_isfree_text = $club_isfree == 1 ? '自由報名' : '登入報名';
+        $club_isfree_text = $club_isfree == 1 ? _MD_KWCLUB_FREE_APPLY : _MD_KWCLUB_LOGIN_APPLY;
 
         //過濾讀出的變數值
         $club_year       = $myts->htmlSpecialChars($club_year);
@@ -189,6 +189,7 @@ function kw_club_info_form($club_id = '')
     //設定 club_id 欄位的預設值
     $club_id = !isset($DBV['club_id']) ? $club_id : $DBV['club_id'];
     $xoopsTpl->assign('club_id', $club_id);
+
     //設定 club_year 欄位的預設值
     $club_year = !isset($DBV['club_year']) ? '' : $DBV['club_year'];
     $xoopsTpl->assign('club_year', $club_year);
@@ -196,31 +197,37 @@ function kw_club_info_form($club_id = '')
     if ($club_year) {
         $xoopsTpl->assign('club_year_txt', $club_year_text);
     }
+
     //設定 club_start_date 欄位的預設值
     $club_start_date = !isset($DBV['club_start_date']) ? date("Y-m-d 08:00") : $DBV['club_start_date'];
     $xoopsTpl->assign('club_start_date', $club_start_date);
+
     //設定 club_end_date 欄位的預設值
     $club_end_date = !isset($DBV['club_end_date']) ? date("Y-m-d 17:30") : $DBV['club_end_date'];
     $xoopsTpl->assign('club_end_date', $club_end_date);
+
     //設定 club_isfree 欄位的預設值
     $club_isfree = !isset($DBV['club_isfree']) ? 0 : $DBV['club_isfree'];
     $xoopsTpl->assign('club_isfree', $club_isfree);
+
     //設定 club_backup_num 欄位的預設值
     $club_backup_num = !isset($DBV['club_backup_num']) ? '' : $DBV['club_backup_num'];
     $xoopsTpl->assign('club_backup_num', $club_backup_num);
+
     //設定 club_uid 欄位的預設值
     $user_uid = $xoopsUser ? $xoopsUser->uid() : "";
     $club_uid = !isset($DBV['club_uid']) ? $user_uid : $DBV['club_uid'];
     $xoopsTpl->assign('club_uid', $club_uid);
+
     //設定 club_datetime 欄位的預設值
     $club_datetime = !isset($DBV['club_datetime']) ? date("Y-m-d H:i:s") : $DBV['club_datetime'];
     $xoopsTpl->assign('club_datetime', $club_datetime);
+
     //設定 club_enable 欄位的預設值
     $club_enable = !isset($DBV['club_enable']) ? 1 : $DBV['club_enable'];
     $xoopsTpl->assign('club_enable', $club_enable);
 
     $op = empty($club_id) ? "insert_kw_club_info" : "update_kw_club_info";
-    //$op = "replace_kw_club_info";
 
     //套用formValidator驗證機制
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -267,17 +274,15 @@ function insert_kw_club_info()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $club_id         = intval($_POST['club_id']);
-    $club_year       = $myts->addSlashes($_POST['club_year']);
+    $club_year       = (int) $_POST['club_year'];
     $club_start_date = $myts->addSlashes($_POST['club_start_date']);
     $club_end_date   = $myts->addSlashes($_POST['club_end_date']);
-    $club_isfree     = intval($_POST['club_isfree']);
-    $club_backup_num = $myts->addSlashes($_POST['club_backup_num']);
-    //取得使用者編號
-    $club_uid      = ($xoopsUser) ? $xoopsUser->uid() : "";
-    $club_uid      = !empty($_POST['club_uid']) ? intval($_POST['club_uid']) : $club_uid;
-    $club_datetime = date("Y-m-d H:i:s", xoops_getUserTimestamp(time()));
-    $club_enable   = intval($_POST['club_enable']);
+    $club_isfree     = (int) $_POST['club_isfree'];
+    $club_backup_num = (int) $_POST['club_backup_num'];
+    $uid             = ($xoopsUser) ? $xoopsUser->uid() : "";
+    $club_uid        = !empty($_POST['club_uid']) ? (int) $_POST['club_uid'] : $uid;
+    $club_datetime   = date("Y-m-d H:i:s", xoops_getUserTimestamp(time()));
+    $club_enable     = (int) $_POST['club_enable'];
 
     $sql = "insert into `" . $xoopsDB->prefix("kw_club_info") . "` (
         `club_year`,
@@ -304,13 +309,13 @@ function insert_kw_club_info()
     $club_id = $xoopsDB->getInsertId();
 
     //設定相關變數
-    $_SESSION['club_year']       = $club_year;
-    $_SESSION['club_start_date'] = $club_start_date;
+    $_SESSION['club_year']          = $club_year;
+    $_SESSION['club_start_date']    = $club_start_date;
     $_SESSION['club_start_date_ts'] = strtotime($club_start_date);
-    $_SESSION['club_end_date']   = $club_end_date;
+    $_SESSION['club_end_date']      = $club_end_date;
     $_SESSION['club_end_date_ts']   = strtotime($club_end_date);
-    $_SESSION['club_isfree']     = $club_isfree;
-    $_SESSION['club_backup_num'] = $club_backup_num;
+    $_SESSION['club_isfree']        = $club_isfree;
+    $_SESSION['club_backup_num']    = $club_backup_num;
 
     return $club_id;
 }
@@ -328,17 +333,16 @@ function update_kw_club_info($club_id = '')
 
     $myts = MyTextSanitizer::getInstance();
 
-    $club_id         = intval($_POST['club_id']);
-    $club_year       = $myts->addSlashes($_POST['club_year']);
+    $club_id         = (int) $_POST['club_id'];
+    $club_year       = (int) $_POST['club_year'];
     $club_start_date = $myts->addSlashes($_POST['club_start_date']);
     $club_end_date   = $myts->addSlashes($_POST['club_end_date']);
-    $club_isfree     = intval($_POST['club_isfree']);
-    $club_backup_num = $myts->addSlashes($_POST['club_backup_num']);
-    //取得使用者編號
-    $club_uid      = ($xoopsUser) ? $xoopsUser->uid() : "";
-    $club_uid      = !empty($_POST['club_uid']) ? intval($_POST['club_uid']) : $club_uid;
-    $club_datetime = date("Y-m-d H:i:s", xoops_getUserTimestamp(time()));
-    $club_enable   = intval($_POST['club_enable']);
+    $club_isfree     = (int) $_POST['club_isfree'];
+    $club_backup_num = (int) $_POST['club_backup_num'];
+    $uid             = ($xoopsUser) ? $xoopsUser->uid() : "";
+    $club_uid        = !empty($_POST['club_uid']) ? (int) $_POST['club_uid'] : $uid;
+    $club_datetime   = date("Y-m-d H:i:s", xoops_getUserTimestamp(time()));
+    $club_enable     = (int) $_POST['club_enable'];
 
     $sql = "update `" . $xoopsDB->prefix("kw_club_info") . "` set
     `club_year` = '{$club_year}',
@@ -353,13 +357,13 @@ function update_kw_club_info($club_id = '')
     $xoopsDB->queryF($sql) or web_error($sql);
 
     //update session
-    $_SESSION['club_year']       = $club_year;
-    $_SESSION['club_start_date'] = $club_start_date;
+    $_SESSION['club_year']          = $club_year;
+    $_SESSION['club_start_date']    = $club_start_date;
     $_SESSION['club_start_date_ts'] = strtotime($club_start_date);
-    $_SESSION['club_end_date']   = $club_end_date;
+    $_SESSION['club_end_date']      = $club_end_date;
     $_SESSION['club_end_date_ts']   = strtotime($club_end_date);
-    $_SESSION['club_isfree']     = $club_isfree;
-    $_SESSION['club_backup_num'] = $club_backup_num;
+    $_SESSION['club_isfree']        = $club_isfree;
+    $_SESSION['club_backup_num']    = $club_backup_num;
 
     return $club_id;
 }
@@ -517,7 +521,7 @@ function delete_cate($type, $cate_id = '')
     global $xoopsDB;
 
     if (empty($cate_id)) {
-        redirect_header("config.php", 3, '刪除錯誤!沒有id!');
+        redirect_header("config.php", 3, _MD_KWCLUB_NEED_CATE_ID);
     }
 
     $sql = "delete from `" . $xoopsDB->prefix('kw_club_' . $type) . "`

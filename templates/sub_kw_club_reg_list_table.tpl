@@ -45,17 +45,17 @@
                         <a href="index.php?class_id=<{$data.class_id}>" data-toggle="tooltip" data-placement="bottom" title="<{$data.class_id}>"><{$data.class_title}></a>
                     </td>
                 <{/if}>
+
                 <td class="text-center">
-                    <span class="editable" id="reg_name_<{$data.reg_sn}>" data-toggle="tooltip" data-placement="bottom" title="於 <{$data.reg_datetime}>，從 <{$data.reg_ip}>，報名編號：<{$data.reg_sn}>"><{$data.reg_name}></span>
+                    <span class="editable" id="reg_name_<{$data.reg_sn}>" data-toggle="tooltip" data-placement="bottom" title="at  <{$data.reg_datetime}>, from <{$data.reg_ip}>, <{$smarty.const._MD_KWCLUB_REG_SN}><{$smarty.const._TAD_FOR}><{$data.reg_sn}>"><{$data.reg_name}></span>
                 </td>
+
                 <td class="text-center">
-
-                        <{if $data.reg_grade=='幼'}>
-                            <span class="editable" id="reg_grade_<{$data.reg_sn}>"><{$data.reg_grade}>兒園</span><span class="editable" id="reg_class_<{$data.reg_sn}>"><{$data.reg_class}></span>
-                        <{else}>
-                            <span class="editable" id="reg_grade_<{$data.reg_sn}>"><{$data.reg_grade}>年</span><span class="editable" id="reg_class_<{$data.reg_sn}>"><{$data.reg_class}></span>
-                        <{/if}>
-
+                    <{if $data.reg_grade==$smarty.const._MD_KWCLUB_KG}>
+                        <span class="editable" id="reg_grade_<{$data.reg_sn}>"><{$smarty.const._MD_KWCLUB_KINDERGARTEN}></span><span class="editable" id="reg_class_<{$data.reg_sn}>"><{$data.reg_class}></span>
+                    <{else}>
+                        <span class="editable" id="reg_grade_<{$data.reg_sn}>"><{$data.reg_grade}><{$smarty.const._MD_KWCLUB_G}></span><span class="editable" id="reg_class_<{$data.reg_sn}>"><{$data.reg_class}></span>
+                    <{/if}>
                 </td>
 
                 <{if $smarty.session.isclubAdmin}>
@@ -66,28 +66,31 @@
                             <span class="editable" id="reg_isreg_<{$data.reg_sn}>" style='color: rgb(35, 97, 35)'><{$data.reg_isreg}></span>
                         <{/if}>
                     </td>
+
                     <td class="text-center">
+                        <a href="register.php?op=update_reg_isfee&amp;reg_isfee=<{if $data.reg_isfee==1}>0<{else}>1<{/if}>&amp;reg_sn=<{$data.reg_sn}>" data-toggle="tooltip" data-placement="top" title="<{$smarty.const._MD_KWCLUB_CLICK_TO}><{if $data.reg_isfee==1}><{$smarty.const._MD_KWCLUB_NOT_PAY}><{else}><{$smarty.const._MD_KWCLUB_PAID}><{/if}>"><{$data.reg_isfee_pic}></a>
 
-                        <a href="register.php?op=update_reg_isfee&amp;reg_isfee=<{if $data.reg_isfee==1}>0<{else}>1<{/if}>&amp;reg_sn=<{$data.reg_sn}>" data-toggle="tooltip" data-placement="top" title="點此改為<{if $data.reg_isfee==1}>「未繳費」<{else}>「已繳費」<{/if}>"><{$data.reg_isfee_pic}></a>
-
-                        <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{ if $data.reg_isfee==1}>已繳<{else}>未繳<{/if}>（學費）<{$data.class_money}>元 + （教材費）<{$data.class_fee}>元"<{/if}>><{$data.class_pay}> 元</span>
+                        <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{$smarty.const._MD_KWCLUB_CLASS_MONEY}> <{$data.class_money}> <{$smarty.const._MD_KWCLUB_DOLLAR}> + <{$smarty.const._MD_KWCLUB_CLASS_FEE}> <{$data.class_fee}> <{$smarty.const._MD_KWCLUB_DOLLAR}>"<{/if}>><{$data.class_pay}> <{$smarty.const._MD_KWCLUB_DOLLAR}></span>
                     </td>
+
                     <td class="text-center">
                         <span class="editable" id="reg_uid_<{$data.reg_sn}>"><{$data.reg_uid}></span>
                     </td>
+
                     <td class="text-center">
-                        <a href="index.php?reg_uid=<{$data.reg_uid}>&op=myclass" class="btn btn-xs btn-info">詳情</a>
+                        <a href="index.php?reg_uid=<{$data.reg_uid}>&op=myclass" class="btn btn-xs btn-info"><{$smarty.const._MD_KWCLUB_DETIAL}></a>
                         <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                     </td>
                 <{/if}>
             </tr>
         <{foreachelse}>
             <tr>
-                <td colspan=18>此期沒有人報名！</td>
+                <td colspan=7><{$smarty.const._MD_KWCLUB_EMAPY_REGISTER}></td>
             </tr>
         <{/foreach}>
     </tbody>
 </table>
+
 <div class="text-right">
-    上表中有標<span class="editable">藍色底線</span>者，可直接點擊編輯修改
+    <{$smarty.const._MD_KWCLUB_CLICK_TO_EDIT_DESC}>
 </div>

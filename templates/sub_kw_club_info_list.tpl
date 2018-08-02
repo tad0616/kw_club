@@ -1,14 +1,14 @@
-<h2>期別列表</h2>
+<h2><{$smarty.const._MD_KWCLUB_CLUB_YEAR_LIST}></h2>
 <{if $all_kw_club_info}>
     <{if $smarty.session.isclubAdmin}>
-        <{$delete_kw_club_info_func}>        
+        <{$delete_kw_club_info_func}>
     <{/if}>
 
     <div id="kw_club_info_save_msg"></div>
 
     <table class="table table-striped table-hover">
         <thead>
-            <tr class="success">                
+            <tr class="success">
                 <!--社團年度-->
                 <th>
                     <{$smarty.const._MD_KWCLUB_YEAR}>
@@ -43,7 +43,7 @@
         <tbody id="kw_club_info_sort">
             <{foreach from=$all_kw_club_info item=data}>
                 <tr id="tr_<{$data.club_id}>">
-                    
+
                     <!--社團年度-->
                     <td>
                         <{$data.club_year}>
@@ -78,7 +78,7 @@
                     <{if $smarty.session.isclubAdmin}>
                         <td>
                             <a href="javascript:delete_kw_club_info_func(<{$data.club_id}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-                            <a href="<{$xoops_url}>/modules/kw_club/config.php?op=kw_club_info_form&club_id=<{$data.club_id}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>                            
+                            <a href="<{$xoops_url}>/modules/kw_club/config.php?op=kw_club_info_form&club_id=<{$data.club_id}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
                         </td>
                     <{/if}>
                 </tr>

@@ -46,10 +46,10 @@ function update_reg($id, $value, $reg_sn)
     $xoopsDB->queryF($sql);
 
     if ($col == "reg_grade") {
-        if ($val == '幼') {
-            $value = '幼兒園';
+        if ($val == _MD_KWCLUB_KG) {
+            $value = _MD_KWCLUB_KINDERGARTEN;
         } else {
-            $value = $val . '年';
+            $value = $val . _MD_KWCLUB_G;
         }
     }
     return $value;

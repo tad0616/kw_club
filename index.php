@@ -261,7 +261,7 @@ function myclass($reg_uid = "", $club_year = "")
         if ($_SESSION['isclubAdmin']) {
             $sweet_alert->render("delete_reg_func", "{$_SERVER['PHP_SELF']}?op=delete_reg&reg_sn=", 'reg_sn');
         } else {
-            $sweet_alert->render("delete_reg_func", "{$_SERVER['PHP_SELF']}?op=delete_reg&uid={$reg_uid}&reg_sn=", 'reg_sn', "確定要取消嗎？", "取消", "是！含淚取消報名！");
+            $sweet_alert->render("delete_reg_func", "{$_SERVER['PHP_SELF']}?op=delete_reg&uid={$reg_uid}&reg_sn=", 'reg_sn', _MD_KWCLUB_SURE_CANCEL_APPLY, _MD_KWCLUB_CANCEL, _MD_KWCLUB_CANCEL_APPLY);
         }
 
     }
@@ -331,7 +331,7 @@ function class_show($class_id = '')
     global $xoopsDB, $xoopsUser, $xoopsTpl, $today;
 
     if (empty($class_id)) {
-        redirect_header("index.php", 3, "無社團課程編號");
+        redirect_header("index.php", 3, _MD_KWCLUB_NEED_CLASS_ID);
     }
 
     $uid = ($xoopsUser) ? $xoopsUser->uid() : '';

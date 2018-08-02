@@ -1,12 +1,13 @@
-<h2>教師簡介</h2>
+
+<h2><{$smarty.const._MD_KWCLUB_INDEX_TEACHER}></h2>
 
 <table class="table table-bordered table-hover table-condensed">
     <thead>
         <tr class="success">
-            <th nowrap>講師</th>
-            <th nowrap>教師姓名</th>
-            <th nowrap>電子信箱</th>
-            <th nowrap>簡介</th>
+            <th nowrap><{$smarty.const._MD_KWCLUB_TEACHER_ID}></th>
+            <th nowrap><{$smarty.const._MD_KWCLUB_TEACHER_NAME}></th>
+            <th nowrap><{$smarty.const._MD_KWCLUB_TEACHER_EMAIL}></th>
+            <th nowrap><{$smarty.const._MD_KWCLUB_CATE_DESC}></th>
         </tr>
     </thead>
     <tbody>

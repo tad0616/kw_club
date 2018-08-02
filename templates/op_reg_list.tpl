@@ -24,15 +24,15 @@
 
 <div align="right">
     <a href="register.php?op=reg_uid&club_year=<{$club_year}>" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i>
-        繳費統計模式</a>
+        <{$smarty.const._MD_KWCLUB_PAY_MODE}></a>
     <a href="excel.php?club_year=<{$club_year}>&review=<{$review}>" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i>
-        匯出excel</a>
+        <{$smarty.const._MD_KWCLUB_EXPORT_EXCEL}></a>
 </div>
 
 
 <h3>
-    <{if $club_year_text}><span class="club_year_text"><{$club_year_text}></span><{/if}>社團報名列表
-    <small>（共 <{$total}> 筆報名資料）</small>
+    <{if $club_year_text}><span class="club_year_text"><{$club_year_text}></span><{/if}><{$smarty.const._MD_KWCLUB_REGISTER_LIST}>
+    <small><{$smarty.const._MD_KWCLUB_PAGEBAR_TOTAL|sprintf:$total}></small>
 </h3>
 
 <{includeq file="$xoops_rootpath/modules/kw_club/templates/sub_kw_club_reg_list_table.tpl"}>

@@ -1,22 +1,22 @@
-<h2>查詢我報名過的社團</h2>
+<h2><{$smarty.const._MD_KWCLUB_MYCLASS}></h2>
 
 <form action="index.php" method="post" id="myForm" class="myForm form-horizontal" role="form" style="margin: 20px auto 50px;">
     <div class="input-group">
-        <span class="input-group-addon" id="basic-addon3">請選擇期別</span>
+        <span class="input-group-addon" id="basic-addon3"><{$smarty.const._MD_KWCLUB_SELECT_YEAR}></span>
         <select name="club_year" class="form-control">
             <{if $arr_year}>
                 <{foreach from=$arr_year key=year item=year_txt}>
                     <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year_txt}></option>
                 <{/foreach}>
             <{else}>
-                <option value="">目前沒有任何社團期別</option>
+                <option value=""><{$smarty.const._MD_KWCLUB_EMPTY_YEAR}></option>
             <{/if}>
         </select>
-        <span class="input-group-addon" id="basic-addon3">請輸入身分證字號</span>
-        <input type="text" name="reg_uid" class="form-control" placeholder="請輸入身分證字號" value="<{$reg_uid}>">
+        <span class="input-group-addon" id="basic-addon3"><{$smarty.const._MD_KWCLUB_KEYIN}><{$smarty.const._MD_KWCLUB_REG_UID}></span>
+        <input type="text" name="reg_uid" class="form-control" placeholder="<{$smarty.const._MD_KWCLUB_KEYIN}><{$smarty.const._MD_KWCLUB_REG_UID}>" value="<{$reg_uid}>">
         <span class="input-group-btn">
             <input type="hidden" name="op" value="myclass">
-            <button class="btn btn-primary" type="submit">查詢</button>
+            <button class="btn btn-primary" type="submit"><{$smarty.const._TAD_SEARCH}></button>
         </span>
     </div>
 </form>
@@ -24,19 +24,19 @@
 <{if $reg_uid}>
     <{if $reg_name}>
         <h3>
-            <span style="color: rgb(124, 58, 58);"><{$reg_name}></span><span class="club_year_text"><{$club_year_text}></span>的報名社團列表
-            <small>（共 <{$total}> 筆）</small>
+            <span style="color: rgb(124, 58, 58);"><{$reg_name}></span><span class="club_year_text"><{$club_year_text}></span><{$smarty.const._MD_KWCLUB_MY_ALL_CLASS}>
+            <small><{$smarty.const._MD_KWCLUB_PAGEBAR_TOTAL|sprintf:$total}></small>
         </h3>
 
         <table class="table table-bordered table-hover table-condensed">
             <thead>
                 <tr class="success">
                     <th class="text-center"><{$smarty.const._MD_KWCLUB_CLASS_TITLE}></th>
-                    <th class="text-center">上課時間</th>
+                    <th class="text-center"><{$smarty.const._MD_KWCLUB_CLASS_TIME}></th>
                     <th class="text-center"><{$smarty.const._MD_KWCLUB_CLASS_MONEY}></th>
                     <th class="text-center"><{$smarty.const._MD_KWCLUB_REG_DATETIME}></th>
                     <th class="text-center"><{$smarty.const._MD_KWCLUB_REG_ISREG}></th>
-                    <th class="text-center">功能</th>
+                    <th class="text-center"><{$smarty.const._TAD_FUNCTION}></th>
                 </tr>
             </thead>
             <tbody>
@@ -45,25 +45,26 @@
                         <td>
                             <a href="index.php?class_id=<{$data.class_id}>"><{$data.class_title}></a>
                         </td>
-                        <td>
-                            <span class="number_b">
-                                <{$data.class_date_open|date_format:"%Y/%m/%d"}>
-                            </span>至
-                            <span class="number_b">
-                                <{$data.class_date_close|date_format:"%Y/%m/%d"}>
-                            </span>
-                            <!--起始時間-->
+                        <td nowrap>
                             <div>
-                                <!--上課星期-->
-                                <{if $data.class_week=="一、二、三、四、五"}>
-                                    每星期<span class="text_g">一到五</span>的
+                                <span class="number_b">
+                                    <{$data.class_date_open|date_format:"%Y/%m/%d"}>
+                                </span>
+                                <{$smarty.const._MD_KWCLUB_APPLY_FROM_TO}>
+                                <span class="number_b">
+                                    <{$data.class_date_close|date_format:"%Y/%m/%d"}>
+                                </span>
+                            </div>
+                            <div>
+                                <{if $data.class_week==$smarty.const._MD_KWCLUB_ALL_WEEK}>
+                                    <{$smarty.const._MD_KWCLUB_1_5}>
                                 <{else}>
-                                    每星期<span class="text_g"><{$data.class_week}></span>的
+                                    <{$smarty.const._MD_KWCLUB_W|sprintf:$data.class_week}>
                                 <{/if}>
                                 <span class="number_o">
                                     <{$data.class_time_start|date_format:"%H:%M"}>
                                 </span>
-                                至
+                                <{$smarty.const._MD_KWCLUB_APPLY_FROM_TO}>
                                 <span class="number_o">
                                     <{$data.class_time_end|date_format:"%H:%M"}>
                                 </span>
@@ -72,10 +73,10 @@
 
                         <!-- 學費 -->
                         <td nowrap class="text-center">
-                            <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{$data.class_money}>元（學費） + <{$data.class_fee}>元（教材費）"<{/if}>>
-                                <{$data.class_pay}>元
+                            <span data-toggle="tooltip" data-placement="bottom" <{if $data.class_fee}>style="color: #ad168a;"  title="<{$smarty.const._MD_KWCLUB_CLASS_MONEY}> <{$data.class_money}> <{$smarty.const._MD_KWCLUB_DOLLAR}> + <{$smarty.const._MD_KWCLUB_CLASS_FEE}> <{$data.class_fee}> <{$smarty.const._MD_KWCLUB_DOLLAR}>"<{/if}>>
+                                <{$data.class_pay}> <{$smarty.const._MD_KWCLUB_DOLLAR}>
                             </span>
-                            （<{ if $data.reg_isfee==1}><span style='color: green'>已繳費</span> <{else}><span style='color: red'>未繳費</span><{/if}>）
+                            （<{ if $data.reg_isfee==1}><span style='color: green'><{$smarty.const._MD_KWCLUB_PAID}></span> <{else}><span style='color: red'><{$smarty.const._MD_KWCLUB_NOT_PAY}></span><{/if}>）
                         </td>
 
                         <!--報名時間-->
@@ -84,7 +85,7 @@
                         </td>
 
                         <!-- 是否後補 -->
-                        <td class="text-center">
+                        <td nowrap class="text-center">
                             <{ if $data.reg_isreg==$smarty.const._MD_KWCLUB_OFFICIALLY_ENROLL}>
                                 <span style='color: rgb(6, 2, 238)'><{$data.reg_isreg}></span>
                             <{else}>
@@ -93,18 +94,21 @@
                         </td>
                         <td class="text-center">
                             <{if $today < $data.end_date }>
-                                <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-danger btn-xs" >取消報名</a>
+                                <a href="javascript:delete_reg_func(<{$data.reg_sn}>);" class="btn btn-danger btn-xs"><{$smarty.const._MD_KWCLUB_DELETE_APPLY}></a>
                             <{/if}>
                         </td>
                     </tr>
                 <{/foreach}>
                 <tr>
-                    <td colspan="2" align='center'>總繳費金額</td>
-                    <td  colspan="6" align='right'>總共 <{$money}> 元，已繳 <span style='color: green'><{$in_money}></span> 元，未繳 <span style='color: red'><{$un_money}></span> 元</td>
+                    <td colspan="2" align='center'><{$smarty.const._MD_KWCLUB_PAY_TOTAL}></td>
+                    <td  colspan="6" align='right'>
+                        <{$smarty.const._MD_KWCLUB_PAY_STATUS|sprintf:$money:$in_money:$un_money}>
+                    </td>
                 </tr>
             </tbody>
         </table>
     <{else}>
-        <div class="alert alert-danger"><span class="club_year_text"><{$club_year_text}></span>中，查無任何 <{$reg_uid}> 的報名資料</div>
+        <div class="alert alert-danger">
+            <span class="club_year_text"><{$club_year_text}></span><{$smarty.const._MD_KWCLUB_NOT_FOUND|sprintf:$reg_uid}></div>
     <{/if}>
 <{/if}>

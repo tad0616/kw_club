@@ -3,12 +3,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        
-        // $.post("ajax.php", {op: "keyman", keyman: ''}, function(theResponse){
-        //     $('#adm_repository').html(theResponse);
-        // });
-     
-      
         $('#search_user').click(function () {
             search_user();
         });
@@ -38,11 +32,11 @@
 
 <div class="row">
     <div class="col-sm-6 text-center">
-        <h4>所有使用者</h4>
+        <h4><{$smarty.const._MD_KWCLUB_ALL_USERS}></h4>
     </div>
     <div class="col-sm-1"></div>
     <div class="col-sm-5 text-center">
-        <h4>已選擇使用者</h4>
+        <h4><{$smarty.const._MD_KWCLUB_PICKED_USERS}></h4>
     </div>
 </div>
 
@@ -50,9 +44,9 @@
     <div class="col-sm-6">
 
         <div class="input-group">
-            <input type="text" name="keyman" id="keyman" placeholder="請輸入姓名、Email或帳號..." class="form-control" onkeypress="if (event.keyCode == 13) {return false;}">
+            <input type="text" name="keyman" id="keyman" placeholder="<{$smarty.const._MD_KWCLUB_SEARCH_KEY}>" class="form-control" onkeypress="if (event.keyCode == 13) {return false;}">
             <span class="input-group-btn">
-            <button type="button" id="search_user" class="btn btn-success">搜尋</button>
+            <button type="button" id="search_user" class="btn btn-success"><{$smarty.const._MD_KWCLUB_SEARCH}></button>
             </span>
         </div>
 
@@ -75,4 +69,3 @@
 </div>
 
 <input type="hidden" name="users_uid" id="users_uid" value="<{$users_uid}>">
-

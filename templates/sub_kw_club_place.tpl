@@ -1,12 +1,11 @@
-
 <div class="row">
     <div class="col-sm-6">
-        <h2>上課場地設定</h2>
+        <h2><{$smarty.const._MD_KWCLUB_PLACE_SETUP}></h2>
         <{includeq file="$xoops_rootpath/modules/kw_club/templates/sub_kw_club_place_form.tpl"}>
     </div>
     <div class="col-sm-6">
-        <h2>上課場地列表</h2>
-        <{if $all_place_content}>    
+        <h2><{$smarty.const._MD_KWCLUB_PLACE_LIST}></h2>
+        <{if $all_place_content}>
             <script type="text/javascript">
                 $(document).ready(function(){
                     $("#kw_club_place_sort").sortable({ opacity: 0.6, cursor: "move", update: function() {
@@ -17,7 +16,7 @@
                     }
                     });
                 });
-            </script>    
+            </script>
             <div id="kw_club_place_save_msg"></div>
             <ul class="list-group" id="kw_club_place_sort">
                 <{foreach from=$all_place_content item=data}>
@@ -34,6 +33,3 @@
         <{/if}>
     </div>
 </div>
-
-    
-    

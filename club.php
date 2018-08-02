@@ -67,23 +67,15 @@ function class_form($class_id = '')
     $cal = new My97DatePicker();
     $cal->render();
 
-    //ck edit
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
-    $ck = new CKEditor("class_form", "class_desc", "");
-    $ck->setHeight(350);
-    $editor = $ck->render();
-
     if (!$_SESSION['isclubAdmin'] && !$_SESSION['isclubUser']) {
         redirect_header("index.php", 3, _MD_KWCLUB_FORBBIDEN);
     }
 
     $club_info = get_club_info();
     if (!isset($club_info['club_year'])) {
-        redirect_header("index.php", 3, '尚未設定社團期別，請管理員先設定社團資料!');
+        redirect_header("index.php", 3, _MD_KWCLUB_NEED_CONFIG);
     }
 
-    // include_once(XOOPS_ROOT_PATH."/class/xoopsformloader.php");
-    // include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
     $class_num = system_CleanVars($_REQUEST, 'class_num', '', 'int');
 
     //取得此期已有的class_num
@@ -154,7 +146,7 @@ function class_form($class_id = '')
     $class_week_arr = explode("、", $class_week);
     // $class_week_arr = str_split($class_week);
     $xoopsTpl->assign('class_week', $class_week_arr);
-    $xoopsTpl->assign('c_week', array('日', '一', '二', '三', '四', '五', '六'));
+    $xoopsTpl->assign('c_week', array(_MD_KWCLUB_W0, _MD_KWCLUB_W1, _MD_KWCLUB_W2, _MD_KWCLUB_W3, _MD_KWCLUB_W4, _MD_KWCLUB_W5, _MD_KWCLUB_W6));
 
     //設定 class_grade 欄位的預設值
     $class_grade     = !isset($DBV['class_grade']) ? "" : $DBV['class_grade'];
@@ -166,48 +158,69 @@ function class_form($class_id = '')
     //設定 class_date_open 欄位的預設值
     $class_date_open = !isset($DBV['class_date_open']) ? date("Y-m-d") : $DBV['class_date_open'];
     $xoopsTpl->assign('class_date_open', $class_date_open);
+
     //設定 class_date_close 欄位的預設值
     $class_date_close = !isset($DBV['class_date_close']) ? date("Y-m-d") : $DBV['class_date_close'];
     $xoopsTpl->assign('class_date_close', $class_date_close);
+
     //設定 class_time_start 欄位的預設值
     $class_time_start = !isset($DBV['class_time_start']) ? date("H:i") : $DBV['class_time_start'];
     $xoopsTpl->assign('class_time_start', $class_time_start);
+
     //設定 class_time_end 欄位的預設值
     $class_time_end = !isset($DBV['class_time_end']) ? date("H:i") : $DBV['class_time_end'];
     $xoopsTpl->assign('class_time_end', $class_time_end);
+
     //設定 place_id 欄位的預設值
     $place_id = !isset($DBV['place_id']) ? "" : $DBV['place_id'];
     $xoopsTpl->assign('place_id', $place_id);
+
     //設定 class_member 欄位的預設值
     $class_member = !isset($DBV['class_member']) ? "" : $DBV['class_member'];
     $xoopsTpl->assign('class_member', $class_member);
+
     //設定 class_money 欄位的預設值
     $class_money = !isset($DBV['class_money']) ? "" : $DBV['class_money'];
     $xoopsTpl->assign('class_money', $class_money);
+
     //設定 class_fee 欄位的預設值
     $class_fee = !isset($DBV['class_fee']) ? "" : $DBV['class_fee'];
     $xoopsTpl->assign('class_fee', $class_fee);
+
     //設定 class_regnum 欄位的預設值
     $class_regnum = !isset($DBV['class_regnum']) ? "" : $DBV['class_regnum'];
     $xoopsTpl->assign('class_regnum', $class_regnum);
+
     //設定 class_note 欄位的預設值
     $class_note = !isset($DBV['class_note']) ? "" : $DBV['class_note'];
     $xoopsTpl->assign('class_note', $class_note);
+
     //設定 class_date_start 欄位的預設值
     $class_date_start = !isset($DBV['class_date_start']) ? date("Y-m-d H:i") : $DBV['class_date_start'];
     $xoopsTpl->assign('class_date_start', $class_date_start);
+
     //設定 class_date_end 欄位的預設值
     $class_date_end = !isset($DBV['class_date_end']) ? date("Y-m-d H:i") : $DBV['class_date_end'];
     $xoopsTpl->assign('class_date_end', $class_date_end);
+
     //設定 class_ischecked 欄位的預設值
     $class_ischecked = !isset($DBV['class_ischecked']) ? "" : $DBV['class_ischecked'];
     $xoopsTpl->assign('class_ischecked', $class_ischecked);
+
     //設定 class_isopen 欄位的預設值
     $class_isopen = !isset($DBV['class_isopen']) ? "1" : $DBV['class_isopen'];
     $xoopsTpl->assign('class_isopen', $class_isopen);
+
     //設定 class_desc 欄位的預設值
     $class_desc = !isset($DBV['class_desc']) ? "" : $DBV['class_desc'];
     $xoopsTpl->assign('class_desc', $class_desc);
+    //所見即所得編輯器
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
+    $ck = new CKEditor("kw_club", "class_desc", $class_desc);
+    $ck->setHeight(250);
+    $ck->setToolbarSet('tadSimple');
+    $editor = $ck->render();
+    $xoopsTpl->assign('class_desc_editor', $editor);
 
     //semester
     $arr_semester = get_semester();
@@ -432,25 +445,18 @@ function delete_class($class_id)
     }
 
     if (empty($class_id)) {
-        redirect_header("index.php", 3, '錯誤!!');
+        redirect_header("index.php", 3, _MD_KWCLUB_NEED_CLASS_ID);
     } else if (check_class_reg($class_id)) {
-        redirect_header("club.php", 3, '警告!!此課程已有學生報名!!無法刪除!!');
+        redirect_header("club.php", 3, _MD_KWCLUB_NOT_EMPTY_CLASS);
     } else {
-
-        $tbl = $xoopsDB->prefix('kw_club_class');
-        if ($_SESSION['isclubAdmin']) {
-            $sql = "delete from `{$tbl}` where `class_id`='{$class_id}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
-        } else if ($_SESSION['isclubUser']) {
+        $and_uid = '';
+        if ($_SESSION['isclubUser']) {
             // 只能刪除自己的
-            $uid = $xoopsUser->uid();
-            $sql = "delete from `{$tbl}` where `class_id`='{$class_id}' and `class_uid = '{$uid}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            $uid     = $xoopsUser->uid();
+            $and_uid = "and `class_uid = '{$uid}'";
         }
 
+        $sql = "delete from `" . $xoopsDB->prefix('kw_club_class') . "` where `class_id`='{$class_id}' {$and_uid}";
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
-    // $sql = "delete from `" . $xoopsDB->prefix("kw_club_class") . "`
-    // where `class_id` = '{$class_id}'";
-    // $xoopsDB->queryF($sql) or web_error($sql);
-
 }

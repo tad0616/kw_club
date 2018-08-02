@@ -95,3 +95,14 @@ function reg_uid($club_year = "")
     $xoopsTpl->assign('total', sizeof($reg_all));
 
 }
+
+//改變繳費狀態
+function update_reg_isfee($reg_sn, $reg_isfee)
+{
+    global $xoopsDB;
+
+    $sql = "update `" . $xoopsDB->prefix("kw_club_reg") . "` set
+    `reg_isfee` = '{$reg_isfee}'
+    where `reg_sn` = '$reg_sn'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+}

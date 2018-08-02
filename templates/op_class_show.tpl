@@ -1,16 +1,15 @@
 <h2 class="text-center">
-
     <span class="label label-info"><{$cate_id_title}></span>
     <{$class_title}>
     <!--是否開班-->
     <{if $smarty.session.isclubAdmin}>
         <span class="badge">
             <{if $class_ischecked=='1'}>
-                開班
+                <{$smarty.const._MD_KWCLUB_CLASS_ENABLE}>
             <{elseif $class_ischecked=='0'}>
-                不開班
+                <{$smarty.const._MD_KWCLUB_CLASS_UNABLE}>
             <{else}>
-                尚未報名完成
+                <{$smarty.const._MD_KWCLUB_CLASS_UNDONE}>
             <{/if}>
         </span>
     <{/if}>
@@ -68,17 +67,18 @@
             <div class="col-sm-9">
                 <span class="number_b">
                     <{$class_date_open|date_format:"%Y/%m/%d"}>
-                </span>至
+                </span>
+                <{$smarty.const._MD_KWCLUB_APPLY_FROM_TO}>
                 <span class="number_b">
                     <{$class_date_close|date_format:"%Y/%m/%d"}>
                 </span>
                 <div>
                     <!--上課星期-->
-                    每星期<span class="text_g"><{$class_week}></span>的
+                    <{$smarty.const._MD_KWCLUB_W|sprintf:$class_week}>
                     <span class="number_o">
                         <{$class_time_start|date_format:"%H:%M"}>
                     </span>
-                    至
+                    <{$smarty.const._MD_KWCLUB_APPLY_FROM_TO}>
                     <span class="number_o">
                         <{$class_time_end|date_format:"%H:%M"}>
                     </span>
@@ -93,7 +93,10 @@
                 <{$smarty.const._MD_KWCLUB_CLASS_MONEY}>
             </label>
             <div class="col-sm-9">
-                <{$class_money}>元<{if $class_fee}>（學費） + <{$class_fee}>元（教材費）<{/if}>
+                <{$class_money}> <{$smarty.const._MD_KWCLUB_DOLLAR}>
+                <{if $class_fee}>
+                    <{$smarty.const._MD_KWCLUB_CLASS_FEE}> <{$data.class_fee}> <{$smarty.const._MD_KWCLUB_DOLLAR}>
+                <{/if}>
             </div>
         </div>
 
@@ -103,7 +106,7 @@
                 <{$smarty.const._MD_KWCLUB_CLASS_MENBER}>
             </label>
             <div class="col-sm-9">
-                <{$class_member}> 人
+                <{$class_member}> <{$smarty.const._MD_KWCLUB_PEOPLE}>
             </div>
         </div>
 
@@ -113,7 +116,7 @@
                 <{$smarty.const._MD_KWCLUB_CLASS_REGNUM}>
             </label>
             <div class="col-sm-9">
-                <{$class_regnum}> 人
+                <{$class_regnum}> <{$smarty.const._MD_KWCLUB_PEOPLE}>
             </div>
         </div>
 
@@ -136,16 +139,16 @@
 <div class="alert alert-info text-center">
     <{if $is_full}>
         <a href="#" class="btn btn-danger disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
-            報名額滿</a>
+            <{$smarty.const._MD_KWCLUB_FULL_REGISTRATION}></a>
     <{elseif $class_regnum >= $class_member}>
         <a href="index.php?op=reg_form&class_id=<{$class_id}>&is_full=1" class="btn btn-warning"><i class="fa fa-user-plus" aria-hidden="true"></i>
-            我要報名後補</a>
+            <{$smarty.const._MD_KWCLUB_SIGNUP_TO_MAKE_UP}></a>
     <{elseif $chk_time}>
         <a href="index.php?op=reg_form&class_id=<{$class_id}>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i>
-            我要報名</a>
+            <{$smarty.const._MD_KWCLUB_SIGNUP}></a>
     <{else}>
         <a href="#" class="btn btn-danger disabled"><i class="fa fa-user-plus" aria-hidden="true"></i>
-            非報名時間</a>
+            <{$smarty.const._MD_KWCLUB_NON_REGISTRATION_TIME}></a>
     <{/if}>
 </div>
 
@@ -177,8 +180,8 @@
     <h3>
         <span class="club_year_text"><{$club_year_text}></span>
         <span style="color:green"><{$class_title}></span>
-        已報名名單
-        <small>（共 <{$class_regnum}> 筆報名資料）</small>
+        <{$smarty.const._MD_KWCLUB_REGISTERED_LIST}>
+        <small><{$smarty.const._MD_KWCLUB_PAGEBAR_TOTAL|sprintf:$total}></small>
     </h3>
 
     <{includeq file="$xoops_rootpath/modules/kw_club/templates/sub_kw_club_reg_list_table.tpl"}>
